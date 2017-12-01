@@ -1,19 +1,18 @@
-ir_version: 1
+ir_version: 2
 producer_name: "pytorch"
-producer_version: "0.2"
-domain: "com.facebook"
+producer_version: "0.3"
 graph {
   node {
     input: "0"
     input: "1"
     output: "2"
-    op_type: "Mul"
+    op_type: "Add"
   }
   node {
-    input: "2"
     input: "0"
+    input: "2"
     output: "3"
-    op_type: "Add"
+    op_type: "Mul"
   }
   name: "torch-jit-export"
   initializer {
@@ -71,4 +70,7 @@ graph {
       }
     }
   }
+}
+opset_import {
+  version: 2
 }

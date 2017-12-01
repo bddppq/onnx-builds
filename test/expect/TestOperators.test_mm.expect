@@ -1,7 +1,6 @@
-ir_version: 1
+ir_version: 2
 producer_name: "pytorch"
-producer_version: "0.2"
-domain: "com.facebook"
+producer_version: "0.3"
 graph {
   node {
     output: "2"
@@ -87,4 +86,7 @@ graph {
       }
     }
   }
+}
+opset_import {
+  version: 2
 }
