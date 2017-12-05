@@ -413,6 +413,23 @@ class TestCaffe2Backend(unittest.TestCase):
         model = nn.ReplicationPad2d((1, 2, 3, 4))
         self.run_model_test(model, train=False, batch_size=BATCH_SIZE)
 
+    def test_maxpool2d(self):
+        model = nn.MaxPool2d(5, padding=(1, 2))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE)
+
+    def test_maxpool2d_single_padding(self):
+        model = nn.MaxPool2d(5, padding=2)
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE)
+
+    @unittest.skip("C2 and PyTorch have small difference in padding implementation")
+    def test_avgpool2d(self):
+        model = nn.AvgPool2d(5, padding=(2))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE)
+
+    def test_avgpool2d_no_padding(self):
+        model = nn.AvgPool2d(5)
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE)
+
     def test_mnist(self):
         model = MNIST()
         input = Variable(torch.randn(BATCH_SIZE, 1, 28, 28),
