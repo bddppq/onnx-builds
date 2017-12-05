@@ -1032,7 +1032,7 @@ graph torch-jit-export (
   %1149 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%1148, %601, %602, %603, %604)
   %1150 = Relu(%1149)
   %1151 = AveragePool[kernel_shape = [7, 7], pads = [0, 0], strides = [7, 7]](%1150)
-  %1152 = Reshape[shape = [2, -1]](%1151)
+  %1152 = Flatten[axis = 1](%1151)
   %1155 = Gemm[alpha = 1, beta = 1, broadcast = 1, transB = 1](%1152, %605, %606)
   return %1155
 }

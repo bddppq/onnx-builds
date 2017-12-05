@@ -172,7 +172,7 @@ graph torch-jit-export (
   %169 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%168, %93, %94, %95, %96)
   %170 = Relu(%169)
   %171 = MaxPool[kernel_shape = [2, 2], pads = [0, 0], strides = [2, 2]](%170)
-  %172 = Reshape[shape = [2, -1]](%171)
+  %172 = Flatten[axis = 1](%171)
   %175 = Gemm[alpha = 1, beta = 1, broadcast = 1, transB = 1](%172, %97, %98)
   %176 = Relu(%175)
   %177, %178 = Dropout[is_test = 1, ratio = 0.5](%176)

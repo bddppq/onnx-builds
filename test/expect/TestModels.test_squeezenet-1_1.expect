@@ -144,6 +144,6 @@ graph torch-jit-export (
   %142 = Add[axis = 1, broadcast = 1](%141, %52)
   %143 = Relu(%142)
   %144 = AveragePool[kernel_shape = [13, 13], pads = [0, 0], strides = [13, 13]](%143)
-  %145 = Reshape[shape = [2, 1000]](%144)
+  %145 = Flatten[axis = 1](%144)
   return %145
 }

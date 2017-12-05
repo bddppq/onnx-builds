@@ -797,7 +797,7 @@ graph torch-jit-export (
   %888 = Concat[axis = 1](%852, %865, %882, %887)
   %889 = AveragePool[kernel_shape = [8, 8], pads = [0, 0], strides = [8, 8]](%888)
   %890, %891 = Dropout[is_test = 1, ratio = 0.5](%889)
-  %892 = Reshape[shape = [2, -1]](%890)
+  %892 = Flatten[axis = 1](%890)
   %895 = Gemm[alpha = 1, beta = 1, broadcast = 1, transB = 1](%892, %483, %484)
   return %895
 }

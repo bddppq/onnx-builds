@@ -35,7 +35,7 @@ graph torch-jit-export (
   %32 = Add[axis = 1, broadcast = 1](%31, %10)
   %33 = Relu(%32)
   %34 = MaxPool[kernel_shape = [3, 3], pads = [0, 0], strides = [2, 2]](%33)
-  %35 = Reshape[shape = [2, 9216]](%34)
+  %35 = Flatten[axis = 1](%34)
   %36, %37 = Dropout[is_test = 1, ratio = 0.5](%35)
   %40 = Gemm[alpha = 1, beta = 1, broadcast = 1, transB = 1](%36, %11, %12)
   %41 = Relu(%40)

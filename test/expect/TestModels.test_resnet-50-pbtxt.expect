@@ -4102,12 +4102,11 @@ graph {
   node {
     input: "493"
     output: "494"
-    op_type: "Reshape"
+    op_type: "Flatten"
     attribute {
-      name: "shape"
-      ints: 2
-      ints: -1
-      type: INTS
+      name: "axis"
+      i: 1
+      type: INT
     }
   }
   node {

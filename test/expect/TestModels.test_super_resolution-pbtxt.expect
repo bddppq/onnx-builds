@@ -232,16 +232,11 @@ graph {
   node {
     input: "19"
     output: "20"
-    op_type: "Reshape"
+    op_type: "Flatten"
     attribute {
-      name: "shape"
-      ints: 2
-      ints: 1
-      ints: 3
-      ints: 3
-      ints: 224
-      ints: 224
-      type: INTS
+      name: "axis"
+      i: 1
+      type: INT
     }
   }
   node {
@@ -262,14 +257,11 @@ graph {
   node {
     input: "21"
     output: "22"
-    op_type: "Reshape"
+    op_type: "Flatten"
     attribute {
-      name: "shape"
-      ints: 2
-      ints: 1
-      ints: 672
-      ints: 672
-      type: INTS
+      name: "axis"
+      i: 1
+      type: INT
     }
   }
   name: "torch-jit-export"
