@@ -1,0 +1,158 @@
+ir_version: 2
+producer_name: "pytorch"
+producer_version: "0.3"
+graph {
+  node {
+    input: "0"
+    input: "1"
+    output: "3"
+    op_type: "Conv"
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 2
+      ints: 2
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 1
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(90): conv2d\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/conv.py(282): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  node {
+    input: "3"
+    input: "2"
+    output: "4"
+    op_type: "Add"
+    attribute {
+      name: "broadcast"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "axis"
+      i: 1
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(90): conv2d\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/conv.py(282): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  name: "torch-jit-export"
+  initializer {
+    dims: 4
+    dims: 3
+    dims: 3
+    dims: 3
+    data_type: FLOAT
+    name: "1"
+    raw_data: "\333F\013>.l4\276H\216_\275\001\254\356\275\205\235\004>\000P\270\273Tm\023\276\266\207\371=\027\2326>\000\211r\275\025\254\000\276\340\2621=\320c\250\274\234\354\256\275\215.1>@\351\264\273l\265#\276\343$\034>Jy\213=\026\236\254=\310\340\252<\254\354|\275\014B\363\275\300t.\274\302\315\223=\344#\023\276\240\"\332\273\200\257-<\224\355\021\276\332\312\334={\0007\276\014\320)\276\220\217J=\242\327\255=[\333>>w\022&>@\374\024;\247\317B>\312\323\260=\3502\024=\211\344\021\2765\273\252\2759\3700>\240\325-\276\252T3\276\370{\261\274\224\177%\275\205\247 >\026\031\307=H\223\272\274\372\271\363=\202j\034\276\210\264\331\274Be>\276@V\361;\014l\025\276l]G\275\2140\325\275\240\200\311\274~\272\315\275rT\t\276\223o\021>\226(\316\275\372\355\364=\370\320\311<(\274\034\275\212\253\251=@\365\034;85\325\274\246\331\227=\003\330\017>\374\276f\275@x\013\275\312\200\233=\266a\374=\240\256\356<\244\323A\275\2313.>X\r\255<\344\022w=\224f\265\275 \364\375;X\310\206\274Y\307(\276\020<\006\276@<\255<\3418)>\252H\220=\010\215\227<\202t\315=\212I\234=p\3508<\332\333\325=\240\263C\275`P%=\237\315\031>Z\306\375=Wr\037\276A\037\r\276\371\315&>\000\374W=U/\006\276*\177\346=\204\022*=p[\213<)\2523>\252@\234=x\222\211<"
+  }
+  initializer {
+    dims: 4
+    data_type: FLOAT
+    name: "2"
+    raw_data: "\200p\323\274\n\321\n\276\324\203 \276\212\347\273\275"
+  }
+  input {
+    name: "0"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 6
+          }
+          dim {
+            dim_value: 6
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "1"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 3
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "2"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 4
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "4"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 3
+          }
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 2
+}

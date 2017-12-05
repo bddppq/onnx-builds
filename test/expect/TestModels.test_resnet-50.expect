@@ -271,7 +271,7 @@ graph torch-jit-export (
   %269 = Conv[dilations = [1, 1], group = 1, kernel_shape = [7, 7], pads = [3, 3, 3, 3], strides = [2, 2]](%0, %1)
   %270 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%269, %2, %3, %4, %5)
   %271 = Relu(%270)
-  %272 = MaxPool[kernel_shape = [3, 3], pads = [1, 1], strides = [2, 2]](%271)
+  %272 = MaxPool[kernel_shape = [3, 3], pads = [1, 1, 1, 1], strides = [2, 2]](%271)
   %274 = Conv[dilations = [1, 1], group = 1, kernel_shape = [1, 1], pads = [0, 0, 0, 0], strides = [1, 1]](%272, %6)
   %275 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%274, %7, %8, %9, %10)
   %276 = Relu(%275)
@@ -440,8 +440,8 @@ graph torch-jit-export (
   %490 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%489, %262, %263, %264, %265)
   %491 = Add(%490, %479)
   %492 = Relu(%491)
-  %493 = AveragePool[kernel_shape = [7, 7], pads = [0, 0], strides = [7, 7]](%492)
-  %494 = Reshape[shape = [2, -1]](%493)
+  %493 = AveragePool[kernel_shape = [7, 7], pads = [0, 0, 0, 0], strides = [7, 7]](%492)
+  %494 = Flatten[axis = 1](%493)
   %497 = Gemm[alpha = 1, beta = 1, broadcast = 1, transB = 1](%494, %266, %267)
   return %497
 }

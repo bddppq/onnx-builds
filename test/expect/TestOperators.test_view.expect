@@ -5,12 +5,11 @@ graph {
   node {
     input: "0"
     output: "1"
-    op_type: "Reshape"
+    op_type: "Flatten"
     attribute {
-      name: "shape"
-      ints: 1
-      ints: 1
-      type: INTS
+      name: "axis"
+      i: 1
+      type: INT
     }
   }
   name: "torch-jit-export"

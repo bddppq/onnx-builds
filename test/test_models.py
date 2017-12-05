@@ -11,7 +11,7 @@ from model_defs.srresnet import SRResNet
 from model_defs.dcgan import _netD, _netG, weights_init, bsz, imgsz, nz
 from model_defs.op_test import DummyNet, ConcatNet, PermuteNet, PReluNet
 
-from test_common import TestCase, run_tests, skipIfNoLapack, skipIfTravis
+from test_pytorch_common import TestCase, run_tests, skipIfNoLapack, skipIfTravis
 
 import torch
 import torch.onnx

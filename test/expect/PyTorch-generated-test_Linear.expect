@@ -1,0 +1,111 @@
+ir_version: 2
+producer_name: "pytorch"
+producer_version: "0.3"
+graph {
+  node {
+    input: "0"
+    input: "1"
+    input: "2"
+    output: "5"
+    op_type: "Gemm"
+    attribute {
+      name: "alpha"
+      f: 1.0
+      type: FLOAT
+    }
+    attribute {
+      name: "beta"
+      f: 1.0
+      type: FLOAT
+    }
+    attribute {
+      name: "broadcast"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "transB"
+      i: 1
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(885): linear\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/linear.py(55): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  name: "torch-jit-export"
+  initializer {
+    dims: 8
+    dims: 10
+    data_type: FLOAT
+    name: "1"
+    raw_data: "\355\265\240>`2\022\275\270\214\332=\324\306\365=\316jU>v\265\274\275H$\177\276\220;(\275g\330\207\276\\(\313\275\374\326$\276\252\262\240\276\000\"\n>9\017\237>\200\207\360;\263m\200>\2164V>\013@\205>\300x\030=2\277Q>o\263o\276L\317\231\276\020S\326=f\017\026\276m.\237>p(6=<\247\320\275\261\020\215>\347\031\233>\232jp>\376DG>jl\271\275\000\0013>\230\206\300=,\222\364\275\210We\276\235\312\241>\242\236\216\276\350\303\222=\302\205\035\276\203\312\211\276\357\352\025\276\004`\373\275\2020:>\260_\204\274\375\236\227>\244\'\201=\000\364`:\342TM>\250\"*\275\362v(>\244\371\313=\300\324\010\274\202nd\276r`i>\245\252k\276\344\333\370=\214X\237\276@\032\005=\240\032K<f\002\000>\350#M\276\267?\205\276\370K\307\275<\362\033\276\3643\226\276B\316j>@j\t=\204|\026>\206X\034>\251\273\002\276\0226\347\275\314\006n\276\217\255\205>\356\274G>\314\241\204\275\\\371\260\275\367\013\205>0\343\255\275\010\264\345\275"
+  }
+  initializer {
+    dims: 8
+    data_type: FLOAT
+    name: "2"
+    raw_data: "\344\270\267=\352a\362\275\000\223\211:\302wu>\2200r\276^\323B>!\2425\276\316<\223\275"
+  }
+  input {
+    name: "0"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 10
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "1"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 8
+          }
+          dim {
+            dim_value: 10
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "2"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 8
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "5"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 8
+          }
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 2
+}

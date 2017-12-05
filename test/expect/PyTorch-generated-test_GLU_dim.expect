@@ -1,0 +1,70 @@
+ir_version: 2
+producer_name: "pytorch"
+producer_version: "0.3"
+graph {
+  node {
+    input: "0"
+    output: "1"
+    output: "2"
+    op_type: "Split"
+    attribute {
+      name: "axis"
+      i: 1
+      type: INT
+    }
+  }
+  node {
+    input: "2"
+    output: "3"
+    op_type: "Sigmoid"
+  }
+  node {
+    input: "1"
+    input: "3"
+    output: "4"
+    op_type: "Mul"
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/activation.py(333): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  name: "torch-jit-export"
+  input {
+    name: "0"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 5
+          }
+          dim {
+            dim_value: 6
+          }
+          dim {
+            dim_value: 7
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "4"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 5
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 7
+          }
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 2
+}

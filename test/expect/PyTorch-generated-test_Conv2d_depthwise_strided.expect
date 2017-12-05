@@ -1,0 +1,158 @@
+ir_version: 2
+producer_name: "pytorch"
+producer_version: "0.3"
+graph {
+  node {
+    input: "0"
+    input: "1"
+    output: "3"
+    op_type: "Conv"
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 2
+      ints: 2
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
+      type: INTS
+    }
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 4
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(90): conv2d\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/conv.py(282): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  node {
+    input: "3"
+    input: "2"
+    output: "4"
+    op_type: "Add"
+    attribute {
+      name: "broadcast"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "axis"
+      i: 1
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(90): conv2d\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/conv.py(282): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  name: "torch-jit-export"
+  initializer {
+    dims: 4
+    dims: 1
+    dims: 3
+    dims: 3
+    data_type: FLOAT
+    name: "1"
+    raw_data: ")\240\032>\027\251$>\234g%=.\226\031\276\336\227\316=\350\016\215\275\343&\020\276\306\262o\275\250\037\242\275@\035\276\274\026\270~\275\320\247|</\355\021>\210\225\214\275\202\026*\276DB\"\275\375m\016>\200\014\361\274\034\332^=Z\235\207=;6\361\275x>\332<\000\3552\2752\316%\276\343\230\244\2754FT=\2337\210\275\277L\n\276j\377\374=\3438\351\275\236\036\322\275|\2360=\020\353\254\275l\350\007\275\353\276\315\275%\255)>"
+  }
+  initializer {
+    dims: 4
+    data_type: FLOAT
+    name: "2"
+    raw_data: "n\237\231=nm\323\275\200T\034\275\3511\006>"
+  }
+  input {
+    name: "0"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 6
+          }
+          dim {
+            dim_value: 6
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "1"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 1
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 3
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "2"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 4
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "4"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 2
+          }
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 2
+}

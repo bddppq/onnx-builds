@@ -33,7 +33,7 @@ from model_defs.mnist import MNIST
 import onnx
 import onnx_caffe2.backend as c2
 
-from test_common import skipIfTravis, skipIfNoLapack, skipIfNoCuda
+from test_pytorch_common import skipIfTravis, skipIfNoLapack, skipIfNoCuda
 
 skip = unittest.skip
 

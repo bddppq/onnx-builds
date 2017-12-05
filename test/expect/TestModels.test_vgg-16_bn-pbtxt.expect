@@ -198,6 +198,8 @@ graph {
       name: "pads"
       ints: 0
       ints: 0
+      ints: 0
+      ints: 0
       type: INTS
     }
     attribute {
@@ -401,6 +403,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 0
+      ints: 0
       ints: 0
       ints: 0
       type: INTS
@@ -699,6 +703,8 @@ graph {
       name: "pads"
       ints: 0
       ints: 0
+      ints: 0
+      ints: 0
       type: INTS
     }
     attribute {
@@ -993,6 +999,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 0
+      ints: 0
       ints: 0
       ints: 0
       type: INTS
@@ -1291,6 +1299,8 @@ graph {
       name: "pads"
       ints: 0
       ints: 0
+      ints: 0
+      ints: 0
       type: INTS
     }
     attribute {
@@ -1303,12 +1313,11 @@ graph {
   node {
     input: "141"
     output: "142"
-    op_type: "Reshape"
+    op_type: "Flatten"
     attribute {
-      name: "shape"
-      ints: 2
-      ints: -1
-      type: INTS
+      name: "axis"
+      i: 1
+      type: INT
     }
   }
   node {

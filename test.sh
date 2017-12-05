@@ -2,11 +2,8 @@
 
 set -ex
 
-if [[ "$(uname)" == 'Darwin' ]]; then
-    script_path=$(realpath -e "${BASH_SOURCE[0]}")
-else
-    script_path=$(readlink -e "${BASH_SOURCE[0]}")
-fi
+# realpath might not be available on MacOS
+script_path=$(python -c "import os; import sys; print(os.path.realpath(sys.argv[1]))" "${BASH_SOURCE[0]}")
 top_dir=$(dirname "$script_path")
 TEST_DIR="$top_dir/test"
 

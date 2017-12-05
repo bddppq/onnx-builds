@@ -74,6 +74,8 @@ graph {
       name: "pads"
       ints: 0
       ints: 0
+      ints: 0
+      ints: 0
       type: INTS
     }
     attribute {
@@ -153,6 +155,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 0
+      ints: 0
       ints: 0
       ints: 0
       type: INTS
@@ -352,6 +356,8 @@ graph {
       name: "pads"
       ints: 0
       ints: 0
+      ints: 0
+      ints: 0
       type: INTS
     }
     attribute {
@@ -364,12 +370,11 @@ graph {
   node {
     input: "34"
     output: "35"
-    op_type: "Reshape"
+    op_type: "Flatten"
     attribute {
-      name: "shape"
-      ints: 2
-      ints: 9216
-      type: INTS
+      name: "axis"
+      i: 1
+      type: INT
     }
   }
   node {

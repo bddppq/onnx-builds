@@ -1,0 +1,122 @@
+ir_version: 2
+producer_name: "pytorch"
+producer_version: "0.3"
+graph {
+  node {
+    input: "0"
+    input: "1"
+    output: "3"
+    op_type: "Conv"
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 2
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
+      type: INTS
+    }
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 1
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(90): conv2d\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/conv.py(282): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  name: "torch-jit-export"
+  initializer {
+    dims: 4
+    dims: 3
+    dims: 3
+    dims: 2
+    data_type: FLOAT
+    name: "1"
+    raw_data: "\322e\362=\0178b\276\350\330\220\274_\037\026>\3000{;i\365\004\276\350\3769\276\3373$\276\357hU\276c\360\010>-}X>\2453\352\275\317Aq>\265\016\017>A\262.>\206,\305=\347\303a\276\233\222?>\200\264\267;\020ij<D\346d=r\177\322\275\0348t\275\nH\030\276\334\251M=0\373\221\274 \226\016\276<\362A=\\\342\\\275&\262\324=\374\355h\276\236s\305=\020\230S\275\363\212c>\246\201\204=\330\276\351\274k\354M>\014\275\255\275\303$8>\244q\033\276\351\023m\276\332O\336=\300\037@<\232\2040\276\232\344\263\275\372\206[\276ZV\325=\350\201U\2758\317\225\275\321\243\021>\265P\031>p\"k\276\3708\010\276\375\274.>\335/7>dB\'=\227\250\356\275\257gC>\023\2619\276)\030@\276\255zB>\336jb\276\260 N\274\274\310\001=\024M\315\275\236\021\263=\250\2764\275\304y\324\275\177\016\r>\rc)>cvS\276\211\010\000\276"
+  }
+  input {
+    name: "0"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 6
+          }
+          dim {
+            dim_value: 5
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "1"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 2
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "3"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 4
+          }
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 2
+}

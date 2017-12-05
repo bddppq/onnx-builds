@@ -1,0 +1,173 @@
+ir_version: 2
+producer_name: "pytorch"
+producer_version: "0.3"
+graph {
+  node {
+    input: "0"
+    input: "1"
+    output: "3"
+    op_type: "Conv"
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
+      type: INTS
+    }
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 2
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(126): conv3d\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/conv.py(388): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  node {
+    input: "3"
+    input: "2"
+    output: "4"
+    op_type: "Add"
+    attribute {
+      name: "broadcast"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "axis"
+      i: 1
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(126): conv3d\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/conv.py(388): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  name: "torch-jit-export"
+  initializer {
+    dims: 6
+    dims: 2
+    dims: 3
+    dims: 3
+    dims: 3
+    data_type: FLOAT
+    name: "1"
+    raw_data: ":\231\226\2750\372\242\275]\020%\275\304\321\350\274k~,\275\031\005\270=W\211\263=\305\366\017\275{n\213=\256m\002=\340v\362\274\320\247\271\275\220@\274\274\2511\223=o\326\277=S0\273\275H#=< \227\023\275\330\274\271\274x\260V<j\327Q=\321\331\221=`\272\254\273\200<_\275 \243\344;\006\023\216\275QN\273\275e\032\'\275m\266\016\275\364\002\261<8%\213\274\022b\277\275\357Y\261=\363\300i\275\212\305j=N\245\036=\242\367N=`x%;ZY\010=\233B\302=\214c\252\275\242\347i\275\264\303\301<Q\327\245=\220)\t\2750\370\363\274u-\271=\202\342\\=\3206\227\274\335\t\254=EFQ\275\336>\030=py\324;\000\227\007:H\256\005<\200%~<\350\263O<\020fl<\240K[;9\203\277=\330\213o\274\024\036\252\275;\006\264=\367v\243=\203t\216=\270\033%<\020\n\036\275\033\221X\275\027^\255\275\274\321\302<@\031\036<\227\237\244=\340\200\016<f\232s=li\217<\257{X\275\202\265\013=\340\334x\273\240\335J<\356Ub=c\355\233=,C\337<\'V\222=\376\242\276\275\036\027\036=\232\215`\275^v6\275#\024\215=\200rb<D\017\337\274\262\247E=\001\327\206=\336\354*=\364\254\017\275p\rg\275\266\316c=a\312\240\275\366\317\250\275]v\016\275oG4\275\2609\241<!\017\264=\024\025\005\275\367V\277=\236\232B=R\376\020=\302\277J=\212\301&=\227hN\275XOD<\317/\031\275-w|\275\020o\325<]\307\035\275\365\263\230=c\0310\275\273;\024\275\244W\371<?\327W\275 \227g<oP\230=\264\232\265<\224\244B\275\264\251\277<\032\020I\275P\350\226;J\254\273\275\342\2234\275\275z\247=\234\256\267\274l\200\343<b/g\275\272\\\253\275\2408\311;\222\216a\275\220{\277<\2429}=\237\205\212=\004_\262<\320\325\312\273i\367\277\275\026\360$=v\254\007=\266\365h\275\036\371;=0{4\274\201\245\235=\202\276Y=\223\371\257=\305\223\242=i;\231=\267\r\232=\000:f9\216\204\216\275\240z\373\274\326\025\213\275\204T\320\274\333^\200\275\t\300\217\275\320\033\302\274\344\005=\275h\307i\274\364\204\232\275\204\235\344\274\010\021\210<\3303\301<\352~0\2750\212\263;\253\266\273=\241\344\265\275\314\267\273<@\2479\273\260\243\362\273\276\271\035=\211\334\202=h\306\265<\3568)=\215\235\242=8\246\302<p\000\200\275\300\265b\275\217a\300=&\0064=\350eg<\225\272\271=\032\0358=\252\212\267\275\300\037\306\272\210\316@\274$\247\211\275\261;\273=\346R\216\275\'\000\256=\300\370\245\273\324\367\373\274\035>\227=P\022\242\274t\303\355<\331\222\256=|(\022\275\222\220\034\275$\014\253\275\333}\257=\023c\207=\177\002\263=\355\371\247=\200s\317<\340\0361<\332\203\024\2754N_\275|af\275@9\343<R&7=\363\250\243=P\257\313\273\326(+=\350\312W<\354\252\237\275>i\020\275d\024\224\275\327\332\201=\212\370\n\275&y{=3\031\271\2750\244\345<\014\375\260\2746\006^\2750Ap<\204\306\363\274\020\253S<\212\t\036=^\272\022=\225\245C\275h\251!\275\200\004\301\275h\032\216\274\2175\232=\226?!=\250\007e\274@\013\277<\224\356\362<\300\272\223:@\331\204<\200\330m;\265\261\303=>\2704=\252\201j\275\261Q\252=\373\233Q\275\300\357\253\272l\026\237\275\032\265^=\030\205\261\27515\205=\002\267\016=\326VJ=(\241~\274\265\274\275\2753\003\201=\260e\275<\334\201\273<\236\202G=\211\253\250=\371=,\275\255LT\275\177\303\231=\200\201K\274x\301\026<27\014=\022\303\212\275\352\303\265\275Q\023\220=P\203\020<\034\177\272<s3\275=\362\250\276\275\000\337\265\272S*\270=\3006d\274\330$\264<\376\201+=E!\247=\344*\265\274]\032\022\275x\361\255\274\260H\340\273\225z\254\275\371_\241\275\230L\212\275X\270\213<\n\275\006=\350\323\332<Dc\277<C\241\300\275\240\033\243\275i\242\014\275\200x\341:2O\017=9\335\210\2752:\002=\326\236j=\223\261\215=\264@w\275*\317*=\236(G=H\372\213\274\317c\216\275\355\317\255=(D\273\274\322\024)=\370/\262\274\221n\251=UW\236=\217\342\227=b\250|=\330\321|\275\230S\013<.\307\270\275\340q\366;\223\225\213\275\240\364\377;flO=R\326R=y\270\201="
+  }
+  initializer {
+    dims: 6
+    data_type: FLOAT
+    name: "2"
+    raw_data: "@k\016<\260\314K<H]y\275\353R\267=\367\331\217=\202\263E="
+  }
+  input {
+    name: "0"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 5
+          }
+          dim {
+            dim_value: 4
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "1"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 6
+          }
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 3
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "2"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 6
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "4"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 6
+          }
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 2
+          }
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 2
+}

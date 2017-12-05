@@ -1,4 +1,4 @@
-from test_common import TestCase, run_tests, skipIfNoLapack
+from test_pytorch_common import TestCase, run_tests, skipIfNoLapack
 
 import torch
 import torch.onnx

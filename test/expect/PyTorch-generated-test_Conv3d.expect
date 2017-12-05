@@ -1,0 +1,173 @@
+ir_version: 2
+producer_name: "pytorch"
+producer_version: "0.3"
+graph {
+  node {
+    input: "0"
+    input: "1"
+    output: "3"
+    op_type: "Conv"
+    attribute {
+      name: "kernel_shape"
+      ints: 2
+      ints: 3
+      ints: 4
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
+      type: INTS
+    }
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 1
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(126): conv3d\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/conv.py(388): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  node {
+    input: "3"
+    input: "2"
+    output: "4"
+    op_type: "Add"
+    attribute {
+      name: "broadcast"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "axis"
+      i: 1
+      type: INT
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(126): conv3d\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/conv.py(388): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  name: "torch-jit-export"
+  initializer {
+    dims: 4
+    dims: 3
+    dims: 2
+    dims: 3
+    dims: 4
+    data_type: FLOAT
+    name: "1"
+    raw_data: "\"\306\267\275D\005\270<\034\361\260<VjW=\227K\272=\013\021\325=\363h\236=a\034\243=\274\324\235\275\350\020\304\275\215\216\250\275^\366`\275@\206\275:\316\310==\002b4=\350\327\034\275Y\314\300\275\305\335\334\275~O`\275#\312\360=$\022\363<\352E<=\240/\361\273\310\0325<Ce\207=\3005P\273\327\264\246\275\222\253\003=$9\036\275\273\260\303=d7\320\274C\220\240=\3273t\275\203\326\234=d_\203\275\263\211\304=\320\263\277\273\323\255\255=9\001\334=t\035\231\275P\272\364;\264\357\377<\320\375\220\275ZkV=`g\203\274\250\243$\275G\203\353\275\374\314\241<\214\304\257<\030\277r\275\315\323\322=p1b\274\276\016B\275\264@\265\275(\371\016<\320\202\317\273\356-_=\371\317\302=\240\016Q\274l\313\217\274V\220\036\275\300\027\216\274\330y:<fh\031=rJB=L\311\322\274\263_\211=\373\372\212=]\272\357\275\201|\243=^\310r=\014+\342<<\2051\275T\336R\275\226\375\247\275\343\031o\275\376l4\275\001\245\332\275\200\366s\272sZ\335=\260\261\232\275\361]\320\275\320\215\304;:\366>=\372\264\006\275\014y\215<8p\001<g?\333=)3\332=$\024\331\275\020A\237;\006\305y=$\306\200<\240h}\274\036\334\001=\3462L=\303E\220=\264t\233<1W\277=N\274^=\"M2=2\000\225\275\333]{\275B\354>=\211\354\247=\336g\002=\\\034C\275\230\306\236\274R\201\033\275B\374O=\270\375\270\275\221k\333=\013\337\257=Y\\\262=>\344a\275\270\310Y\274\225\354\317\275L\345\332\274\230\207}\275\340m\030\274N\374\315\275\232\264\303\275+\326\331\275\213S\207=,\273\372\274\240r\221\274\000\025\204;\026Ha=j\211O\275yG\236\275\334\252\260\275\260\333\361;\312\240A=\314\324\"\275\3468\301\275\277\023\223=(V\035\275\300\244\337\274t\302\370<\334l\n\275\016Zx=\334\222\210\275FUK=.\371O\275\250\261A\275\302_e=\245]\314=x@a<\3564\003\275\237\024\237\275\000\351\365\273\243u\200=`Sq\274\352\371\'=\030\311\215\275\022\363Z=\302+\036=\352Z\035=\241\314\341=\334\224\222\274\206\305\233\275\232\177\226\275&>\356\275\222\036\\=\2636\266=\364\313\242\275\036\254\254\275\025B\346=v\202\311\275\031\277\232\275\345\326\226=M\270\236\275\200\302L;\020\275\n\275(\245D\275\303\020\330=\203b\301\275\013\372\270=\200\375\221\272\326\3205\275\34066\273\002\244\032\275\265\277\344=\242\221\007=\365\376\217\275T\036\336<;\356\343\275n\237\273\275\250K\036\275\014\266\213<\020c\220\275RmN=\341\274\335=\331f\327=\327\340\206=\3636\267=\377\314\252=\272pz=Ex\214\275!\331\223\275\300\312\315\275j*\325\275\250}_\275!\324\271=\357Z\304\275\362K\007\275`\213\351\275\301j\332=\210\330w<\272B>=\2149L\275N\333\353\275@\013\304;\361A\324=\240\242=;Q\010\316\275\205a\314\275\240\220>\275HA?<3e\240=\\q\305<\262\006,\275\030\300\036<\n\226 \275\200 Q\272\252\307L=\204`\206<\017\034\257=BA\002\275\022G\010\275\000x\245\274uc\237\275+E\257=\201\317\350\275\366KG=y\243\350=VL\177=\305\214\206=;\360\336=\t\315\242=)\265\313=#\345\303=$f\213\275a\277\235= \005\203;\303$\201=`\336n\273\324\\\224\274\030\225\245\275\360\010I\275\302\003D\275\243ht\275Y\023\345\275i[\316\275R!\037\275\254\363\207<\334\014\225\275\003\357\347=p\207\216;$\236e\275\204O\337\275\221-\257\275\232C\273\275\220b\260\273\223\213\346=\270\036\234\275\210\253\323\275\226\262\003=9\347\267\275\014\331\204<\300\344\276\273\023\340\340\275\265\032\271=\264\344\343<TX&\275h\"\264\274\231\254\352=)\375\221=x\206F\274lN\202<\255\337\347=8i\330\275(\253*\2754\341\313<B;i=\000\373N\2727\343\322=\220\351\025\274"
+  }
+  initializer {
+    dims: 4
+    data_type: FLOAT
+    name: "2"
+    raw_data: "\342*{\2752\365\006\275N\247I\275\270\274H<"
+  }
+  input {
+    name: "0"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 5
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "1"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 4
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "2"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 4
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "4"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 2
+          }
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 2
+}

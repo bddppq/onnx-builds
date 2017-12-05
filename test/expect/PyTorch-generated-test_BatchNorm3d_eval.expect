@@ -1,0 +1,169 @@
+ir_version: 2
+producer_name: "pytorch"
+producer_version: "0.3"
+graph {
+  node {
+    input: "0"
+    input: "1"
+    input: "2"
+    input: "3"
+    input: "4"
+    output: "5"
+    op_type: "BatchNormalization"
+    attribute {
+      name: "is_test"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "epsilon"
+      f: 9.99999974738e-06
+      type: FLOAT
+    }
+    attribute {
+      name: "momentum"
+      f: 0.899999976158
+      type: FLOAT
+    }
+    attribute {
+      name: "consumed_inputs"
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    doc_string: "/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/functional.py(1063): batch_norm\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/batchnorm.py(37): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(245): forward\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/nn/modules/module.py(325): __call__\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/jit/__init__.py(227): trace\n/home/lufang/gitrepos/onnx-fb-universe/repos/pytorch/torch/onnx/__init__.py(120): _export\nconvert_pytorch_test.py(69): convert_tests\nconvert_pytorch_test.py(102): <module>\n"
+  }
+  name: "torch-jit-export"
+  initializer {
+    dims: 3
+    data_type: FLOAT
+    name: "1"
+    raw_data: "\213\"\006?\262\3472?aH(?"
+  }
+  initializer {
+    dims: 3
+    data_type: FLOAT
+    name: "2"
+    raw_data: "\000\000\000\000\000\000\000\000\000\000\000\000"
+  }
+  initializer {
+    dims: 3
+    data_type: FLOAT
+    name: "3"
+    raw_data: "\000\000\000\000\000\000\000\000\000\000\000\000"
+  }
+  initializer {
+    dims: 3
+    data_type: FLOAT
+    name: "4"
+    raw_data: "\000\000\200?\000\000\200?\000\000\200?"
+  }
+  input {
+    name: "0"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 4
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "1"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 3
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "2"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 3
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "3"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 3
+          }
+        }
+      }
+    }
+  }
+  input {
+    name: "4"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 3
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "5"
+    type {
+      tensor_type {
+        elem_type: FLOAT
+        shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 3
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 4
+          }
+          dim {
+            dim_value: 4
+          }
+        }
+      }
+    }
+  }
+}
+opset_import {
+  version: 2
+}
