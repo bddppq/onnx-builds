@@ -46,6 +46,8 @@ def collect_generated_testcases(root_dir=_generated_dir, verbose=False, fail_dir
                                                "PyTorch-generated-{}.expect".format(d))
                     with open(expect_file, "w") as text_file:
                         model = onnx.load(model_file)
+                        onnx.checker.check_model(model)
+                        onnx.helper.strip_doc_string(model)
                         text_file.write(google.protobuf.text_format.MessageToString(model))
                 total_pass += 1
             except Exception as e:
@@ -55,7 +57,10 @@ def collect_generated_testcases(root_dir=_generated_dir, verbose=False, fail_dir
                 if fail_dir is None:
                     shutil.rmtree(dir_name)
                 else:
-                    shutil.move(dir_name, fail_dir)
+                    target_dir = os.path.join(fail_dir, d)
+                    if os.path.exists(target_dir):
+                        shutil.rmtree(target_dir)
+                    shutil.move(dir_name, target_dir)
                 total_fail += 1
     print("Successfully generated/updated {} test cases from PyTorch.".format(total_pass))
     if expect:
@@ -76,9 +81,7 @@ if __name__ == '__main__':
     if delete:
         fail_dir = None
     if fail_dir:
-        if os.path.exists(fail_dir):
-            shutil.rmtree(fail_dir)
-        else:
+        if not os.path.exists(fail_dir):
             os.makedirs(fail_dir)
 
     collect_generated_testcases(verbose=verbose, fail_dir=fail_dir, expect=expect)

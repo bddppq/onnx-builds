@@ -68,26 +68,29 @@ def convert_tests(testcases, sets=1):
             f = io.BytesIO()
             torch.onnx._export(module, input, f)
             onnx_model = onnx.load_from_string(f.getvalue())
+            onnx.checker.check_model(onnx_model)
+            onnx.helper.strip_doc_string(onnx_model)
             output_dir = os.path.join(_generated_dir, test_name)
+
+            if os.path.exists(output_dir):
+                shutil.rmtree(output_dir)
+            os.makedirs(output_dir)
+            with open(os.path.join(output_dir, "model.pb"), "wb") as file:
+                file.write(onnx_model.SerializeToString())
 
             for i in range(sets):
                 output = module(input)
-                if os.path.exists(output_dir):
-                    shutil.rmtree(output_dir)
-                os.makedirs(output_dir)
                 data_dir = os.path.join(output_dir, "test_data_set_{}".format(i))
                 os.makedirs(data_dir)
 
-                with open(os.path.join(output_dir, "model.pb"), "wb") as f:
-                    f.write(onnx_model.SerializeToString())
                 for index, var in enumerate([input]):
                     tensor = numpy_helper.from_array(var.data.numpy())
-                    with open(os.path.join(data_dir, "input_{}.pb".format(index)), "wb") as f:
-                        f.write(tensor.SerializeToString())
+                    with open(os.path.join(data_dir, "input_{}.pb".format(index)), "wb") as file:
+                        file.write(tensor.SerializeToString())
                 for index, var in enumerate([output]):
                     tensor = numpy_helper.from_array(var.data.numpy())
-                    with open(os.path.join(data_dir, "output_{}.pb".format(index)), "wb") as f:
-                        f.write(tensor.SerializeToString())
+                    with open(os.path.join(data_dir, "output_{}.pb".format(index)), "wb") as file:
+                        file.write(tensor.SerializeToString())
                 input = gen_input(t)
         except:
             traceback.print_exc()
