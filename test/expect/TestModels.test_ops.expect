@@ -7,7 +7,7 @@ graph torch-jit-export (
 ) {
   %5 = LeakyRelu[alpha = 0.0199999995529652](%0)
   %6 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%5, %1, %2, %3, %4)
-  %7 = AveragePool[kernel_shape = [3, 3], pads = [1, 1], strides = [2, 2]](%6)
+  %7 = AveragePool[kernel_shape = [3, 3], pads = [1, 1, 1, 1], strides = [2, 2]](%6)
   %8 = Reshape[shape = [-1, 1]](%7)
   %9 = Squeeze[axes = [1]](%8)
   return %9

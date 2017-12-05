@@ -241,6 +241,8 @@ graph {
       name: "pads"
       ints: 0
       ints: 0
+      ints: 0
+      ints: 0
       type: INTS
     }
     attribute {
@@ -412,6 +414,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 0
+      ints: 0
       ints: 0
       ints: 0
       type: INTS
@@ -885,6 +889,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 1
+      ints: 1
       ints: 1
       ints: 1
       type: INTS
@@ -1448,6 +1454,8 @@ graph {
       name: "pads"
       ints: 1
       ints: 1
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
@@ -2009,6 +2017,8 @@ graph {
       name: "pads"
       ints: 1
       ints: 1
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
@@ -2418,6 +2428,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 0
+      ints: 0
       ints: 0
       ints: 0
       type: INTS
@@ -3128,6 +3140,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 1
+      ints: 1
       ints: 1
       ints: 1
       type: INTS
@@ -3916,6 +3930,8 @@ graph {
       name: "pads"
       ints: 1
       ints: 1
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
@@ -4700,6 +4716,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 1
+      ints: 1
       ints: 1
       ints: 1
       type: INTS
@@ -5488,6 +5506,8 @@ graph {
       name: "pads"
       ints: 1
       ints: 1
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
@@ -6047,6 +6067,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 0
+      ints: 0
       ints: 0
       ints: 0
       type: INTS
@@ -6704,6 +6726,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 1
+      ints: 1
       ints: 1
       ints: 1
       type: INTS
@@ -7439,6 +7463,8 @@ graph {
       name: "pads"
       ints: 1
       ints: 1
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
@@ -7548,6 +7574,8 @@ graph {
     }
     attribute {
       name: "pads"
+      ints: 0
+      ints: 0
       ints: 0
       ints: 0
       type: INTS
