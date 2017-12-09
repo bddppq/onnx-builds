@@ -17,3 +17,12 @@ wget -qO- "https://github.com/google/protobuf/releases/download/v$pb_version/pro
 ccache -z
 cd "$pb_dir" && ./configure && make && make check && sudo make install && sudo ldconfig
 ccache -s
+
+# Install MKL
+_mkl_key=/tmp/mkl.pub
+wget -O "$_mkl_key" http://apt.repos.intel.com/intel-gpg-keys/GPG-PUB-KEY-INTEL-SW-PRODUCTS-2019.PUB
+sudo apt-key add "$_mkl_key"
+rm -f "$_mkl_key"
+echo 'deb http://apt.repos.intel.com/mkl all main' | sudo tee /etc/apt/sources.list.d/intel-mkl.list
+sudo apt-get update
+sudo apt-get install -y intel-mkl-64bit-2018.1-038

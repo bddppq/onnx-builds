@@ -14,7 +14,7 @@ _pip_install() {
         ccache -z
     fi
     if [[ -n "$CI" ]]; then
-        time pip install "$@"
+        time pip install -v "$@"
     else
         pip install "$@"
     fi
