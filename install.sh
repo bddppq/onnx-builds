@@ -14,7 +14,7 @@ _pip_install() {
         ccache -z
     fi
     if [[ -n "$CI" ]]; then
-        time pip install -v "$@"
+        time pip install "$@"
     else
         pip install "$@"
     fi
@@ -25,6 +25,7 @@ _pip_install() {
 
 # Install caffe2
 _pip_install -b "$BUILD_DIR/caffe2" "file://$REPOS_DIR/caffe2#egg=caffe2"
+python -c 'from caffe2.python import build; from pprint import pprint; pprint(build.build_options)'
 
 # Install onnx
 _pip_install -b "$BUILD_DIR/onnx" "file://$REPOS_DIR/onnx#egg=onnx"
