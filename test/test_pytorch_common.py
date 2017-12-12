@@ -10,8 +10,8 @@ import sys
 import torch
 import torch.autograd.function as function
 
-_root_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
-sys.path.insert(-1, os.path.join(_root_dir, "repos", "pytorch", "test"))
+_root_dir = os.path.dirname(os.path.dirname(os.path.realpath(torch.__file__)))
+sys.path.insert(-1, os.path.join(_root_dir, "test"))
 
 from common import *
 
