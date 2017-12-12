@@ -227,6 +227,37 @@ class TestOperators(TestCase):
 
         self.assertONNX(MyModule(), x)
 
+    def test_clip(self):
+        x = Variable(torch.randn(3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.clamp(x, min=-0.5, max=0.5), x)
+
+    def test_max(self):
+        x = Variable(torch.randn(3, 4), requires_grad=True)
+        y = Variable(torch.randn(3, 4), requires_grad=True)
+        self.assertONNX(lambda x, y: torch.max(x, y), (x, y))
+
+    def test_min(self):
+        x = Variable(torch.randn(3, 4), requires_grad=True)
+        y = Variable(torch.randn(3, 4), requires_grad=True)
+        self.assertONNX(lambda x, y: torch.min(x, y), (x, y))
+
+    def test_equal(self):
+        x = Variable(torch.randn(3, 4).int(), requires_grad=True)
+        y = Variable(torch.randn(3, 4).int(), requires_grad=True)
+        self.assertONNX(lambda x, y: x == y, (x, y))
+
+    def test_exp(self):
+        x = Variable(torch.randn(3, 4), requires_grad=True)
+        self.assertONNX(lambda x: x.exp(), x)
+
+    def test_flatten(self):
+        # Flatten is a special case of Reshape when the output is a 2-D tensor.
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: x.view(x.size()[0], x.numel() // x.size()[0]), x)
+
+    def test_logsoftmax(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(nn.LogSoftmax(dim=2), x)
 
 if __name__ == '__main__':
     onnx_test_flag = '--onnx-test'
