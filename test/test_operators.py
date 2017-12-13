@@ -3,7 +3,8 @@ import test_onnx_common
 
 import torch
 import torch.onnx
-from torch.autograd import Variable, Function
+from torch.autograd import Variable, Function, NestedIOFunction
+from torch.autograd.function import symbolic_override
 from torch.nn import Module
 import torch.nn as nn
 
@@ -226,6 +227,75 @@ class TestOperators(TestCase):
                 return MyFun.apply(x)
 
         self.assertONNX(MyModule(), x)
+
+    def test_symbolic_override(self):
+        """Lifted from fast-neural-style: custom implementation of instance norm
+        to be mapped to ONNX operator"""
+
+        class CustomInstanceNorm(torch.nn.Module):
+            def __init__(self, dim, eps=1e-9):
+                super(CustomInstanceNorm, self).__init__()
+                self.scale = nn.Parameter(torch.FloatTensor(dim).uniform_())
+                self.shift = nn.Parameter(torch.FloatTensor(dim).zero_())
+                self.eps = eps
+
+            def forward(self, x):
+                return self._run_forward(x, self.scale, self.shift, eps=self.eps)
+
+            @staticmethod
+            @symbolic_override(
+                lambda g, x, scale, shift, eps: g.op(
+                    'InstanceNormalization', x, scale, shift, epsilon_f=eps)
+            )
+            def _run_forward(x, scale, shift, eps):
+                # since we hand-roll instance norm it doesn't perform well all in fp16
+                n = x.size(2) * x.size(3)
+                t = x.view(x.size(0), x.size(1), n)
+                mean = torch.mean(t, 2).unsqueeze(2).unsqueeze(3).expand_as(x)
+                # Calculate the biased var. torch.var returns unbiased var
+                var = torch.var(t, 2).unsqueeze(2).unsqueeze(3).expand_as(x) * ((n - 1) / float(n))
+                scale_broadcast = scale.unsqueeze(1).unsqueeze(1).unsqueeze(0)
+                scale_broadcast = scale_broadcast.expand_as(x)
+                shift_broadcast = shift.unsqueeze(1).unsqueeze(1).unsqueeze(0)
+                shift_broadcast = shift_broadcast.expand_as(x)
+                out = (x - mean) / torch.sqrt(var + eps)
+                out = out * scale_broadcast + shift_broadcast
+                return out
+
+        instnorm = CustomInstanceNorm(10)
+        x = Variable(torch.randn(2, 10, 32, 32))
+        self.assertONNX(instnorm, x)
+
+    """
+    def test_rnn(self):
+        rnn = nn.RNN(30, 20, 2)
+        input = Variable(torch.randn(10, 32, 30))
+        output, hidden = rnn(input)
+        self.assertONNX(rnn, input)
+    """
+
+    def test_symbolic_override_nested(self):
+        def symb(g, x, y):
+            assert isinstance(x, torch._C.Value)
+            assert isinstance(y[0], torch._C.Value)
+            assert isinstance(y[1], torch._C.Value)
+            return g.op('Sum', x, y[0], y[1]), (
+                g.op('Neg', x), g.op('Neg', y[0]))
+
+        @symbolic_override(symb)
+        def foo(x, y):
+            return x + y[0] + y[1], (-x, -y[0])
+
+        class BigModule(torch.nn.Module):
+            def forward(self, x, y):
+                return foo(x, y)
+
+        inp = (Variable(torch.FloatTensor([1])),
+               (Variable(torch.FloatTensor([2])),
+                Variable(torch.FloatTensor([3]))))
+        BigModule()(*inp)
+        self.assertONNX(BigModule(), inp)
+
 
 
 if __name__ == '__main__':
