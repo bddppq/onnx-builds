@@ -53,6 +53,7 @@ class TestOperators(TestCase):
         # doc_string contains stack trace in it, strip it
         onnx.helper.strip_doc_string(model_def)
         self.assertExpected(google.protobuf.text_format.MessageToString(model_def, float_format='.15g'), subname)
+        return model_def
 
     def assertONNX(self, f, args, params=tuple(), **kwargs):
         if isinstance(f, nn.Module):
@@ -60,16 +61,18 @@ class TestOperators(TestCase):
         else:
             m = FuncModule(f, params)
         onnx_model_pb = export_to_string(m, args, **kwargs)
-        self.assertONNXExpected(onnx_model_pb)
+        model_def = self.assertONNXExpected(onnx_model_pb)
         if _onnx_test:
             test_function = inspect.stack()[1][0].f_code.co_name
             test_name = test_function[0:4] + "_operator" + test_function[4:]
-            output_dir = test_onnx_common.output_dir(test_name)
-            if os.path.exists(output_dir):
-                shutil.rmtree(output_dir)
+            output_dir = os.path.join(test_onnx_common.pytorch_operator_dir, test_name)
+            # Assume:
+            #     1) the old test should be delete before the test.
+            #     2) only one assertONNX in each test, otherwise will override the data.
+            assert not os.path.exists(output_dir), "{} should not exist!".format(output_dir)
             os.makedirs(output_dir)
             with open(os.path.join(output_dir, "model.pb"), 'wb') as file:
-                file.write(onnx_model_pb)
+                file.write(model_def.SerializeToString())
             data_dir = os.path.join(output_dir, "test_data_set_0")
             os.makedirs(data_dir)
             if isinstance(args, Variable):
@@ -82,7 +85,7 @@ class TestOperators(TestCase):
             if isinstance(outputs, Variable):
                 outputs = (outputs,)
             for index, var in enumerate(flatten(outputs)):
-                tesnor = numpy_helper.from_array(var.data.numpy())
+                tensor = numpy_helper.from_array(var.data.numpy())
                 with open(os.path.join(data_dir, "output_{}.pb".format(index)), 'wb') as file:
                     file.write(tensor.SerializeToString())
 

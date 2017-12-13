@@ -14,7 +14,7 @@ from onnx import numpy_helper
 from test_caffe2_common import run_generated_test
 import google.protobuf.text_format
 import test_onnx_common
-
+import traceback
 
 _fail_test_dir = os.path.join(os.path.dirname(
     os.path.realpath(__file__)), "fail", "generated")
@@ -82,3 +82,6 @@ if __name__ == '__main__':
             os.makedirs(fail_dir)
 
     collect_generated_testcases(verbose=verbose, fail_dir=fail_dir, expect=expect)
+    # We already generate the expect files for test_operators.py.
+    collect_generated_testcases(root_dir=test_onnx_common.pytorch_operator_dir,
+                                verbose=verbose, fail_dir=fail_dir, expect=False)
