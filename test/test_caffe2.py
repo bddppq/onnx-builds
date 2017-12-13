@@ -29,6 +29,7 @@ from model_defs.srresnet import SRResNet
 import model_defs.dcgan as dcgan
 import model_defs.word_language_model as word_language_model
 from model_defs.mnist import MNIST
+from model_defs.lstm_discarding_cell_state import LstmDiscardingCellState
 
 import onnx
 import onnx_caffe2.backend as c2
@@ -167,6 +168,57 @@ class TestCaffe2Backend(unittest.TestCase):
         model = nn.Linear(1, 1)
         input = Variable(torch.randn(1, 1), requires_grad=True)
         self.run_model_test(model, train=False, batch_size=0, input=input)
+
+    def test_lstm_single_layer(self):
+        # relatively prime for ease of debugging
+        LAYERS=1
+        SEQUENCE_LENGTH=5
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = LstmDiscardingCellState(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
+        input = Variable(torch.randn(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
+        h0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        c0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)))
+
+    def test_lstm_multi_layer(self):
+        # relatively prime for ease of debugging
+        LAYERS=3
+        SEQUENCE_LENGTH=5
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = LstmDiscardingCellState(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
+        input = Variable(torch.randn(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
+        h0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        c0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)))
+
+    def test_lstm_no_initial_state(self):
+        # relatively prime for ease of debugging
+        LAYERS=3
+        SEQUENCE_LENGTH=5
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = LstmDiscardingCellState(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
+        input = Variable(torch.randn(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input,))
+
+    @skip("we don't even reach the good code...")
+    def test_lstm_bidirectional(self):
+        # relatively prime for ease of debugging
+        LAYERS=3
+        SEQUENCE_LENGTH=5
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = LstmDiscardingCellState(INPUT_SIZE, HIDDEN_SIZE, LAYERS, bidirectional=True)
+        input = Variable(torch.randn(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
+        h0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        c0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)))
 
     def test_alexnet(self):
         alexnet = AlexNet()
