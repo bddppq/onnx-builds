@@ -3,8 +3,7 @@ import test_onnx_common
 
 import torch
 import torch.onnx
-from torch.autograd import Variable, Function, NestedIOFunction
-from torch.autograd.function import symbolic_override
+from torch.autograd import Variable, Function
 from torch.nn import Module
 import torch.nn as nn
 
@@ -243,7 +242,7 @@ class TestOperators(TestCase):
                 return self._run_forward(x, self.scale, self.shift, eps=self.eps)
 
             @staticmethod
-            @symbolic_override(
+            @torch.onnx.symbolic_override(
                 lambda g, x, scale, shift, eps: g.op(
                     'InstanceNormalization', x, scale, shift, epsilon_f=eps)
             )
@@ -282,7 +281,7 @@ class TestOperators(TestCase):
             return g.op('Sum', x, y[0], y[1]), (
                 g.op('Neg', x), g.op('Neg', y[0]))
 
-        @symbolic_override(symb)
+        @torch.onnx.symbolic_override(symb)
         def foo(x, y):
             return x + y[0] + y[1], (-x, -y[0])
 
