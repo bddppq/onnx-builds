@@ -170,7 +170,7 @@ class TestCaffe2Backend(unittest.TestCase):
 
     def test_alexnet(self):
         alexnet = AlexNet()
-        state_dict = model_zoo.load_url(model_urls['alexnet'])
+        state_dict = model_zoo.load_url(model_urls['alexnet'], progress=False)
         self.run_model_test(alexnet, train=False, batch_size=BATCH_SIZE,
                             state_dict=state_dict)
 
@@ -190,8 +190,8 @@ class TestCaffe2Backend(unittest.TestCase):
 
         netG = dcgan._netG(1)
         netG.apply(dcgan.weights_init)
-        state_dict = model_zoo.load_url(model_urls['dcgan_b'])
-        # state_dict = model_zoo.load_url(model_urls['dcgan_f'])
+        state_dict = model_zoo.load_url(model_urls['dcgan_b'], progress=False)
+        # state_dict = model_zoo.load_url(model_urls['dcgan_f'], progress=False)
         noise = Variable(
             torch.randn(BATCH_SIZE, dcgan.nz, 1, 1).normal_(0, 1))
         self.run_model_test(netG, train=False, batch_size=BATCH_SIZE,
@@ -202,7 +202,7 @@ class TestCaffe2Backend(unittest.TestCase):
     def test_densenet(self):
         densenet121 = DenseNet(num_init_features=64, growth_rate=32,
                                block_config=(6, 12, 24, 16))
-        state_dict = model_zoo.load_url(model_urls['densenet121'])
+        state_dict = model_zoo.load_url(model_urls['densenet121'], progress=False)
         self.run_model_test(densenet121, train=False, batch_size=BATCH_SIZE,
                             state_dict=state_dict)
 
@@ -212,21 +212,21 @@ class TestCaffe2Backend(unittest.TestCase):
         x = Variable(
             torch.randn(BATCH_SIZE, 3, 299, 299), requires_grad=True)
         inception = Inception3(aux_logits=True)
-        # state_dict = model_zoo.load_url(model_urls['inception_v3_google'])
+        # state_dict = model_zoo.load_url(model_urls['inception_v3_google'], progress=False)
         state_dict = None
         self.run_model_test(inception, train=False, batch_size=BATCH_SIZE,
                             state_dict=state_dict, input=x)
 
     def test_resnet(self):
         resnet50 = ResNet(Bottleneck, [3, 4, 6, 3])
-        state_dict = model_zoo.load_url(model_urls['resnet50'])
+        state_dict = model_zoo.load_url(model_urls['resnet50'], progress=False)
         self.run_model_test(resnet50, train=False, batch_size=BATCH_SIZE,
                             state_dict=state_dict)
 
     def test_squeezenet(self):
         sqnet_v1_1 = SqueezeNet(version=1.1)
-        state_dict = model_zoo.load_url(model_urls['squeezenet1_1'])
-        # state_dict = model_zoo.load_url(model_urls['squeezenet1_0'])
+        state_dict = model_zoo.load_url(model_urls['squeezenet1_1'], progress=False)
+        # state_dict = model_zoo.load_url(model_urls['squeezenet1_0'], progress=False)
         self.run_model_test(sqnet_v1_1, train=False, batch_size=BATCH_SIZE,
                             state_dict=state_dict)
 
@@ -236,7 +236,7 @@ class TestCaffe2Backend(unittest.TestCase):
     def test_srresnet(self):
         super_resolution_net = SRResNet(
             rescale_factor=4, n_filters=64, n_blocks=8)
-        state_dict = model_zoo.load_url(model_urls['srresNet'])
+        state_dict = model_zoo.load_url(model_urls['srresNet'], progress=False)
         x = Variable(torch.randn(1, 3, 224, 224), requires_grad=True)
         self.run_model_test(super_resolution_net, train=False,
                             batch_size=1, state_dict=state_dict,
@@ -247,7 +247,7 @@ class TestCaffe2Backend(unittest.TestCase):
     @skipIfNoCuda
     def test_super_resolution(self):
         super_resolution_net = SuperResolutionNet(upscale_factor=3)
-        state_dict = model_zoo.load_url(model_urls['super_resolution'])
+        state_dict = model_zoo.load_url(model_urls['super_resolution'], progress=False)
         x = Variable(torch.randn(1, 1, 224, 224), requires_grad=True)
         self.run_model_test(super_resolution_net, train=False,
                             batch_size=BATCH_SIZE, state_dict=state_dict,
@@ -256,7 +256,7 @@ class TestCaffe2Backend(unittest.TestCase):
     @unittest.skip("This model takes too much memory")
     def test_vgg16(self):
         vgg16 = make_vgg16()
-        state_dict = model_zoo.load_url(model_urls['vgg16'])
+        state_dict = model_zoo.load_url(model_urls['vgg16'], progress=False)
         self.run_model_test(vgg16, train=False, batch_size=BATCH_SIZE,
                             state_dict=state_dict)
 
@@ -269,7 +269,7 @@ class TestCaffe2Backend(unittest.TestCase):
     @skip("disable to run tests faster...")
     def test_vgg19(self):
         vgg19 = make_vgg19()
-        state_dict = model_zoo.load_url(model_urls['vgg19'])
+        state_dict = model_zoo.load_url(model_urls['vgg19'], progress=False)
         self.run_model_test(vgg19, train=False, batch_size=BATCH_SIZE,
                             state_dict=state_dict)
 
