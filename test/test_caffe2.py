@@ -8,7 +8,8 @@ import numpy as np
 import sys
 import unittest
 
-import onnx_caffe2
+import onnx_caffe2.backend as c2
+
 import onnx_pytorch
 import torch.onnx
 from torch import nn
@@ -31,7 +32,6 @@ import model_defs.word_language_model as word_language_model
 from model_defs.mnist import MNIST
 
 import onnx
-import onnx_caffe2.backend as c2
 
 from test_pytorch_common import skipIfTravis, skipIfNoLapack, skipIfNoCuda
 
@@ -93,6 +93,7 @@ model_urls = {
 
 class TestCaffe2Backend(unittest.TestCase):
     embed_params = False
+    aten=False
 
     def setUp(self):
         torch.manual_seed(0)
@@ -123,7 +124,7 @@ class TestCaffe2Backend(unittest.TestCase):
         if use_gpu:
             model, input = self.convert_cuda(model, input)
 
-        onnxir, torch_out = do_export(model, input, export_params=self.embed_params, verbose=False)
+        onnxir, torch_out = do_export(model, input, export_params=self.embed_params, verbose=False, aten=self.aten)
         if isinstance(torch_out, torch.autograd.Variable):
           torch_out = (torch_out,)
 
@@ -465,6 +466,10 @@ class TestCaffe2Backend(unittest.TestCase):
 TestCaffe2BackendEmbed = type(str("TestCaffe2BackendEmbed"),
                               (unittest.TestCase,),
                               dict(TestCaffe2Backend.__dict__, embed_params=True))
+
+TestCaffe2BackendATen = type(str("TestCaffe2BackendATen"),
+                              (unittest.TestCase,),
+                              dict(TestCaffe2Backend.__dict__, aten=True))
 
 if __name__ == '__main__':
     unittest.main()
