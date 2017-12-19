@@ -26,6 +26,20 @@ cache:
     - $HOME/.cache/pb
     - $HOME/.ccache
 
+# We don't want to trigger travis builds for auto PR because there are
+# too many of them and they are updated very frequently. travis can
+# barely catchup and so causing the build status of these PRs always
+# being shown as pending.
+
+# For each PR, travis triggers two builds, one is "branch updates"
+# which uses the commit in the PR branch, another one is "pull request
+# updates" which uses the merge commit that merges the PR branch into
+# master branch. The following branches filter will only be able to
+# disable builds of "branch updates", but not the "pull request
+# updates", because the latter has branch name "master". To achieve
+# that, we have turned off "Build pull request updates" option in the
+# travis website.
+
 branches:
   except:
     - /^auto-.*$/
