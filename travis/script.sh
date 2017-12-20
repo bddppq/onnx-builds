@@ -2,4 +2,4 @@
 
 source "$(dirname $(readlink -e "${BASH_SOURCE[0]}"))/setup.sh"
 
-exec "$top_dir/test.sh"
+time "$top_dir/test.sh"
