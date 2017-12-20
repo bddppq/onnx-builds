@@ -5,18 +5,24 @@ graph {
   node {
     input: "0"
     input: "1"
+    input: "2"
     output: "33"
     op_type: "Conv"
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 1
+      type: INT
+    }
     attribute {
       name: "kernel_shape"
       ints: 3
       ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
       type: INTS
     }
     attribute {
@@ -28,63 +34,23 @@ graph {
       type: INTS
     }
     attribute {
-      name: "dilations"
+      name: "strides"
       ints: 1
       ints: 1
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   node {
     input: "33"
-    input: "2"
     output: "34"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "34"
-    output: "35"
     op_type: "Relu"
   }
   node {
-    input: "35"
+    input: "34"
     input: "3"
-    output: "36"
+    input: "4"
+    output: "35"
     op_type: "Conv"
-    attribute {
-      name: "kernel_shape"
-      ints: 3
-      ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 1
-      ints: 1
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "dilations"
       ints: 1
@@ -96,78 +62,106 @@ graph {
       i: 1
       type: INT
     }
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+  }
+  node {
+    input: "35"
+    output: "36"
+    op_type: "Relu"
   }
   node {
     input: "36"
-    input: "4"
     output: "37"
-    op_type: "Add"
+    op_type: "MaxPool"
     attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
+      name: "kernel_shape"
+      ints: 2
+      ints: 2
+      type: INTS
     }
     attribute {
-      name: "axis"
-      i: 1
-      type: INT
+      name: "pads"
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 2
+      ints: 2
+      type: INTS
     }
   }
   node {
     input: "37"
+    input: "5"
+    input: "6"
     output: "38"
-    op_type: "Relu"
+    op_type: "Conv"
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
   }
   node {
     input: "38"
     output: "39"
-    op_type: "MaxPool"
-    attribute {
-      name: "kernel_shape"
-      ints: 2
-      ints: 2
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 0
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 2
-      ints: 2
-      type: INTS
-    }
+    op_type: "Relu"
   }
   node {
     input: "39"
-    input: "5"
+    input: "7"
+    input: "8"
     output: "40"
     op_type: "Conv"
-    attribute {
-      name: "kernel_shape"
-      ints: 3
-      ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 1
-      ints: 1
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "dilations"
       ints: 1
@@ -178,90 +172,36 @@ graph {
       name: "group"
       i: 1
       type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
     }
   }
   node {
     input: "40"
-    input: "6"
     output: "41"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
+    op_type: "Relu"
   }
   node {
     input: "41"
     output: "42"
-    op_type: "Relu"
-  }
-  node {
-    input: "42"
-    input: "7"
-    output: "43"
-    op_type: "Conv"
-    attribute {
-      name: "kernel_shape"
-      ints: 3
-      ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 1
-      ints: 1
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "dilations"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "43"
-    input: "8"
-    output: "44"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "44"
-    output: "45"
-    op_type: "Relu"
-  }
-  node {
-    input: "45"
-    output: "46"
     op_type: "MaxPool"
     attribute {
       name: "kernel_shape"
@@ -285,20 +225,26 @@ graph {
     }
   }
   node {
-    input: "46"
+    input: "42"
     input: "9"
-    output: "47"
+    input: "10"
+    output: "43"
     op_type: "Conv"
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 1
+      type: INT
+    }
     attribute {
       name: "kernel_shape"
       ints: 3
       ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
       type: INTS
     }
     attribute {
@@ -310,6 +256,24 @@ graph {
       type: INTS
     }
     attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+  }
+  node {
+    input: "43"
+    output: "44"
+    op_type: "Relu"
+  }
+  node {
+    input: "44"
+    input: "11"
+    input: "12"
+    output: "45"
+    op_type: "Conv"
+    attribute {
       name: "dilations"
       ints: 1
       ints: 1
@@ -319,44 +283,122 @@ graph {
       name: "group"
       i: 1
       type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+  }
+  node {
+    input: "45"
+    output: "46"
+    op_type: "Relu"
+  }
+  node {
+    input: "46"
+    input: "13"
+    input: "14"
+    output: "47"
+    op_type: "Conv"
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
     }
   }
   node {
     input: "47"
-    input: "10"
     output: "48"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
+    op_type: "Relu"
   }
   node {
     input: "48"
     output: "49"
-    op_type: "Relu"
-  }
-  node {
-    input: "49"
-    input: "11"
-    output: "50"
-    op_type: "Conv"
+    op_type: "MaxPool"
     attribute {
       name: "kernel_shape"
-      ints: 3
-      ints: 3
+      ints: 2
+      ints: 2
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
       type: INTS
     }
     attribute {
       name: "strides"
+      ints: 2
+      ints: 2
+      type: INTS
+    }
+  }
+  node {
+    input: "49"
+    input: "15"
+    input: "16"
+    output: "50"
+    op_type: "Conv"
+    attribute {
+      name: "dilations"
       ints: 1
       ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
       type: INTS
     }
     attribute {
@@ -368,63 +410,23 @@ graph {
       type: INTS
     }
     attribute {
-      name: "dilations"
+      name: "strides"
       ints: 1
       ints: 1
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   node {
     input: "50"
-    input: "12"
     output: "51"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "51"
-    output: "52"
     op_type: "Relu"
   }
   node {
-    input: "52"
-    input: "13"
-    output: "53"
+    input: "51"
+    input: "17"
+    input: "18"
+    output: "52"
     op_type: "Conv"
-    attribute {
-      name: "kernel_shape"
-      ints: 3
-      ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 1
-      ints: 1
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "dilations"
       ints: 1
@@ -436,21 +438,68 @@ graph {
       i: 1
       type: INT
     }
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+  }
+  node {
+    input: "52"
+    output: "53"
+    op_type: "Relu"
   }
   node {
     input: "53"
-    input: "14"
+    input: "19"
+    input: "20"
     output: "54"
-    op_type: "Add"
+    op_type: "Conv"
     attribute {
-      name: "broadcast"
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
       i: 1
       type: INT
     }
     attribute {
-      name: "axis"
-      i: 1
-      type: INT
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
     }
   }
   node {
@@ -485,19 +534,25 @@ graph {
   }
   node {
     input: "56"
-    input: "15"
+    input: "21"
+    input: "22"
     output: "57"
     op_type: "Conv"
+    attribute {
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
+      i: 1
+      type: INT
+    }
     attribute {
       name: "kernel_shape"
       ints: 3
       ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
       type: INTS
     }
     attribute {
@@ -509,63 +564,23 @@ graph {
       type: INTS
     }
     attribute {
-      name: "dilations"
+      name: "strides"
       ints: 1
       ints: 1
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   node {
     input: "57"
-    input: "16"
     output: "58"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "58"
-    output: "59"
     op_type: "Relu"
   }
   node {
-    input: "59"
-    input: "17"
-    output: "60"
+    input: "58"
+    input: "23"
+    input: "24"
+    output: "59"
     op_type: "Conv"
-    attribute {
-      name: "kernel_shape"
-      ints: 3
-      ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 1
-      ints: 1
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "dilations"
       ints: 1
@@ -577,21 +592,68 @@ graph {
       i: 1
       type: INT
     }
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+  }
+  node {
+    input: "59"
+    output: "60"
+    op_type: "Relu"
   }
   node {
     input: "60"
-    input: "18"
+    input: "25"
+    input: "26"
     output: "61"
-    op_type: "Add"
+    op_type: "Conv"
     attribute {
-      name: "broadcast"
+      name: "dilations"
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "group"
       i: 1
       type: INT
     }
     attribute {
-      name: "axis"
-      i: 1
-      type: INT
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
+      type: INTS
+    }
+    attribute {
+      name: "pads"
+      ints: 1
+      ints: 1
+      ints: 1
+      ints: 1
+      type: INTS
+    }
+    attribute {
+      name: "strides"
+      ints: 1
+      ints: 1
+      type: INTS
     }
   }
   node {
@@ -601,289 +663,32 @@ graph {
   }
   node {
     input: "62"
-    input: "19"
     output: "63"
-    op_type: "Conv"
+    op_type: "MaxPool"
     attribute {
       name: "kernel_shape"
-      ints: 3
-      ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
+      ints: 2
+      ints: 2
       type: INTS
     }
     attribute {
       name: "pads"
-      ints: 1
-      ints: 1
-      ints: 1
-      ints: 1
+      ints: 0
+      ints: 0
+      ints: 0
+      ints: 0
       type: INTS
     }
     attribute {
-      name: "dilations"
-      ints: 1
-      ints: 1
+      name: "strides"
+      ints: 2
+      ints: 2
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   node {
     input: "63"
-    input: "20"
     output: "64"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "64"
-    output: "65"
-    op_type: "Relu"
-  }
-  node {
-    input: "65"
-    output: "66"
-    op_type: "MaxPool"
-    attribute {
-      name: "kernel_shape"
-      ints: 2
-      ints: 2
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 0
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 2
-      ints: 2
-      type: INTS
-    }
-  }
-  node {
-    input: "66"
-    input: "21"
-    output: "67"
-    op_type: "Conv"
-    attribute {
-      name: "kernel_shape"
-      ints: 3
-      ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 1
-      ints: 1
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "dilations"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "67"
-    input: "22"
-    output: "68"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "68"
-    output: "69"
-    op_type: "Relu"
-  }
-  node {
-    input: "69"
-    input: "23"
-    output: "70"
-    op_type: "Conv"
-    attribute {
-      name: "kernel_shape"
-      ints: 3
-      ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 1
-      ints: 1
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "dilations"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "70"
-    input: "24"
-    output: "71"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "71"
-    output: "72"
-    op_type: "Relu"
-  }
-  node {
-    input: "72"
-    input: "25"
-    output: "73"
-    op_type: "Conv"
-    attribute {
-      name: "kernel_shape"
-      ints: 3
-      ints: 3
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 1
-      ints: 1
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "dilations"
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "73"
-    input: "26"
-    output: "74"
-    op_type: "Add"
-    attribute {
-      name: "broadcast"
-      i: 1
-      type: INT
-    }
-    attribute {
-      name: "axis"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "74"
-    output: "75"
-    op_type: "Relu"
-  }
-  node {
-    input: "75"
-    output: "76"
-    op_type: "MaxPool"
-    attribute {
-      name: "kernel_shape"
-      ints: 2
-      ints: 2
-      type: INTS
-    }
-    attribute {
-      name: "pads"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 0
-      type: INTS
-    }
-    attribute {
-      name: "strides"
-      ints: 2
-      ints: 2
-      type: INTS
-    }
-  }
-  node {
-    input: "76"
-    output: "77"
     op_type: "Flatten"
     attribute {
       name: "axis"
@@ -892,10 +697,10 @@ graph {
     }
   }
   node {
-    input: "77"
+    input: "64"
     input: "27"
     input: "28"
-    output: "78"
+    output: "65"
     op_type: "Gemm"
     attribute {
       name: "alpha"
@@ -919,14 +724,14 @@ graph {
     }
   }
   node {
-    input: "78"
-    output: "79"
+    input: "65"
+    output: "66"
     op_type: "Relu"
   }
   node {
-    input: "79"
-    output: "80"
-    output: "81"
+    input: "66"
+    output: "67"
+    output: "68"
     op_type: "Dropout"
     attribute {
       name: "is_test"
@@ -940,10 +745,10 @@ graph {
     }
   }
   node {
-    input: "80"
+    input: "67"
     input: "29"
     input: "30"
-    output: "82"
+    output: "69"
     op_type: "Gemm"
     attribute {
       name: "alpha"
@@ -967,14 +772,14 @@ graph {
     }
   }
   node {
-    input: "82"
-    output: "83"
+    input: "69"
+    output: "70"
     op_type: "Relu"
   }
   node {
-    input: "83"
-    output: "84"
-    output: "85"
+    input: "70"
+    output: "71"
+    output: "72"
     op_type: "Dropout"
     attribute {
       name: "is_test"
@@ -988,10 +793,10 @@ graph {
     }
   }
   node {
-    input: "84"
+    input: "71"
     input: "31"
     input: "32"
-    output: "86"
+    output: "73"
     op_type: "Gemm"
     attribute {
       name: "alpha"
@@ -1580,7 +1385,7 @@ graph {
     }
   }
   output {
-    name: "86"
+    name: "73"
     type {
       tensor_type {
         elem_type: FLOAT

@@ -22,24 +22,19 @@ graph torch-jit-export (
   %20[FLOAT, 64]
   %21[FLOAT, 64x3x4x4]
 ) {
-  %22 = Constant[value = <Tensor>]()
-  %23 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [0, 0, 0, 0], strides = [1, 1]](%0, %1, %22)
-  %24 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%23, %2, %3, %4, %5)
-  %25 = Relu(%24)
-  %26 = Constant[value = <Tensor>]()
-  %27 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [1, 1, 1, 1], strides = [2, 2]](%25, %6, %26)
-  %28 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%27, %7, %8, %9, %10)
-  %29 = Relu(%28)
-  %30 = Constant[value = <Tensor>]()
-  %31 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [1, 1, 1, 1], strides = [2, 2]](%29, %11, %30)
-  %32 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%31, %12, %13, %14, %15)
+  %22 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [0, 0, 0, 0], strides = [1, 1]](%0, %1)
+  %23 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%22, %2, %3, %4, %5)
+  %24 = Relu(%23)
+  %25 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [1, 1, 1, 1], strides = [2, 2]](%24, %6)
+  %26 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%25, %7, %8, %9, %10)
+  %27 = Relu(%26)
+  %28 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [1, 1, 1, 1], strides = [2, 2]](%27, %11)
+  %29 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%28, %12, %13, %14, %15)
+  %30 = Relu(%29)
+  %31 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [1, 1, 1, 1], strides = [2, 2]](%30, %16)
+  %32 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%31, %17, %18, %19, %20)
   %33 = Relu(%32)
-  %34 = Constant[value = <Tensor>]()
-  %35 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [1, 1, 1, 1], strides = [2, 2]](%33, %16, %34)
-  %36 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%35, %17, %18, %19, %20)
-  %37 = Relu(%36)
-  %38 = Constant[value = <Tensor>]()
-  %39 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [1, 1, 1, 1], strides = [2, 2]](%37, %21, %38)
-  %40 = Tanh(%39)
-  return %40
+  %34 = ConvTranspose[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [1, 1, 1, 1], strides = [2, 2]](%33, %21)
+  %35 = Tanh(%34)
+  return %35
 }

@@ -8,15 +8,20 @@ graph {
     output: "18"
     op_type: "Conv"
     attribute {
-      name: "kernel_shape"
-      ints: 4
-      ints: 4
+      name: "dilations"
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
-      name: "strides"
-      ints: 2
-      ints: 2
+      name: "group"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 4
+      ints: 4
       type: INTS
     }
     attribute {
@@ -28,15 +33,10 @@ graph {
       type: INTS
     }
     attribute {
-      name: "dilations"
-      ints: 1
-      ints: 1
+      name: "strides"
+      ints: 2
+      ints: 2
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   node {
@@ -55,15 +55,20 @@ graph {
     output: "20"
     op_type: "Conv"
     attribute {
-      name: "kernel_shape"
-      ints: 4
-      ints: 4
+      name: "dilations"
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
-      name: "strides"
-      ints: 2
-      ints: 2
+      name: "group"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 4
+      ints: 4
       type: INTS
     }
     attribute {
@@ -75,15 +80,10 @@ graph {
       type: INTS
     }
     attribute {
-      name: "dilations"
-      ints: 1
-      ints: 1
+      name: "strides"
+      ints: 2
+      ints: 2
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   node {
@@ -135,15 +135,20 @@ graph {
     output: "23"
     op_type: "Conv"
     attribute {
-      name: "kernel_shape"
-      ints: 4
-      ints: 4
+      name: "dilations"
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
-      name: "strides"
-      ints: 2
-      ints: 2
+      name: "group"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 4
+      ints: 4
       type: INTS
     }
     attribute {
@@ -155,15 +160,10 @@ graph {
       type: INTS
     }
     attribute {
-      name: "dilations"
-      ints: 1
-      ints: 1
+      name: "strides"
+      ints: 2
+      ints: 2
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   node {
@@ -215,15 +215,20 @@ graph {
     output: "26"
     op_type: "Conv"
     attribute {
-      name: "kernel_shape"
-      ints: 4
-      ints: 4
+      name: "dilations"
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
-      name: "strides"
-      ints: 2
-      ints: 2
+      name: "group"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 4
+      ints: 4
       type: INTS
     }
     attribute {
@@ -235,15 +240,10 @@ graph {
       type: INTS
     }
     attribute {
-      name: "dilations"
-      ints: 1
-      ints: 1
+      name: "strides"
+      ints: 2
+      ints: 2
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   node {
@@ -295,15 +295,20 @@ graph {
     output: "29"
     op_type: "Conv"
     attribute {
-      name: "kernel_shape"
-      ints: 4
-      ints: 4
+      name: "dilations"
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
+      name: "group"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 4
+      ints: 4
       type: INTS
     }
     attribute {
@@ -315,15 +320,10 @@ graph {
       type: INTS
     }
     attribute {
-      name: "dilations"
+      name: "strides"
       ints: 1
       ints: 1
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   node {

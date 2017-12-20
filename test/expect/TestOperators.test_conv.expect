@@ -8,15 +8,20 @@ graph {
     output: "2"
     op_type: "Conv"
     attribute {
-      name: "kernel_shape"
-      ints: 3
-      ints: 3
+      name: "dilations"
+      ints: 1
+      ints: 1
       type: INTS
     }
     attribute {
-      name: "strides"
-      ints: 1
-      ints: 1
+      name: "group"
+      i: 1
+      type: INT
+    }
+    attribute {
+      name: "kernel_shape"
+      ints: 3
+      ints: 3
       type: INTS
     }
     attribute {
@@ -28,15 +33,10 @@ graph {
       type: INTS
     }
     attribute {
-      name: "dilations"
+      name: "strides"
       ints: 1
       ints: 1
       type: INTS
-    }
-    attribute {
-      name: "group"
-      i: 1
-      type: INT
     }
   }
   name: "torch-jit-export"
