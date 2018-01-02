@@ -169,6 +169,17 @@ class TestCaffe2Backend(unittest.TestCase):
         input = Variable(torch.randn(1, 1), requires_grad=True)
         self.run_model_test(model, train=False, batch_size=0, input=input)
 
+    def test_lstm_cell(self):
+        # relatively prime for ease of debugging
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = nn.LSTMCell(INPUT_SIZE, HIDDEN_SIZE)
+        input = Variable(torch.randn(BATCH_SIZE, INPUT_SIZE))
+        h0 = Variable(torch.randn(BATCH_SIZE, HIDDEN_SIZE))
+        c0 = Variable(torch.randn(BATCH_SIZE, HIDDEN_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)))
+
     def test_lstm_single_layer(self):
         # relatively prime for ease of debugging
         LAYERS=1
@@ -219,6 +230,69 @@ class TestCaffe2Backend(unittest.TestCase):
         h0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
         c0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
         self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)))
+
+    def test_gru_cell(self):
+        # relatively prime for ease of debugging
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = nn.GRUCell(INPUT_SIZE, HIDDEN_SIZE)
+
+        input = Variable(torch.zeros(BATCH_SIZE, INPUT_SIZE))
+        h0 = Variable(torch.zeros(BATCH_SIZE, HIDDEN_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, h0))
+
+    def test_gru_single_layer(self):
+        # relatively prime for ease of debugging
+        LAYERS=1
+        SEQUENCE_LENGTH=5
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = nn.GRU(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
+
+        input = Variable(torch.zeros(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
+        h0 = Variable(torch.zeros(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, h0))
+
+    def test_gru_multi_layer(self):
+        # relatively prime for ease of debugging
+        LAYERS=3
+        SEQUENCE_LENGTH=5
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = nn.GRU(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
+
+        input = Variable(torch.zeros(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
+        h0 = Variable(torch.zeros(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, h0))
+
+    def test_gru_no_initial_state(self):
+        # relatively prime for ease of debugging
+        LAYERS=3
+        SEQUENCE_LENGTH=5
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = nn.GRU(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
+
+        input = Variable(torch.zeros(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input,))
+
+    @skip("we don't even reach the good code...")
+    def test_gru_bidirectional(self):
+        # relatively prime for ease of debugging
+        LAYERS=3
+        SEQUENCE_LENGTH=5
+        INPUT_SIZE=7
+        HIDDEN_SIZE=13
+
+        model = nn.GRU(INPUT_SIZE, HIDDEN_SIZE, LAYERS, bidirectional=True)
+
+        input = Variable(torch.zeros(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
+        h0 = Variable(torch.zeros(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, h0))
 
     def test_alexnet(self):
         alexnet = AlexNet()
