@@ -205,6 +205,14 @@ class TestOperators(TestCase):
         x = Variable(torch.randn(2, 2).fill_(1.0), requires_grad=True)
         self.assertONNX(nn.BatchNorm2d(2), x, training=True)
 
+    def test_linear_bias(self):
+        x = Variable(torch.randn(1, 16), requires_grad=True)
+        self.assertONNX(nn.Linear(16, 2, bias=True), x)
+
+    def test_linear_nobias(self):
+        x = Variable(torch.randn(1, 16), requires_grad=True)
+        self.assertONNX(nn.Linear(16, 2, bias=False), x)
+
     def test_conv(self):
         x = Variable(torch.randn(20, 16, 50, 40).fill_(1.0), requires_grad=True)
         self.assertONNX(nn.Conv2d(16, 13, 3, bias=False), x)
