@@ -169,7 +169,6 @@ class TestCaffe2Backend(unittest.TestCase):
         input = Variable(torch.randn(1, 1), requires_grad=True)
         self.run_model_test(model, train=False, batch_size=0, input=input)
 
-    @unittest.skip("skip due to bugs")
     def test_lstm_single_layer(self):
         # relatively prime for ease of debugging
         LAYERS=1
@@ -183,7 +182,6 @@ class TestCaffe2Backend(unittest.TestCase):
         c0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
         self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)))
 
-    @unittest.skip("skip due to bugs")
     def test_lstm_multi_layer(self):
         # relatively prime for ease of debugging
         LAYERS=3
@@ -197,7 +195,6 @@ class TestCaffe2Backend(unittest.TestCase):
         c0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
         self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)))
 
-    @unittest.skip("skip due to bugs")
     def test_lstm_no_initial_state(self):
         # relatively prime for ease of debugging
         LAYERS=3
