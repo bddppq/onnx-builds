@@ -43,7 +43,7 @@ test_files=(
 )
 
 if [[ $PARALLEL == 1 ]]; then
-    if hash parallels 2>/dev/null; then
+    if hash parallel 2>/dev/null; then
         parallel -j 2 -t --line-buffer --keep-order $PYTHON {} -v ::: "${test_files[@]}"
     else
         # poor man's parallel
