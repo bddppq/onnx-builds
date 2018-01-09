@@ -1,3 +1,3 @@
 #!/bin/bash
 
-time "$TOP_DIR/test.sh"
+time "$TOP_DIR/test.sh" -p
