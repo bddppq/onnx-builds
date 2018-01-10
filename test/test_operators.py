@@ -208,6 +208,11 @@ class TestOperators(TestCase):
         x = Variable(torch.randn(20, 16, 50, 40).fill_(1.0), requires_grad=True)
         self.assertONNX(nn.Conv2d(16, 13, 3, bias=False), x)
 
+    def test_convtranspose(self):
+        x = Variable(torch.randn(2, 3, 4, 5).fill_(1.0), requires_grad=True)
+        self.assertONNX(nn.ConvTranspose2d(3, 3, 3, stride=3, bias=False,
+                                           padding=1, output_padding=2), x)
+
     def test_maxpool(self):
         x = Variable(torch.randn(20, 16, 50))
         self.assertONNX(nn.MaxPool1d(3, stride=2), x)
