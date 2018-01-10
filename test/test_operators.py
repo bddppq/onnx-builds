@@ -32,7 +32,8 @@ _onnx_test = False
 
 def export_to_string(model, inputs, *args, **kwargs):
     f = io.BytesIO()
-    torch.onnx.export(model, inputs, f, *args, **kwargs)
+    with torch.no_grad():
+        torch.onnx.export(model, inputs, f, *args, **kwargs)
     return f.getvalue()
 
 
@@ -142,10 +143,8 @@ class TestOperators(TestCase):
         self.assertONNX(lambda x: x.chunk(2), x)
 
     def test_concat2(self):
-        # volatile is of particular interest; it caused a segfault
-        # with the exporter
-        x = Variable(torch.randn(2, 3), volatile=True)
-        y = Variable(torch.randn(2, 3), volatile=True)
+        x = Variable(torch.randn(2, 3))
+        y = Variable(torch.randn(2, 3))
         self.assertONNX(lambda inputs: torch.cat(inputs, 1), ((x, y),))
 
     def test_mm(self):

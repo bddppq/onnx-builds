@@ -39,7 +39,8 @@ BATCH_SIZE = 2
 
 def export_to_string(model, inputs, *args, **kwargs):
     f = io.BytesIO()
-    torch.onnx.export(model, inputs, f, *args, **kwargs)
+    with torch.no_grad():
+        torch.onnx.export(model, inputs, f, *args, **kwargs)
     return f.getvalue()
 
 
@@ -60,109 +61,99 @@ class TestModels(TestCase):
 
     def test_ops(self):
         x = Variable(
-            torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0), volatile=True
+            torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0)
         )
         self.exportTest(toC(DummyNet()), toC(x))
 
     def test_prelu(self):
         x = Variable(
-            torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0), volatile=True
+            torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0)
         )
         self.exportTest(PReluNet(), x)
 
     def test_concat(self):
-        input_a = Variable(torch.randn(BATCH_SIZE, 3), volatile=True)
-        input_b = Variable(torch.randn(BATCH_SIZE, 3), volatile=True)
+        input_a = Variable(torch.randn(BATCH_SIZE, 3))
+        input_b = Variable(torch.randn(BATCH_SIZE, 3))
         inputs = ((toC(input_a), toC(input_b)), )
         self.exportTest(toC(ConcatNet()), inputs)
 
     def test_permute(self):
-        x = Variable(torch.randn(BATCH_SIZE, 3, 10, 12), volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 3, 10, 12))
         self.exportTest(PermuteNet(), x)
 
     @unittest.skip("This model takes too much memory")
     def test_srresnet(self):
-        x = Variable(torch.randn(1, 3, 224, 224).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(1, 3, 224, 224).fill_(1.0))
         self.exportTest(toC(SRResNet(rescale_factor=4, n_filters=64, n_blocks=8)), toC(x))
 
     @skipIfTravis
     @skipIfNoLapack
     def test_super_resolution(self):
         x = Variable(
-            torch.randn(BATCH_SIZE, 1, 224, 224).fill_(1.0), volatile=True
+            torch.randn(BATCH_SIZE, 1, 224, 224).fill_(1.0)
         )
         self.exportTest(toC(SuperResolutionNet(upscale_factor=3)), toC(x))
 
     def test_alexnet(self):
         x = Variable(
-            torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0), volatile=True
+            torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0)
         )
         self.exportTest(toC(AlexNet()), toC(x))
 
     @unittest.skip("Waiting for https://github.com/pytorch/pytorch/pull/3100")
     def test_mnist(self):
-        x = Variable(torch.randn(BATCH_SIZE, 1, 28, 28).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 1, 28, 28).fill_(1.0))
         self.exportTest(toC(MNIST()), toC(x))
 
     @skipIfTravis
     def test_vgg(self):
         # VGG 16-layer model (configuration "D")
-        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         vgg16 = make_vgg16()
         self.exportTest(toC(vgg16), toC(x), "16")
 
         # VGG 16-layer model (configuration "D") with batch normalization
-        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         vgg16_bn = make_vgg16_bn()
         self.exportTest(toC(vgg16_bn), toC(x), "16_bn")
 
         # VGG 19-layer model (configuration "E")
-        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         vgg19 = make_vgg19()
         self.exportTest(toC(vgg19), toC(x), "19")
 
         # VGG 19-layer model (configuration 'E') with batch normalization
-        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         vgg19_bn = make_vgg19_bn()
         self.exportTest(toC(vgg19_bn), toC(x), "19_bn")
 
     def test_resnet(self):
         # ResNet50 model
-        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         resnet50 = ResNet(Bottleneck, [3, 4, 6, 3])
         self.exportTest(toC(resnet50), toC(x), "50")
 
     def test_inception(self):
         x = Variable(
-            torch.randn(BATCH_SIZE, 3, 299, 299).fill_(1.0), volatile=True)
+            torch.randn(BATCH_SIZE, 3, 299, 299).fill_(1.0))
         self.exportTest(toC(Inception3()), toC(x), "3")
 
     def test_squeezenet(self):
         # SqueezeNet: AlexNet-level accuracy with 50x fewer parameters and
         # <0.5MB model size
-        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         sqnet_v1_0 = SqueezeNet(version=1.1)
         self.exportTest(toC(sqnet_v1_0), toC(x), "1_0")
 
         # SqueezeNet 1.1 has 2.4x less computation and slightly fewer params
         # than SqueezeNet 1.0, without sacrificing accuracy.
-        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         sqnet_v1_1 = SqueezeNet(version=1.1)
         self.exportTest(toC(sqnet_v1_1), toC(x), "1_1")
 
     def test_densenet(self):
         # Densenet-121 model
-        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0),
-                     volatile=True)
+        x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         dense121 = DenseNet(num_init_features=64, growth_rate=32,
                             block_config=(6, 12, 24, 16))
         self.exportTest(toC(dense121), toC(x), "121")

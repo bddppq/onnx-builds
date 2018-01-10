@@ -484,8 +484,7 @@ class TestCaffe2Backend(unittest.TestCase):
 
     def test_mnist(self):
         model = MNIST()
-        input = Variable(torch.randn(BATCH_SIZE, 1, 28, 28),
-                     volatile=True)
+        input = Variable(torch.randn(BATCH_SIZE, 1, 28, 28))
         state_dict = None
         # TODO: test with state_dict
         self.run_model_test(model, train=False, input=input, batch_size=BATCH_SIZE,
