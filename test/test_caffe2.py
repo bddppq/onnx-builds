@@ -130,7 +130,7 @@ class TestCaffe2Backend(unittest.TestCase):
 
         caffe2_out = test_embed_params(onnxir, model, input, state_dict, use_gpu)
         for i, (x, y) in enumerate(zip(torch_out, caffe2_out)):
-          np.testing.assert_almost_equal(x.data.cpu().numpy(), y, decimal=3)
+            np.testing.assert_almost_equal(x.data.cpu().numpy(), y, decimal=3)
 
     def run_actual_test(self, model, train, batch_size, state_dict=None,
                         input=None, use_gpu=True):
@@ -510,6 +510,19 @@ class TestCaffe2Backend(unittest.TestCase):
         m1 = Variable(torch.randn(3, 4))
         m2 = Variable(torch.randn(4, 5))
         self.run_model_test(MyModel(), train=False, input=(ma, m1, m2), batch_size=BATCH_SIZE, use_gpu=False)
+
+    def test_softmax(self):
+        model = nn.Softmax(dim=2)
+        input = Variable(torch.randn(2, 3, 4).fill_(1),
+                         requires_grad=True)
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=input)
+
+    def test_logsoftmax(self):
+        model = nn.LogSoftmax(dim=2)
+        input = Variable(torch.randn(2, 3, 4).fill_(1),
+                         requires_grad=True)
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=input)
+
 
 # add the same test suite as above, but switch embed_params=False
 # to embed_params=True
