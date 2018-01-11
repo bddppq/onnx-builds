@@ -5,12 +5,7 @@ graph {
   node {
     input: "0"
     output: "1"
-    op_type: "LogSoftmax"
-    attribute {
-      name: "axis"
-      i: 2
-      type: INT
-    }
+    op_type: "Sqrt"
   }
   name: "torch-jit-export"
   input {
@@ -19,12 +14,6 @@ graph {
       tensor_type {
         elem_type: FLOAT
         shape {
-          dim {
-            dim_value: 1
-          }
-          dim {
-            dim_value: 2
-          }
           dim {
             dim_value: 3
           }
@@ -41,12 +30,6 @@ graph {
       tensor_type {
         elem_type: FLOAT
         shape {
-          dim {
-            dim_value: 1
-          }
-          dim {
-            dim_value: 2
-          }
           dim {
             dim_value: 3
           }

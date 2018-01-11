@@ -5,10 +5,15 @@ graph {
   node {
     input: "0"
     output: "1"
-    op_type: "LogSoftmax"
+    op_type: "ReduceProd"
     attribute {
-      name: "axis"
-      i: 2
+      name: "axes"
+      ints: 2
+      type: INTS
+    }
+    attribute {
+      name: "keepdims"
+      i: 1
       type: INT
     }
   }
@@ -48,7 +53,7 @@ graph {
             dim_value: 2
           }
           dim {
-            dim_value: 3
+            dim_value: 1
           }
           dim {
             dim_value: 4

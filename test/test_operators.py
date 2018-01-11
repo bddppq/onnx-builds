@@ -266,6 +266,46 @@ class TestOperators(TestCase):
         y = Variable(torch.randn(3, 4), requires_grad=True)
         self.assertONNX(lambda x, y: torch.min(x, y), (x, y))
 
+    def test_mean(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.mean(x), x)
+
+    def test_reduced_mean(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.mean(x, dim=2), x)
+
+    def test_reduced_mean_keepdim(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.mean(x, dim=2, keepdim=True), x)
+
+    def test_sum(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.sum(x), x)
+
+    def test_reduced_sum(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.sum(x, dim=2), x)
+
+    def test_reduced_sum_keepdim(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.sum(x, dim=2, keepdim=True), x)
+
+    def test_prod(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.prod(x), x)
+
+    def test_reduced_prod(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.prod(x, dim=2), x)
+
+    def test_reduced_prod_keepdim(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.prod(x, dim=2, keepdim=True), x)
+
+    def test_sqrt(self):
+        x = Variable(torch.randn(3, 4), requires_grad=True)
+        self.assertONNX(lambda x: torch.sqrt(x), x)
+
     def test_equal(self):
         x = Variable(torch.randn(3, 4).int(), requires_grad=True)
         y = Variable(torch.randn(3, 4).int(), requires_grad=True)

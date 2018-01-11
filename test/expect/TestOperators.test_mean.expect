@@ -5,12 +5,7 @@ graph {
   node {
     input: "0"
     output: "1"
-    op_type: "LogSoftmax"
-    attribute {
-      name: "axis"
-      i: 2
-      type: INT
-    }
+    op_type: "Mean"
   }
   name: "torch-jit-export"
   input {
@@ -43,15 +38,6 @@ graph {
         shape {
           dim {
             dim_value: 1
-          }
-          dim {
-            dim_value: 2
-          }
-          dim {
-            dim_value: 3
-          }
-          dim {
-            dim_value: 4
           }
         }
       }
