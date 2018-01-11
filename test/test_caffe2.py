@@ -512,16 +512,20 @@ class TestCaffe2Backend(unittest.TestCase):
         self.run_model_test(MyModel(), train=False, input=(ma, m1, m2), batch_size=BATCH_SIZE, use_gpu=False)
 
     def test_softmax(self):
-        model = nn.Softmax(dim=2)
-        input = Variable(torch.randn(2, 3, 4).fill_(1),
-                         requires_grad=True)
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=input)
+        for i in range(7)[2:]:
+            model = nn.Softmax(dim=i-1)
+            dims = [2] * (i - 2) + [3, 4]
+            input = Variable(torch.randn(*dims).fill_(1),
+                             requires_grad=True)
+            self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=input)
 
     def test_logsoftmax(self):
-        model = nn.LogSoftmax(dim=2)
-        input = Variable(torch.randn(2, 3, 4).fill_(1),
-                         requires_grad=True)
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=input)
+        for i in range(7)[2:]:
+            model = nn.LogSoftmax(dim=i-1)
+            dims = [2] * (i - 2) + [3, 4]
+            input = Variable(torch.randn(*dims).fill_(1),
+                             requires_grad=True)
+            self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=input)
 
 
 # add the same test suite as above, but switch embed_params=False
