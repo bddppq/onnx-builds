@@ -425,19 +425,15 @@ class TestCaffe2Backend(unittest.TestCase):
         self.run_model_test(model, train=False, input=(x, model.hidden),
                             batch_size=batchsize, use_gpu=False)
 
-    @unittest.expectedFailure
     def test_word_language_model_RNN_TANH(self):
         self.run_word_language_model("RNN_TANH")
 
-    @unittest.expectedFailure
     def test_word_language_model_RNN_RELU(self):
         self.run_word_language_model("RNN_RELU")
 
-    @unittest.expectedFailure
     def test_word_language_model_LSTM(self):
         self.run_word_language_model("LSTM")
 
-    @unittest.expectedFailure
     def test_word_language_model_GRU(self):
         self.run_word_language_model("GRU")
 
