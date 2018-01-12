@@ -35,6 +35,8 @@ skipIfNoCuda = _skipper(lambda: not torch.cuda.is_available(),
 skipIfTravis = _skipper(lambda: os.getenv('TRAVIS'),
                         'Skip In Travis')
 
+skipIfCI = _skipper(lambda: os.getenv('CI'),
+                    'Skip In CI')
 
 def flatten(x):
     return tuple(function._iter_filter(lambda o: isinstance(o, Variable) or torch.is_tensor(o))(x))
