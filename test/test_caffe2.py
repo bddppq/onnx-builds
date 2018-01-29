@@ -14,6 +14,7 @@ import torch.onnx
 from torch import nn
 from torch.autograd import Variable, function
 import torch.utils.model_zoo as model_zoo
+from torch.nn.utils import rnn as rnn_utils
 from debug_embed_params import test_embed_params
 import io
 
@@ -30,6 +31,7 @@ import model_defs.dcgan as dcgan
 import model_defs.word_language_model as word_language_model
 from model_defs.mnist import MNIST
 from model_defs.lstm_discarding_cell_state import LstmDiscardingCellState
+from model_defs.rnn_model_with_packed_sequence import RnnModelWithPackedSequence
 
 import onnx
 import onnx_caffe2.backend as c2
@@ -75,6 +77,10 @@ except ImportError:
 
 
 BATCH_SIZE = 2
+RNN_SEQUENCE_LENGTH = 5
+RNN_INPUT_SIZE = 7
+RNN_HIDDEN_SIZE = 13
+
 
 model_urls = {
     'alexnet': 'https://download.pytorch.org/models/alexnet-owt-4df8aa71.pth',
@@ -173,129 +179,150 @@ class TestCaffe2Backend(unittest.TestCase):
         self.run_model_test(model, train=False, batch_size=0, input=input)
 
     def test_lstm_cell(self):
-        # relatively prime for ease of debugging
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
-
-        model = nn.LSTMCell(INPUT_SIZE, HIDDEN_SIZE)
-        input = Variable(torch.randn(BATCH_SIZE, INPUT_SIZE))
-        h0 = Variable(torch.randn(BATCH_SIZE, HIDDEN_SIZE))
-        c0 = Variable(torch.randn(BATCH_SIZE, HIDDEN_SIZE))
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)), use_gpu=False)
-
-    def test_lstm_single_layer(self):
-        # relatively prime for ease of debugging
-        LAYERS=1
-        SEQUENCE_LENGTH=5
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
-
-        model = LstmDiscardingCellState(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
-        input = Variable(torch.randn(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
-        h0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
-        c0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)), use_gpu=False)
-
-    def test_lstm_multi_layer(self):
-        # relatively prime for ease of debugging
-        LAYERS=3
-        SEQUENCE_LENGTH=5
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
-
-        model = LstmDiscardingCellState(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
-        input = Variable(torch.randn(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
-        h0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
-        c0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)), use_gpu=False)
-
-    def test_lstm_no_initial_state(self):
-        # relatively prime for ease of debugging
-        LAYERS=3
-        SEQUENCE_LENGTH=5
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
-
-        model = LstmDiscardingCellState(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
-        input = Variable(torch.randn(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input,), use_gpu=False)
-
-    @skip("we don't even reach the good code...")
-    def test_lstm_bidirectional(self):
-        # relatively prime for ease of debugging
-        LAYERS=3
-        SEQUENCE_LENGTH=5
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
-
-        model = LstmDiscardingCellState(INPUT_SIZE, HIDDEN_SIZE, LAYERS, bidirectional=True)
-        input = Variable(torch.randn(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
-        h0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
-        c0 = Variable(torch.randn(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
+        model = nn.LSTMCell(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE)
+        input = Variable(torch.randn(BATCH_SIZE, RNN_INPUT_SIZE))
+        h0 = Variable(torch.randn(BATCH_SIZE, RNN_HIDDEN_SIZE))
+        c0 = Variable(torch.randn(BATCH_SIZE, RNN_HIDDEN_SIZE))
         self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, (h0, c0)), use_gpu=False)
 
     def test_gru_cell(self):
-        # relatively prime for ease of debugging
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
-
-        model = nn.GRUCell(INPUT_SIZE, HIDDEN_SIZE)
-
-        input = Variable(torch.zeros(BATCH_SIZE, INPUT_SIZE))
-        h0 = Variable(torch.zeros(BATCH_SIZE, HIDDEN_SIZE))
+        model = nn.GRUCell(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE)
+        input = Variable(torch.randn(BATCH_SIZE, RNN_INPUT_SIZE))
+        h0 = Variable(torch.randn(BATCH_SIZE, RNN_HIDDEN_SIZE))
         self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, h0), use_gpu=False)
+
+    def _elman_rnn_test(self, layers, nonlinearity='tanh',
+                        bidirectional=False, initial_state=True,
+                        packed_sequence=False):
+        model = nn.RNN(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE,
+                       layers,
+                       nonlinearity=nonlinearity,
+                       bidirectional=bidirectional)
+        if packed_sequence:
+            model = RnnModelWithPackedSequence(model)
+
+        seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=BATCH_SIZE)
+        seq_lengths = list(reversed(sorted(seq_lengths)))
+        inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
+        inputs = [rnn_utils.pad_sequence(inputs)]
+
+        if initial_state:
+            h0 = Variable(torch.randn(layers, BATCH_SIZE, RNN_HIDDEN_SIZE))
+            inputs.append(h0)
+        if packed_sequence:
+            inputs.append(Variable(torch.IntTensor(seq_lengths)))
+        if len(inputs) == 1:
+            input = inputs[0]
+        else:
+            input = tuple(inputs)
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=input, use_gpu=False)
+
+    def test_elman_rnn_single_layer(self):
+        self._elman_rnn_test(layers=1)
+
+    def test_elman_rnn_multi_layer(self):
+        self._elman_rnn_test(layers=3)
+
+    def test_elman_rnn_relu(self):
+        self._elman_rnn_test(layers=3, nonlinearity='relu')
+
+    @skip("bidirectional not yet implemented")
+    def test_elman_rnn_bidirectional_single_layer(self):
+        self._elman_rnn_test(layers=1, bidirectional=True)
+
+    def test_elman_rnn_no_initial_state(self):
+        self._elman_rnn_test(layers=3, initial_state=False)
+
+    def test_elman_rnn_packed_sequence(self):
+        self._elman_rnn_test(layers=3, packed_sequence=True)
+
+    def test_elman_rnn_no_initial_state_packed_sequence(self):
+        self._elman_rnn_test(layers=3, initial_state=False, packed_sequence=True)
+
+    def _lstm_test(self, layers, bidirectional=False,
+                   initial_state=True, packed_sequence=False):
+        model = LstmDiscardingCellState(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE,
+                                        layers,
+                                        bidirectional=bidirectional)
+        if packed_sequence:
+            model = RnnModelWithPackedSequence(model)
+
+        seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=BATCH_SIZE)
+        seq_lengths = list(reversed(sorted(seq_lengths)))
+        inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
+        inputs = [rnn_utils.pad_sequence(inputs)]
+
+        if initial_state:
+            h0 = Variable(torch.randn(layers, BATCH_SIZE, RNN_HIDDEN_SIZE))
+            c0 = Variable(torch.randn(layers, BATCH_SIZE, RNN_HIDDEN_SIZE))
+            inputs.append((h0, c0))
+        if packed_sequence:
+            inputs.append(Variable(torch.IntTensor(seq_lengths)))
+        if len(inputs) == 1:
+            input = inputs[0]
+        else:
+            input = tuple(inputs)
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=input, use_gpu=False)
+
+    def test_lstm_single_layer(self):
+        self._lstm_test(layers=1)
+
+    def test_lstm_multi_layer(self):
+        self._lstm_test(layers=3)
+
+    def test_lstm_no_initial_state(self):
+        self._lstm_test(layers=3, initial_state=False)
+
+    def test_lstm_packed_sequence(self):
+        self._lstm_test(layers=3, packed_sequence=True)
+
+    def test_lstm_no_initial_state_packed_sequence(self):
+        self._lstm_test(layers=3, initial_state=False, packed_sequence=True)
+
+    @skip("we don't even reach the good code...")
+    def test_lstm_bidirectional(self):
+        self._lstm_test(layers=3, bidirectional=True)
+
+    def _gru_test(self, layers, bidirectional=False,
+                  initial_state=True, packed_sequence=False):
+        model = nn.GRU(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE, layers, bidirectional=bidirectional)
+        if packed_sequence:
+            model = RnnModelWithPackedSequence(model)
+
+        seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=BATCH_SIZE)
+        seq_lengths = list(reversed(sorted(seq_lengths)))
+        inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
+        inputs = [rnn_utils.pad_sequence(inputs)]
+
+        if initial_state:
+            h0 = Variable(torch.randn(layers, BATCH_SIZE, RNN_HIDDEN_SIZE))
+            inputs.append(h0)
+        if packed_sequence:
+            inputs.append(Variable(torch.IntTensor(seq_lengths)))
+        if len(inputs) == 1:
+            input = inputs[0]
+        else:
+            input = tuple(inputs)
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=input, use_gpu=False)
 
     def test_gru_single_layer(self):
-        # relatively prime for ease of debugging
-        LAYERS=1
-        SEQUENCE_LENGTH=5
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
-
-        model = nn.GRU(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
-
-        input = Variable(torch.zeros(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
-        h0 = Variable(torch.zeros(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, h0), use_gpu=False)
+        self._gru_test(layers=1)
 
     def test_gru_multi_layer(self):
-        # relatively prime for ease of debugging
-        LAYERS=3
-        SEQUENCE_LENGTH=5
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
-
-        model = nn.GRU(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
-
-        input = Variable(torch.zeros(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
-        h0 = Variable(torch.zeros(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, h0), use_gpu=False)
+        self._gru_test(layers=3)
 
     def test_gru_no_initial_state(self):
-        # relatively prime for ease of debugging
-        LAYERS=3
-        SEQUENCE_LENGTH=5
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
+        self._gru_test(layers=3, initial_state=False)
 
-        model = nn.GRU(INPUT_SIZE, HIDDEN_SIZE, LAYERS)
+    def test_gru_packed_sequence(self):
+        self._gru_test(layers=3, packed_sequence=True)
 
-        input = Variable(torch.zeros(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input,), use_gpu=False)
+    def test_gru_no_initial_state_packed_sequence(self):
+        self._gru_test(layers=3, initial_state=False, packed_sequence=True)
 
     @skip("we don't even reach the good code...")
     def test_gru_bidirectional(self):
-        # relatively prime for ease of debugging
-        LAYERS=3
-        SEQUENCE_LENGTH=5
-        INPUT_SIZE=7
-        HIDDEN_SIZE=13
-
-        model = nn.GRU(INPUT_SIZE, HIDDEN_SIZE, LAYERS, bidirectional=True)
-
-        input = Variable(torch.zeros(SEQUENCE_LENGTH, BATCH_SIZE, INPUT_SIZE))
-        h0 = Variable(torch.zeros(LAYERS, BATCH_SIZE, HIDDEN_SIZE))
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, h0), use_gpu=False)
+        self._gru_test(layers=3, bidirectional=True)
 
     def test_alexnet(self):
         alexnet = AlexNet()
