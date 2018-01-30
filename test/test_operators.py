@@ -197,11 +197,11 @@ class TestOperators(TestCase):
 
     # TODO: Do an nn style test for these
     def test_batchnorm(self):
-        x = Variable(torch.randn(2, 2).fill_(1.0), requires_grad=True)
+        x = Variable(torch.randn(2, 2, 2, 2).fill_(1.0), requires_grad=True)
         self.assertONNX(nn.BatchNorm2d(2), x)
 
     def test_batchnorm_training(self):
-        x = Variable(torch.randn(2, 2).fill_(1.0), requires_grad=True)
+        x = Variable(torch.randn(2, 2, 2, 2).fill_(1.0), requires_grad=True)
         self.assertONNX(nn.BatchNorm2d(2), x, training=True)
 
     def test_conv(self):
