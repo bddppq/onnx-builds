@@ -40,7 +40,7 @@ graph {
     dims: 2
     data_type: FLOAT
     name: "1"
-    raw_data: "\217~,?b\265\251>"
+    raw_data: "\330=\221>|\037(?"
   }
   initializer {
     dims: 2
@@ -66,6 +66,12 @@ graph {
       tensor_type {
         elem_type: FLOAT
         shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 2
+          }
           dim {
             dim_value: 2
           }
@@ -134,6 +140,12 @@ graph {
       tensor_type {
         elem_type: FLOAT
         shape {
+          dim {
+            dim_value: 2
+          }
+          dim {
+            dim_value: 2
+          }
           dim {
             dim_value: 2
           }
