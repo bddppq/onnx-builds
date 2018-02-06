@@ -231,6 +231,7 @@ class TestOperators(TestCase):
         h0 = Variable(torch.randn(2, 3, 20))
         self.assertONNX(rnn, input, h0)
 
+    @unittest.skip("lstm is not yet supported")
     def test_lstm(self):
         rnn = LstmDiscardingCellState(10, 20, 2)
         input = Variable(torch.randn(5, 3, 10))
