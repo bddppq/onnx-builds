@@ -7,6 +7,7 @@ from __future__ import unicode_literals
 
 import os
 import subprocess
+import sys
 import tarfile
 import tempfile
 
@@ -82,25 +83,34 @@ models = [
     'inception_v2',
     'resnet50',
     'shufflenet',
-    'squeezenet',
+
+    # TODO currently onnx can't translate squeezenet :(
+    # 'squeezenet',
+
     'vgg16',
-    'vgg19'
+
+    # TODO currently vgg19 doesn't work in the CI environment,
+    # possibly due to OOM
+    # 'vgg19'
 ]
 
-if __name__ == '__main__':
-    try:
-        subprocess.check_call(['aws', 'sts', 'get-caller-identity'])
-    except:
-        print('please run `aws configure` manually to set up credentials')
+def download_models():
     sc = SomeClass()
     for model in models:
-        print('updating', model)
+        print('update-caffe2-models.py:  downloading', model)
         caffe2_model_dir = sc._caffe2_model_dir(model)
         onnx_model_dir, onnx_models_dir = sc._onnx_model_dir(model)
         if not os.path.exists(caffe2_model_dir):
             sc._download(model)
         if not os.path.exists(onnx_model_dir):
             sc._prepare_model_data(model)
+
+def generate_models():
+    sc = SomeClass()
+    for model in models:
+        print('update-caffe2-models.py:  generating', model)
+        caffe2_model_dir = sc._caffe2_model_dir(model)
+        onnx_model_dir, onnx_models_dir = sc._onnx_model_dir(model)
         subprocess.check_call(['echo', model])
         with open(os.path.join(caffe2_model_dir, 'value_info.json'), 'r') as f:
             value_info = f.read()
@@ -118,6 +128,12 @@ if __name__ == '__main__':
             model + '.tar.gz',
             model
         ], cwd=onnx_models_dir)
+
+def upload_models():
+    sc = SomeClass()
+    for model in models:
+        print('update-caffe2-models.py:  uploading', model)
+        onnx_model_dir, onnx_models_dir = sc._onnx_model_dir(model)
         subprocess.check_call([
             'aws',
             's3',
@@ -126,4 +142,24 @@ if __name__ == '__main__':
             "s3://download.onnx/models/{}.tar.gz".format(model),
             '--acl', 'public-read'
         ], cwd=onnx_models_dir)
+
+def cleanup():
+    sc = SomeClass()
+    for model in models:
+        onnx_model_dir, onnx_models_dir = sc._onnx_model_dir(model)
         os.remove(os.path.join(os.path.dirname(onnx_model_dir), model + '.tar.gz'))
+
+if __name__ == '__main__':
+    try:
+        subprocess.check_call(['aws', 'sts', 'get-caller-identity'])
+    except:
+        print('update-caffe2-models.py:  please run `aws configure` manually to set up credentials')
+        sys.exit(1)
+    if sys.argv[1] == 'download':
+        download_models()
+    if sys.argv[1] == 'generate':
+        generate_models()
+    elif sys.argv[1] == 'upload':
+        upload_models()
+    elif sys.argv[1] == 'cleanup':
+        cleanup()
