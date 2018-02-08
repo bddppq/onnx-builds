@@ -41,6 +41,14 @@ from test_pytorch_common import skipIfTravis, skipIfNoLapack, skipIfNoCuda
 skip = unittest.skip
 
 
+def skipIfEmbed(func):
+    def wrapper(self):
+        if self.embed_params:
+            raise unittest.SkipTest("Skip onnx-pytorch verify test")
+        return func(self)
+    return wrapper
+
+
 #def import_model(proto, input, workspace=None, use_gpu=True):
 #    model_def = onnx.ModelProto.FromString(proto)
 #    onnx.checker.check_model(model_def)
@@ -635,6 +643,9 @@ class TestCaffe2Backend(unittest.TestCase):
         model = nn.ConvTranspose2d(3, 3, 3, stride=3, bias=False, padding=1, output_padding=2)
         self.run_model_test(model, train=False, batch_size=BATCH_SIZE)
 
+    # NB: InstanceNorm model includes unused weights, so skip this in TestCaffe2BackendEmbed
+    # TODO: We should have another pass to eliminate the unused initializers in ONNX models.
+    @skipIfEmbed
     def test_instance_norm(self):
         underlying = nn.InstanceNorm2d(3)
         self.run_model_test(underlying, train=False, batch_size=BATCH_SIZE)
@@ -645,6 +656,7 @@ class TestCaffe2Backend(unittest.TestCase):
 TestCaffe2BackendEmbed = type(str("TestCaffe2BackendEmbed"),
                               (unittest.TestCase,),
                               dict(TestCaffe2Backend.__dict__, embed_params=True))
+
 
 if __name__ == '__main__':
     unittest.main()
