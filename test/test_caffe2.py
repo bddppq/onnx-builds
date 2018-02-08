@@ -202,7 +202,7 @@ class TestCaffe2Backend(unittest.TestCase):
             model = RnnModelWithPackedSequence(model)
 
         seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=BATCH_SIZE)
-        seq_lengths = list(reversed(sorted(seq_lengths)))
+        seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
         inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
         inputs = [rnn_utils.pad_sequence(inputs)]
 
@@ -248,7 +248,7 @@ class TestCaffe2Backend(unittest.TestCase):
             model = RnnModelWithPackedSequence(model)
 
         seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=BATCH_SIZE)
-        seq_lengths = list(reversed(sorted(seq_lengths)))
+        seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
         inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
         inputs = [rnn_utils.pad_sequence(inputs)]
 
@@ -290,7 +290,7 @@ class TestCaffe2Backend(unittest.TestCase):
             model = RnnModelWithPackedSequence(model)
 
         seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=BATCH_SIZE)
-        seq_lengths = list(reversed(sorted(seq_lengths)))
+        seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
         inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
         inputs = [rnn_utils.pad_sequence(inputs)]
 
