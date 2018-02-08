@@ -199,7 +199,7 @@ class TestCaffe2Backend(unittest.TestCase):
         h0 = Variable(torch.randn(BATCH_SIZE, RNN_HIDDEN_SIZE))
         self.run_model_test(model, train=False, batch_size=BATCH_SIZE, input=(input, h0), use_gpu=False)
 
-    def _elman_rnn_test(self, layers, nonlinearity='tanh',
+    def _elman_rnn_test(self, layers, nonlinearity=u'tanh',
                         bidirectional=False, initial_state=True,
                         packed_sequence=False):
         model = nn.RNN(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE,
@@ -232,7 +232,7 @@ class TestCaffe2Backend(unittest.TestCase):
         self._elman_rnn_test(layers=3)
 
     def test_elman_rnn_relu(self):
-        self._elman_rnn_test(layers=3, nonlinearity='relu')
+        self._elman_rnn_test(layers=3, nonlinearity=u'relu')
 
     @skip("bidirectional not yet implemented")
     def test_elman_rnn_bidirectional_single_layer(self):
