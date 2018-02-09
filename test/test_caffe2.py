@@ -608,6 +608,23 @@ class TestCaffe2Backend(unittest.TestCase):
         self.run_model_test(underlying, train=False, batch_size=BATCH_SIZE)
 
 # a bit of metaprogramming to set up all the rnn tests
+def make_test(name, base, layer, bidirectional, initial_state, variable_length, **extra_kwargs):
+    test_name = str('_'.join([
+        'test', name, layer[1], bidirectional[1], initial_state[1], variable_length[1]
+    ]))
+
+    def f(self):
+        self._dispatch_rnn_test(
+            base,
+            layers=layer[0],
+            bidirectional=bidirectional[0],
+            initial_state=initial_state[0],
+            packed_sequence=variable_length[0],
+            **extra_kwargs)
+
+    f.__name__ = test_name
+    setattr(TestCaffe2Backend, f.__name__, f)
+
 def setup_rnn_tests():
     layers_opts = [
         (1, 'unilayer'),
@@ -644,22 +661,7 @@ def setup_rnn_tests():
                 ('lstm', 'lstm', {}),
                 ('gru', 'gru', {})
         ):
-            test_name = str('_'.join([
-                'test', name, layer[1], bidirectional[1], initial_state[1], variable_length[1]
-            ]))
-
-            def f(self):
-                self._dispatch_rnn_test(
-                    self, base,
-                    layers=layer[0],
-                    bidirectional=bidirectional[0],
-                    initial_state=initial_state[0],
-                    packed_sequence=variable_length[0],
-                    **extra_kwargs)
-
-            f.__name__ = test_name
-            setattr(TestCaffe2Backend, f.__name__, f)
-
+            make_test(name, base, layer, bidirectional, initial_state, variable_length, **extra_kwargs)
             test_count += 1
 
     # sanity check that a representative example does exist
