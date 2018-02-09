@@ -209,13 +209,13 @@ class TestCaffe2Backend(unittest.TestCase):
         if name == 'gru':
             self._gru_test(*args, **kwargs)
 
-    def _elman_rnn_test(self, layers, nonlinearity='tanh',
-                        bidirectional=False, initial_state=True,
-                        packed_sequence=False):
+    def _elman_rnn_test(self, layers, nonlinearity, bidirectional,
+                        initial_state, packed_sequence, dropout):
         model = nn.RNN(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE,
                        layers,
                        nonlinearity=nonlinearity,
-                       bidirectional=bidirectional)
+                       bidirectional=bidirectional,
+                       dropout=dropout)
 
         if packed_sequence:
             model = RnnModelWithPackedSequence(model)
@@ -238,11 +238,12 @@ class TestCaffe2Backend(unittest.TestCase):
             input = tuple(inputs)
         self.run_model_test(model, train=False, batch_size=RNN_BATCH_SIZE, input=input, use_gpu=False)
 
-    def _lstm_test(self, layers, bidirectional=False,
-                   initial_state=True, packed_sequence=False):
+    def _lstm_test(self, layers, bidirectional, initial_state,
+                   packed_sequence, dropout):
         model = LstmDiscardingCellState(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE,
                                         layers,
-                                        bidirectional=bidirectional)
+                                        bidirectional=bidirectional,
+                                        dropout=dropout)
         if packed_sequence:
             model = RnnModelWithPackedSequence(model)
 
@@ -265,9 +266,10 @@ class TestCaffe2Backend(unittest.TestCase):
             input = tuple(inputs)
         self.run_model_test(model, train=False, batch_size=RNN_BATCH_SIZE, input=input, use_gpu=False)
 
-    def _gru_test(self, layers, bidirectional=False,
-                  initial_state=True, packed_sequence=False):
-        model = nn.GRU(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE, layers, bidirectional=bidirectional)
+    def _gru_test(self, layers, bidirectional, initial_state,
+                  packed_sequence, dropout):
+        model = nn.GRU(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE, layers,
+                       bidirectional=bidirectional, dropout=dropout)
         if packed_sequence:
             model = RnnModelWithPackedSequence(model)
 
@@ -417,19 +419,15 @@ class TestCaffe2Backend(unittest.TestCase):
         self.run_model_test(model, train=False, input=(x, model.hidden),
                             batch_size=batchsize, use_gpu=False)
 
-    @unittest.expectedFailure
     def test_word_language_model_RNN_TANH(self):
         self.run_word_language_model("RNN_TANH")
 
-    @unittest.expectedFailure
     def test_word_language_model_RNN_RELU(self):
         self.run_word_language_model("RNN_RELU")
 
-    @unittest.expectedFailure
     def test_word_language_model_LSTM(self):
         self.run_word_language_model("LSTM")
 
-    @unittest.expectedFailure
     def test_word_language_model_GRU(self):
         self.run_word_language_model("GRU")
 
@@ -608,9 +606,13 @@ class TestCaffe2Backend(unittest.TestCase):
         self.run_model_test(underlying, train=False, batch_size=BATCH_SIZE)
 
 # a bit of metaprogramming to set up all the rnn tests
-def make_test(name, base, layer, bidirectional, initial_state, variable_length, **extra_kwargs):
+def make_test(name, base, layer, bidirectional, initial_state,
+              variable_length, dropout,
+              **extra_kwargs):
     test_name = str('_'.join([
-        'test', name, layer[1], bidirectional[1], initial_state[1], variable_length[1]
+        'test', name, layer[1],
+        bidirectional[1], initial_state[1],
+        variable_length[1], dropout[1]
     ]))
 
     def f(self):
@@ -620,6 +622,7 @@ def make_test(name, base, layer, bidirectional, initial_state, variable_length, 
             bidirectional=bidirectional[0],
             initial_state=initial_state[0],
             packed_sequence=variable_length[0],
+            dropout=dropout[0],
             **extra_kwargs)
 
     f.__name__ = test_name
@@ -642,13 +645,18 @@ def setup_rnn_tests():
         (True, 'with_variable_length_sequences'),
         (False, 'without_sequence_lengths')
     ]
+    dropout_opts = [
+        (0.2, 'with_dropout'),
+        (0.0, 'without_dropout')
+    ]
     test_count = 0
-    for (layer, bidirectional, initial_state, variable_length) in \
+    for (layer, bidirectional, initial_state, variable_length, dropout) in \
         itertools.product(
             layers_opts,
             bidirectional_opts,
             initial_state_opts,
             variable_length_opts,
+            dropout_opts,
         ):
 
         # disable some combinations
@@ -661,15 +669,17 @@ def setup_rnn_tests():
                 ('lstm', 'lstm', {}),
                 ('gru', 'gru', {})
         ):
-            make_test(name, base, layer, bidirectional, initial_state, variable_length, **extra_kwargs)
+            make_test(name, base, layer, bidirectional, initial_state,
+                      variable_length, dropout,
+                      **extra_kwargs)
             test_count += 1
 
     # sanity check that a representative example does exist
-    TestCaffe2Backend.test_gru_trilayer_forward_with_initial_state_without_sequence_lengths
+    TestCaffe2Backend.test_gru_trilayer_forward_with_initial_state_without_sequence_lengths_with_dropout
 
     # make sure no one accidentally disables all the tests without
     # noticing
-    assert test_count == 48, test_count
+    assert test_count == 96, test_count
 setup_rnn_tests()
 
 # add the same test suite as above, but switch embed_params=False
