@@ -41,9 +41,6 @@ graph {
       tensor_type {
         elem_type: FLOAT
         shape {
-          dim {
-            dim_value: 1
-          }
         }
       }
     }
