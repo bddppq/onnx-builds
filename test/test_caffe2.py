@@ -635,7 +635,7 @@ def setup_rnn_tests():
         ):
 
         # disable some combinations
-        if bidirectional[0]:
+        if bidirectional[0] and not variable_length[0]:
             continue
 
         for base, name, extra_kwargs in (
@@ -667,7 +667,7 @@ def setup_rnn_tests():
 
     # make sure no one accidentally disables all the tests without
     # noticing
-    assert test_count == 32, test_count
+    assert test_count == 48, test_count
 setup_rnn_tests()
 
 # add the same test suite as above, but switch embed_params=False
