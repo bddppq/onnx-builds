@@ -31,9 +31,6 @@ _pip_install -e "$REPOS_DIR/caffe2"
 # Install onnx
 _pip_install -e "$REPOS_DIR/onnx"
 
-# Install onnx-caffe2
-_pip_install -e "$REPOS_DIR/onnx-caffe2"
-
 # Install pytorch
 pip install -r "$REPOS_DIR/pytorch/requirements.txt"
 cd "$REPOS_DIR/pytorch" && python setup.py build develop && cd -

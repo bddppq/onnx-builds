@@ -30,9 +30,6 @@ python -c 'from caffe2.python import build; from pprint import pprint; pprint(bu
 # Install onnx
 _pip_install -b "$BUILD_DIR/onnx" "file://$REPOS_DIR/onnx#egg=onnx"
 
-# Install onnx-caffe2
-_pip_install -b "$BUILD_DIR/onnx-caffe2" "file://$REPOS_DIR/onnx-caffe2#egg=onnx-caffe2"
-
 # Install pytorch
 pip install -r "$REPOS_DIR/pytorch/requirements.txt"
 _pip_install -b "$BUILD_DIR/pytorch" "file://$REPOS_DIR/pytorch#egg=torch"
