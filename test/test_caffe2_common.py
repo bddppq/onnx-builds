@@ -6,7 +6,7 @@ from __future__ import unicode_literals
 import glob
 import numpy as np
 import onnx.backend.test
-import onnx_caffe2.backend as c2
+import caffe2.python.onnx.backend as c2
 import os
 from onnx import numpy_helper
 

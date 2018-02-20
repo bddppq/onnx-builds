@@ -9,7 +9,6 @@ import sys
 import unittest
 import itertools
 
-import onnx_caffe2
 import onnx_pytorch
 import torch.onnx
 from torch import nn
@@ -35,7 +34,7 @@ from model_defs.lstm_discarding_cell_state import LstmDiscardingCellState
 from model_defs.rnn_model_with_packed_sequence import RnnModelWithPackedSequence
 
 import onnx
-import onnx_caffe2.backend as c2
+import caffe2.python.onnx.backend as c2
 
 from test_pytorch_common import skipIfTravis, skipIfNoLapack, skipIfNoCuda
 

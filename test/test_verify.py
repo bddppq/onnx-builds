@@ -1,7 +1,7 @@
 import torch
 from torch.autograd import Variable, Function
 from torch.nn import Module, Parameter
-import onnx_caffe2.backend as backend
+import caffe2.python.onnx.backend as backend
 from onnx_pytorch.verify import verify
 
 from test_pytorch_common import TestCase, run_tests
