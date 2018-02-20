@@ -68,9 +68,10 @@ def upload_onnx_model(model_name, zoo_dir, backup=False):
                                 location=boto.s3.connection.Location.DEFAULT)
     chunk_size = 50 * 1024 * 1024
     file_size = os.stat(abs_file_name).st_size
+    key = boto.s3.key.Key(bucket, 'models/{}'.format(rel_file_name))
+    key.set_acl('public-read')
     if file_size < chunk_size:
         print('Uploading {} ({} MB) to s3 cloud...'.format(abs_file_name, float(file_size) / 1024 / 1024))
-        key = boto.s3.key.Key(bucket, 'models/{}'.format(rel_file_name))
         key.set_contents_from_filename(abs_file_name)
     else:
         chunk_count = int(math.ceil(file_size / float(chunk_size)))
@@ -230,7 +231,7 @@ model_mapping = {
     'inception_v2-test': 'inception_v2',
     'resnet50-test': 'resnet50',
     'shufflenet-test': 'shufflenet',
-    'squeezenet-test': 'squeezenet_old',
+    'squeezenet': 'squeezenet_old',
     'vgg16-test': 'vgg16',
     'vgg19-test': 'vgg19',
 }
@@ -278,11 +279,11 @@ if __name__ == '__main__':
         onnx_model, c2_init_net, c2_predict_net = caffe2_to_onnx(c2_model_name, os.path.join(caffe2_zoo_dir, c2_model_name))
 
         print('Deleteing old ONNX {} model...'.format(onnx_model_name))
-        for f in glob.glob(os.path.join(onnx_model_dir, '{}*'.format(onnx_model_name))):
+        for f in glob.glob(os.path.join(onnx_model_dir, 'model*'.format(onnx_model_name))):
             os.remove(f)
 
         print('Serializing generated ONNX {} model ...'.format(onnx_model_name))
-        with open(os.path.join(onnx_model_dir, '{}.onnx'.format(onnx_model_name)), 'wb') as file:
+        with open(os.path.join(onnx_model_dir, 'model.onnx'), 'wb') as file:
             file.write(onnx_model.SerializeToString())
 
         print('Verifying model {} with ONNX model checker...'.format(onnx_model_name))
@@ -329,7 +330,6 @@ if __name__ == '__main__':
             inputs = generate_test_input_data(onnx_model, 255)
             ref_outputs = generate_test_output_data(c2_init_net, c2_predict_net, inputs)
             onnx_verify(onnx_model, inputs, ref_outputs)
-            print(data_dir)
             for index, input in enumerate(inputs):
                 tensor = numpy_helper.from_array(input[1])
                 with open(os.path.join(data_dir, 'input_{}.pb'.format(index)), 'wb') as file:
