@@ -6,7 +6,7 @@ onnx-fb-builds
 | [![Build Status](https://travis-ci.org/onnxbot/onnx-fb-universe.svg?branch=master)](https://travis-ci.org/onnxbot/onnx-fb-universe) | [![Build Status](https://ci.pytorch.org/jenkins/buildStatus/icon?job=onnx-fb-universe-master)](https://ci.pytorch.org/jenkins/job/onnx-fb-universe-master/) |
 
 # Why Universe Repo?
-* It integrates multiple repos, including onnx, onnx-pytorch, pytorch, caffe2, to provide a convenient environment for developers.
+* It integrates multiple repos, including onnx, pytorch, caffe2, to provide a convenient environment for developers.
 * OnnxBot automatically updates the submodules in `repos` folder, runs the tests, and automatically detects the breaking changes from different repos.
 
 # Installation

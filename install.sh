@@ -33,6 +33,3 @@ _pip_install -b "$BUILD_DIR/onnx" "file://$REPOS_DIR/onnx#egg=onnx"
 # Install pytorch
 pip install -r "$REPOS_DIR/pytorch/requirements.txt"
 _pip_install -b "$BUILD_DIR/pytorch" "file://$REPOS_DIR/pytorch#egg=torch"
-
-# Install onnx-pytorch
-_pip_install -b "$BUILD_DIR/onnx-pytorch" "file://$REPOS_DIR/onnx-pytorch#egg=onnx-pytorch"

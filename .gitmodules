@@ -7,6 +7,3 @@
 [submodule "repos/onnx"]
 	path = repos/onnx
 	url = https://github.com/onnx/onnx.git
-[submodule "repos/onnx-pytorch"]
-	path = repos/onnx-pytorch
-	url = https://github.com/ezyang/onnx-pytorch.git

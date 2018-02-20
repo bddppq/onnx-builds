@@ -5,7 +5,7 @@ from torch.autograd import Variable
 import torch.onnx
 import torch.nn.init as init
 from caffe2.python.model_helper import ModelHelper
-from onnx_pytorch.pytorch_helper import PyTorchModule
+from pytorch_helper import PyTorchModule
 import unittest
 from caffe2.python.core import workspace
 

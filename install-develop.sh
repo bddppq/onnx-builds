@@ -34,6 +34,3 @@ _pip_install -e "$REPOS_DIR/onnx"
 # Install pytorch
 pip install -r "$REPOS_DIR/pytorch/requirements.txt"
 cd "$REPOS_DIR/pytorch" && python setup.py build develop && cd -
-
-# Install onnx-pytorch
-_pip_install -e "$REPOS_DIR/onnx-pytorch"
