@@ -12,7 +12,7 @@ from torch.autograd import Variable
 import torch.autograd.function as function
 
 import onnx
-import onnx_caffe2.backend as c2
+import caffe2.python.onnx.backend as c2
 from test_pytorch_common import flatten
 
 
