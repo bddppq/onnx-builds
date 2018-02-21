@@ -73,8 +73,8 @@ cd onnx-fb-universe
 with_proxy ./install-develop.sh
 
 #Sanity Checks
-# python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str(workspace.NumCudaDevices()))'
-# python -c "import onnx"
+python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str(workspace.NumCudaDevices()))'
+python -c "import onnx"
 
 echo "Congrats, you are ready to rock!!"
 
