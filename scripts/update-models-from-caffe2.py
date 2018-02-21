@@ -12,8 +12,8 @@ import json
 import math
 import numpy as np
 import onnx
-import onnx_caffe2.frontend
-import onnx_caffe2.backend
+import caffe2.python.onnx.frontend
+import caffe2.python.onnx.backend
 import os
 import shutil
 import subprocess
@@ -160,7 +160,7 @@ def caffe2_to_onnx(caffe2_model_name, caffe2_model_dir):
         value_info = json.loads(f.read())
 
     print('Converting Caffe2 model {} in {} to ONNX format'.format(caffe2_model_name, caffe2_model_dir))
-    onnx_model = onnx_caffe2.frontend.caffe2_net_to_onnx_model(
+    onnx_model = caffe2.python.onnx.frontend.caffe2_net_to_onnx_model(
         init_net=caffe2_init_proto,
         predict_net=caffe2_predict_proto,
         value_info=value_info
@@ -209,7 +209,7 @@ def generate_test_output_data(caffe2_init_net, caffe2_predict_net, inputs):
 
 
 def onnx_verify(onnx_model, inputs, ref_outputs):
-    prepared = onnx_caffe2.backend.prepare(onnx_model)
+    prepared = caffe2.python.onnx.backend.prepare(onnx_model)
     onnx_inputs = []
     for input in inputs:
         if isinstance(input, tuple):
