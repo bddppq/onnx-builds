@@ -69,7 +69,6 @@ def upload_onnx_model(model_name, zoo_dir, backup=False):
     chunk_size = 50 * 1024 * 1024
     file_size = os.stat(abs_file_name).st_size
     key = boto.s3.key.Key(bucket, 'models/{}'.format(rel_file_name))
-    key.set_acl('public-read')
     if file_size < chunk_size:
         print('Uploading {} ({} MB) to s3 cloud...'.format(abs_file_name, float(file_size) / 1024 / 1024))
         key.set_contents_from_filename(abs_file_name)
@@ -88,6 +87,7 @@ def upload_onnx_model(model_name, zoo_dir, backup=False):
                 with FileChunkIO(abs_file_name, 'r', offset=offset, bytes=bytes) as fp:
                     mp.upload_part_from_file(fp, part_num=i + 1)
         mp.complete_upload()
+    key.set_acl('public-read')
     print('Successfully uploaded {} to s3!'.format(rel_file_name))
 
 
@@ -112,8 +112,8 @@ def download_onnx_model(model_name, zoo_dir, use_cache=True):
             t.extractall(zoo_dir)
         upload_onnx_model(model_name, zoo_dir, backup=True)
     except Exception as e:
-        print('Failed to download data for ONNX model {}: {}'.format(model_name, e))
-        os.makedirs(os.path.join(zoo_dir, model_name))
+        print('Failed to download/backup data for ONNX model {}: {}'.format(model_name, e))
+        os.makedirs(model_dir)
     finally:
         os.remove(download_file.name)
 
@@ -221,19 +221,19 @@ def onnx_verify(onnx_model, inputs, ref_outputs):
 
 
 model_mapping = {
-    'bvlc_alexnet-test': 'bvlc_alexnet',
+    'bvlc_alexnet': 'bvlc_alexnet',
     #'bvlc_googlenet': 'bvlc_googlenet',
     #'bvlc_reference_caffenet': 'bvlc_reference_caffenet',
     #'bvlc_reference_rcnn_ilsvrc13': 'bvlc_reference_rcnn_ilsvrc13',
-    'densenet121-test': 'densenet121',
+    'densenet121': 'densenet121',
     #'finetune_flickr_style': 'finetune_flickr_style',
-    'inception_v1-test': 'inception_v1',
-    'inception_v2-test': 'inception_v2',
-    'resnet50-test': 'resnet50',
-    'shufflenet-test': 'shufflenet',
+    'inception_v1': 'inception_v1',
+    'inception_v2': 'inception_v2',
+    'resnet50': 'resnet50',
+    'shufflenet': 'shufflenet',
     'squeezenet': 'squeezenet_old',
-    'vgg16-test': 'vgg16',
-    'vgg19-test': 'vgg19',
+    'vgg16': 'vgg16',
+    'vgg19': 'vgg19',
 }
 
 
