@@ -72,10 +72,23 @@ with_proxy git clone https://github.com/onnxbot/onnx-fb-universe --recursive
 cd onnx-fb-universe
 with_proxy ./install-develop.sh
 
+# Checking to see if the environment variable script is present
+if [ -f ~/.onnx_env_init ]; then
+    echo "Environment variable script already exists!! Moving the old version to a backup in order to generate a new one"
+    mv --backup ~/.onnx_env_init ~/.onnx_env_init.old
+fi
+
+#Creating a script that can be sourced in the future for the environmental variable
+touch .onnx_env_init
+echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH" >> .onnx_env_init
+echo "export PATH=~/ccache/lib:/usr/local/cuda/bin:$PATH" >> .onnx_env_init
+echo "export CUDA_NVCC_EXECUTABLE=~/ccache/cuda/nvcc" >> .onnx_env_init
+chmod u+x .onnx_env_init
+
 #Sanity Checks
 python -c 'from caffe2.python import build; from pprint import pprint; pprint(build.build_options)'
 python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str(workspace.NumCudaDevices()))'
 python -c "import onnx"
 
 echo "Congrats, you are ready to rock!!"
-
+echo "BTW, don't forget to source the environment variable script by calling 'source ~/.onnx_env_init' " 
