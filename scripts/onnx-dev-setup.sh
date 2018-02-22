@@ -37,7 +37,7 @@ with_proxy pip install pip setuptools -U
 #Install other Caffe2 requirements
 rpm -q protobuf # check the version and if necessary update the value below
 # Todo - Add Grep to find protobuf version
-with_proxy pip install future numpy protobuf==2.6.1 ninja pytest-runner
+with_proxy pip install future numpy protobuf ninja pytest-runner
 
 #Installing CCache
 mkdir -p ~/ccache
@@ -73,8 +73,8 @@ cd onnx-fb-universe
 with_proxy ./install-develop.sh
 
 #Sanity Checks
-python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str(workspace.NumCudaDevices()))'
-python -c "import onnx"
+# python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str(workspace.NumCudaDevices()))'
+# python -c "import onnx"
 
 echo "Congrats, you are ready to rock!!"
 
