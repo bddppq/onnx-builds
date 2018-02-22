@@ -36,7 +36,7 @@ class Inception3(nn.Module):
                 stddev = m.stddev if hasattr(m, 'stddev') else 0.1
                 X = stats.truncnorm(-2, 2, scale=stddev)
                 values = torch.Tensor(X.rvs(m.weight.data.numel()))
-                m.weight.data.copy_(values)
+                m.weight.data.copy_(values.view_as(m.weight))
             elif isinstance(m, nn.BatchNorm2d):
                 m.weight.data.fill_(1)
                 m.bias.data.zero_()

@@ -285,7 +285,7 @@ def verify(model, args, backend, verbose=False, training=False, decimal=3, test_
         # are likely to be things like indices, where just randomly
         # spattering some longs is unlikely to work.  One way we could
         # make this work is to apply a random permutation or something.
-        if hasattr(new_data, 'uniform_'):
+        if arg.is_floating_point():
             new_data.uniform_()
         return torch.autograd.Variable(new_data, volatile=arg.volatile, requires_grad=arg.requires_grad)
 
