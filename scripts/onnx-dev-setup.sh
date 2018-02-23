@@ -79,11 +79,13 @@ if [ -f ~/.onnx_env_init ]; then
 fi
 
 #Creating a script that can be sourced in the future for the environmental variable
-touch .onnx_env_init
-echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH" >> .onnx_env_init
-echo "export PATH=~/ccache/lib:/usr/local/cuda/bin:$PATH" >> .onnx_env_init
-echo "export CUDA_NVCC_EXECUTABLE=~/ccache/cuda/nvcc" >> .onnx_env_init
-chmod u+x .onnx_env_init
+
+ONNX_ENV_INIT_FILE = "~/.onnx_env_init"
+touch "$ONNX_ENV_INIT_FILE"
+echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH" >> "$ONNX_ENV_INIT_FILE"
+echo "export PATH=~/ccache/lib:/usr/local/cuda/bin:$PATH" >> "$ONNX_ENV_INIT_FILE"
+echo "export CUDA_NVCC_EXECUTABLE=~/ccache/cuda/nvcc" >> "$ONNX_ENV_INIT_FILE"
+chmod u+x "$ONNX_ENV_INIT_FILE"
 
 #Sanity Checks
 python -c 'from caffe2.python import build; from pprint import pprint; pprint(build.build_options)'
@@ -91,4 +93,4 @@ python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str
 python -c "import onnx"
 
 echo "Congrats, you are ready to rock!!"
-echo "BTW, don't forget to source the environment variable script by calling 'source ~/.onnx_env_init' " 
+echo "BTW, don't forget to source the environment variable script by calling \"source ONNX_ENV_INIT_FILE\" " 
