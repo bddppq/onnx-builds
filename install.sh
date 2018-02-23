@@ -9,9 +9,15 @@ REPOS_DIR="$top_dir/repos"
 BUILD_DIR="$top_dir/build"
 mkdir -p "$BUILD_DIR"
 
+if [[ -n "${SCCACHE_BUCKET}" ]]; then
+    CACHE_CMD=sccache
+else
+    CACHE_CMD=ccache
+fi
+
 _pip_install() {
     if [[ -n "$CI" ]]; then
-        ccache -z
+        $CACHE_CMD -z
     fi
     if [[ -n "$CI" ]]; then
         time pip install "$@"
@@ -19,7 +25,7 @@ _pip_install() {
         pip install "$@"
     fi
     if [[ -n "$CI" ]]; then
-        ccache -s
+        $CACHE_CMD -s
     fi
 }
 

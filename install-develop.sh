@@ -9,27 +9,13 @@ REPOS_DIR="$top_dir/repos"
 BUILD_DIR="$top_dir/build"
 mkdir -p "$BUILD_DIR"
 
-_pip_install() {
-    if [[ -n "$CI" ]]; then
-        ccache -z
-    fi
-    if [[ -n "$CI" ]]; then
-        time pip install "$@"
-    else
-        pip install "$@"
-    fi
-    if [[ -n "$CI" ]]; then
-        ccache -s
-    fi
-}
-
 pip install ninja
 
 # Install caffe2
-_pip_install -e "$REPOS_DIR/caffe2"
+pip install -e "$REPOS_DIR/caffe2"
 
 # Install onnx
-_pip_install -e "$REPOS_DIR/onnx"
+pip install -e "$REPOS_DIR/onnx"
 
 # Install pytorch
 pip install -r "$REPOS_DIR/pytorch/requirements.txt"
