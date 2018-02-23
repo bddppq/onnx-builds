@@ -93,4 +93,4 @@ python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str
 python -c "import onnx"
 
 echo "Congrats, you are ready to rock!!"
-echo "BTW, don't forget to source the environment variable script by calling \"source ONNX_ENV_INIT_FILE\"" 
+echo "BTW, don't forget to source the environment variable script by calling \"source $ONNX_ENV_INIT_FILE\"" 
