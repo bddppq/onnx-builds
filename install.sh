@@ -9,15 +9,14 @@ REPOS_DIR="$top_dir/repos"
 BUILD_DIR="$top_dir/build"
 mkdir -p "$BUILD_DIR"
 
-if [[ -n "${SCCACHE_BUCKET}" ]]; then
-    CACHE_CMD=sccache
-else
-    CACHE_CMD=ccache
-fi
-
 _pip_install() {
     if [[ -n "$CI" ]]; then
-        $CACHE_CMD -z
+        if [[ -n "${SCCACHE_BUCKET}" ]]; then
+            # Does sccache have flag for clear stats?
+            sccache --show-stats
+        else
+            ccache -z
+        fi
     fi
     if [[ -n "$CI" ]]; then
         time pip install "$@"
@@ -25,7 +24,11 @@ _pip_install() {
         pip install "$@"
     fi
     if [[ -n "$CI" ]]; then
-        $CACHE_CMD -s
+        if [[ -n "${SCCACHE_BUCKET}" ]]; then
+            sccache --show-stats
+        else
+            ccache -s
+        fi
     fi
 }
 
