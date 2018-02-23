@@ -17,29 +17,29 @@ export PATH=/usr/local/cuda/bin:$PATH
 export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH
 nvcc --version
 
-#Install Caffe2 requirements from the internal yum repo
+# Install Caffe2 requirements from the internal yum repo
 sudo yum install python-virtualenv freetype-devel libpng-devel glog gflags protobuf protobuf-devel protobuf-compiler -y
 
-#Installing cmake
+# Installing cmake
 sudo yum remove cmake3 -y
 sudo yum install cmake -y
 sudo yum install autoconf -y
 
-#Proxy setup
+# Proxy setup
 alias with_proxy="HTTPS_PROXY=http://fwdproxy.any:8080 HTTP_PROXY=http://fwdproxy.any:8080 FTP_PROXY=http://fwdproxy.any:8080 https_proxy=http://fwdproxy.any:8080 http_proxy=http://fwdproxy.any:8080 ftp_proxy=http://fwdproxy.any:8080 http_no_proxy='\''*.facebook.com|*.tfbnw.net|*.fb.com'\'"
 
-#Create a virtualenv, activate it, upgrade pip
+# Create a virtualenv, activate it, upgrade pip
 cd ~
 with_proxy virtualenv venv
 source venv/bin/activate
 with_proxy pip install pip setuptools -U
 
-#Install other Caffe2 requirements
+# Install other Caffe2 requirements
 rpm -q protobuf # check the version and if necessary update the value below
 # Todo - Add Grep to find protobuf version
 with_proxy pip install future numpy protobuf ninja pytest-runner
 
-#Installing CCache
+# Installing CCache
 mkdir -p ~/ccache
 pushd /tmp
 rm -rf ccache
@@ -65,10 +65,11 @@ export CUDA_NVCC_EXECUTABLE=~/ccache/cuda/nvcc
 
 # Make sure the nvcc wrapped in CCache is runnable
 ~/ccache/cuda/nvcc --version
-#Cloning repos
+
+# Cloning repos
 with_proxy git clone https://github.com/onnxbot/onnx-fb-universe --recursive
 
-#Installing packages with install script
+# Installing packages with install script
 cd onnx-fb-universe
 with_proxy ./install-develop.sh
 
@@ -78,8 +79,7 @@ if [ -f ~/.onnx_env_init ]; then
     mv --backup ~/.onnx_env_init ~/.onnx_env_init.old
 fi
 
-#Creating a script that can be sourced in the future for the environmental variable
-
+# Creating a script that can be sourced in the future for the environmental variable
 ONNX_ENV_INIT_FILE = "~/.onnx_env_init"
 touch "$ONNX_ENV_INIT_FILE"
 echo "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH" >> "$ONNX_ENV_INIT_FILE"
@@ -87,10 +87,10 @@ echo "export PATH=~/ccache/lib:/usr/local/cuda/bin:$PATH" >> "$ONNX_ENV_INIT_FIL
 echo "export CUDA_NVCC_EXECUTABLE=~/ccache/cuda/nvcc" >> "$ONNX_ENV_INIT_FILE"
 chmod u+x "$ONNX_ENV_INIT_FILE"
 
-#Sanity Checks
+# Sanity Checks
 python -c 'from caffe2.python import build; from pprint import pprint; pprint(build.build_options)'
 python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str(workspace.NumCudaDevices()))'
 python -c "import onnx"
 
 echo "Congrats, you are ready to rock!!"
-echo "BTW, don't forget to source the environment variable script by calling \"source ONNX_ENV_INIT_FILE\" " 
+echo "BTW, don't forget to source the environment variable script by calling \"source ONNX_ENV_INIT_FILE\"" 
