@@ -12,7 +12,6 @@ mkdir -p "$BUILD_DIR"
 _pip_install() {
     if [[ -n "$CI" ]]; then
         if [[ -n "${SCCACHE_BUCKET}" ]]; then
-            # Does sccache have flag for clear stats?
             sccache --show-stats
         else
             ccache -z
