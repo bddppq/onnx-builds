@@ -27,7 +27,11 @@ else
         SCCACHE_BIN_DIR="$TOP_DIR/sccache"
         mkdir -p "$SCCACHE_BIN_DIR"
         for compiler in "${compilers[@]}"; do
-            ln -sf "$(which sccache)" "$SCCACHE_BIN_DIR/$compiler"
+            (
+                echo "#!/bin/sh"
+                echo "exec $SCCACHE $(which $compiler) \"\$@\""
+            ) > "$SCCACHE_BIN_DIR/$compiler"
+            chmod +x "$SCCACHE_BIN_DIR/$compiler"
         done
         export PATH="$SCCACHE_BIN_DIR:$PATH"
     else
