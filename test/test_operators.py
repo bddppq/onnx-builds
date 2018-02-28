@@ -25,8 +25,6 @@ import sys
 import common
 from onnx import numpy_helper
 
-from model_defs.lstm_discarding_cell_state import LstmDiscardingCellState
-
 _onnx_test = False
 
 
@@ -217,23 +215,20 @@ class TestOperators(TestCase):
         x = Variable(torch.randn(20, 16, 50))
         self.assertONNX(nn.MaxPool1d(3, stride=2), x)
 
-    @unittest.skip("rnn is not yet supported")
     def test_rnn_single_layer(self):
         rnn = nn.RNN(10, 20, 1, nonlinearity='relu')
         input = Variable(torch.randn(5, 3, 10))
         h0 = Variable(torch.randn(1, 3, 20))
         self.assertONNX(rnn, input, h0)
 
-    @unittest.skip("rnn is not yet supported")
     def test_rnn(self):
         rnn = nn.RNN(10, 20, 2)
         input = Variable(torch.randn(5, 3, 10))
         h0 = Variable(torch.randn(2, 3, 20))
         self.assertONNX(rnn, input, h0)
 
-    @unittest.skip("lstm is not yet supported")
     def test_lstm(self):
-        rnn = LstmDiscardingCellState(10, 20, 2)
+        rnn = nn.LSTM(10, 20, 2)
         input = Variable(torch.randn(5, 3, 10))
         h0 = Variable(torch.randn(2, 3, 20))
         c0 = Variable(torch.randn(2, 3, 20))
