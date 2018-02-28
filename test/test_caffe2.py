@@ -29,7 +29,7 @@ from model_defs.srresnet import SRResNet
 import model_defs.dcgan as dcgan
 import model_defs.word_language_model as word_language_model
 from model_defs.mnist import MNIST
-from model_defs.lstm_flattening_result import LstmFlatteningResult
+from model_defs.lstm_discarding_cell_state import LstmDiscardingCellState
 from model_defs.rnn_model_with_packed_sequence import RnnModelWithPackedSequence
 
 import onnx
@@ -86,7 +86,7 @@ except ImportError:
 
 BATCH_SIZE = 2
 
-RNN_BATCH_SIZE=1
+RNN_BATCH_SIZE=7
 RNN_SEQUENCE_LENGTH = 11
 RNN_INPUT_SIZE = 5
 RNN_HIDDEN_SIZE = 3
@@ -239,9 +239,10 @@ class TestCaffe2Backend(unittest.TestCase):
 
     def _lstm_test(self, layers, bidirectional, initial_state,
                    packed_sequence, dropout):
-        model = LstmFlatteningResult(
-            RNN_INPUT_SIZE, RNN_HIDDEN_SIZE, layers,
-            bidirectional=bidirectional, dropout=dropout)
+        model = LstmDiscardingCellState(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE,
+                                        layers,
+                                        bidirectional=bidirectional,
+                                        dropout=dropout)
         if packed_sequence:
             model = RnnModelWithPackedSequence(model)
 
