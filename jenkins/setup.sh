@@ -20,7 +20,7 @@ if [[ "$OS" == "Darwin" ]]; then
     export PATH="/usr/local/opt/ccache/libexec:$PATH"
 else
     if [[ -n "${SCCACHE_BUCKET}" ]]; then
-        if hash sccache 2>/dev/null; then
+        if ! hash sccache 2>/dev/null; then
             echo "SCCACHE_BUCKET is set but sccache executable is not found"
             exit 1
         fi
@@ -37,7 +37,7 @@ else
     else
         if [[ -d "/usr/lib/ccache" ]]; then
             export PATH="/usr/lib/ccache:$PATH"
-        elif hash ccache 2>/dev/null; then
+        elif ! hash ccache 2>/dev/null; then
             CCACHE_BIN_DIR="$TOP_DIR/ccache"
             mkdir -p "$CCACHE_BIN_DIR"
             for compiler in "${compilers[@]}"; do
