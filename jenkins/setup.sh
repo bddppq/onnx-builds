@@ -37,7 +37,7 @@ else
     else
         if [[ -d "/usr/lib/ccache" ]]; then
             export PATH="/usr/lib/ccache:$PATH"
-        elif ! hash ccache 2>/dev/null; then
+        elif hash ccache 2>/dev/null; then
             CCACHE_BIN_DIR="$TOP_DIR/ccache"
             mkdir -p "$CCACHE_BIN_DIR"
             for compiler in "${compilers[@]}"; do
