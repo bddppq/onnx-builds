@@ -102,6 +102,7 @@ def download_onnx_model(model_name, zoo_dir, use_cache=True, only_local=False):
     if not only_local:
         upload_onnx_model(model_name, zoo_dir, backup=True, only_local=only_local)
 
+
 def download_caffe2_model(model_name, zoo_dir, use_cache=True):
     model_dir = os.path.join(zoo_dir, model_name)
     if os.path.exists(model_dir):
