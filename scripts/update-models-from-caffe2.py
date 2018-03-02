@@ -21,8 +21,9 @@ import sys
 import tarfile
 import tempfile
 
-import boto
-import boto.s3.connection
+#import boto
+#import boto.s3.connection
+import boto3
 
 from six.moves.urllib.request import urlretrieve
 
@@ -51,7 +52,10 @@ Examples:
 # TODO: Add GPU support
 
 
-def upload_onnx_model(model_name, zoo_dir, backup=False):
+def upload_onnx_model(model_name, zoo_dir, backup=False, only_local=False):
+    if only_local:
+        print('No uploading in loca only mode.')
+        return
     model_dir = os.path.join(zoo_dir, model_name)
     suffix = '-backup' if backup else ''
     if backup:
@@ -63,39 +67,44 @@ def upload_onnx_model(model_name, zoo_dir, backup=False):
         f.add(model_dir, arcname=model_name)
 
     # Assume we did the aws configuration before running on the machine.
-    conn = boto.connect_s3()
-    bucket = conn.create_bucket('download.onnx',
-                                location=boto.s3.connection.Location.DEFAULT)
-    chunk_size = 50 * 1024 * 1024
-    file_size = os.stat(abs_file_name).st_size
-    key = boto.s3.key.Key(bucket, 'models/{}'.format(rel_file_name))
-    if file_size < chunk_size:
-        print('Uploading {} ({} MB) to s3 cloud...'.format(abs_file_name, float(file_size) / 1024 / 1024))
-        key.set_contents_from_filename(abs_file_name)
-    else:
-        chunk_count = int(math.ceil(file_size / float(chunk_size)))
-        mp = bucket.initiate_multipart_upload('models/{}'.format(rel_file_name))
-        print('Preparing uploading {} ({} MB) to s3 cloud...'.format(abs_file_name, float(file_size) / 1024 / 1024))
-        for i in range(chunk_count):
-            print('Uploading part {} of {} to s3 cloud...'.format(i, rel_file_name))
-            offset = chunk_size * i
-            bytes = min(chunk_size, file_size - offset)
-            try:
-                with FileChunkIO(abs_file_name, 'r', offset=offset, bytes=bytes) as fp:
-                    mp.upload_part_from_file(fp, part_num=i + 1)
-            except Exception as e:
-                with FileChunkIO(abs_file_name, 'r', offset=offset, bytes=bytes) as fp:
-                    mp.upload_part_from_file(fp, part_num=i + 1)
-        mp.complete_upload()
-    key.set_acl('public-read')
+    #conn = boto.connect_s3()
+    #bucket = conn.create_bucket('download.onnx',
+    #                            location=boto.s3.connection.Location.DEFAULT)
+    #chunk_size = 50 * 1024 * 1024
+    #file_size = os.stat(abs_file_name).st_size
+    #key = boto.s3.key.Key(bucket, 'models/{}'.format(rel_file_name))
+    #if file_size < chunk_size:
+    #    print('Uploading {} ({} MB) to s3 cloud...'.format(abs_file_name, float(file_size) / 1024 / 1024))
+    #    key.set_contents_from_filename(abs_file_name)
+    #else:
+    #    chunk_count = int(math.ceil(file_size / float(chunk_size)))
+    #    mp = bucket.initiate_multipart_upload('models/{}'.format(rel_file_name))
+    #    print('Preparing uploading {} ({} MB) to s3 cloud...'.format(abs_file_name, float(file_size) / 1024 / 1024))
+    #    for i in range(chunk_count):
+    #        print('Uploading part {} of {} to s3 cloud...'.format(i, rel_file_name))
+    #        offset = chunk_size * i
+    #        bytes = min(chunk_size, file_size - offset)
+    #        try:
+    #            with FileChunkIO(abs_file_name, 'r', offset=offset, bytes=bytes) as fp:
+    #                mp.upload_part_from_file(fp, part_num=i + 1)
+    #        except Exception as e:
+    #            with FileChunkIO(abs_file_name, 'r', offset=offset, bytes=bytes) as fp:
+    #                mp.upload_part_from_file(fp, part_num=i + 1)
+    #    mp.complete_upload()
+    #key.set_acl('public-read')
+
+    client = boto3.client('s3', 'us-west-2')
+    transfer = boto3.s3.transfer.S3Transfer(client)
+    transfer.upload_file(abs_file_name, 'download.onnx', 'models/{}'.format(rel_file_name))
+
     print('Successfully uploaded {} to s3!'.format(rel_file_name))
 
 
-def download_onnx_model(model_name, zoo_dir, use_cache=True):
+def download_onnx_model(model_name, zoo_dir, use_cache=True, only_local=False):
     model_dir = os.path.join(zoo_dir, model_name)
     if os.path.exists(model_dir):
         if use_cache:
-            upload_onnx_model(model_name, zoo_dir, backup=True)
+            upload_onnx_model(model_name, zoo_dir, backup=True, only_local=only_local)
             return
         else:
             shutil.rmtree(model_dir)
@@ -110,7 +119,6 @@ def download_onnx_model(model_name, zoo_dir, use_cache=True):
         with tarfile.open(download_file.name) as t:
             print('Extracting ONNX model {} to {} ...\n'.format(model_name, zoo_dir))
             t.extractall(zoo_dir)
-        upload_onnx_model(model_name, zoo_dir, backup=True)
     except Exception as e:
         print('Failed to download/backup data for ONNX model {}: {}'.format(model_name, e))
         if not os.path.exists(model_dir):
@@ -118,6 +126,8 @@ def download_onnx_model(model_name, zoo_dir, use_cache=True):
     finally:
         os.remove(download_file.name)
 
+    if not only_local:
+        upload_onnx_model(model_name, zoo_dir, backup=True, only_local=only_local)
 
 def download_caffe2_model(model_name, zoo_dir, use_cache=True):
     model_dir = os.path.join(zoo_dir, model_name)
@@ -222,19 +232,19 @@ def onnx_verify(onnx_model, inputs, ref_outputs):
 
 
 model_mapping = {
-    'bvlc_alexnet': 'bvlc_alexnet',
-    'bvlc_googlenet': 'bvlc_googlenet',
-    'bvlc_reference_caffenet': 'bvlc_reference_caffenet',
-    'bvlc_reference_rcnn_ilsvrc13': 'bvlc_reference_rcnn_ilsvrc13',
-    'densenet121': 'densenet121',
-    #'finetune_flickr_style': 'finetune_flickr_style',
-    'inception_v1': 'inception_v1',
-    'inception_v2': 'inception_v2',
-    'resnet50': 'resnet50',
-    'shufflenet': 'shufflenet',
+    #'bvlc_alexnet': 'bvlc_alexnet',
+    #'bvlc_googlenet': 'bvlc_googlenet',
+    #'bvlc_reference_caffenet': 'bvlc_reference_caffenet',
+    #'bvlc_reference_rcnn_ilsvrc13': 'bvlc_reference_rcnn_ilsvrc13',
+    #'densenet121': 'densenet121',
+    ##'finetune_flickr_style': 'finetune_flickr_style',
+    #'inception_v1': 'inception_v1',
+    #'inception_v2': 'inception_v2',
+    #'resnet50': 'resnet50',
+    #'shufflenet': 'shufflenet',
     'squeezenet': 'squeezenet_old',
-    'vgg16': 'vgg16',
-    'vgg19': 'vgg19',
+    #'vgg16': 'vgg16',
+    #'vgg19': 'vgg19',
 }
 
 
@@ -250,11 +260,14 @@ if __name__ == '__main__':
                         help="remove the old test data")
     parser.add_argument('--add-test-data', type=int, default=0,
                         help="add new test data")
+    parser.add_argument('--only-local', action="store_true", default=False,
+                        help="no upload including backup")
 
     args = parser.parse_args()
     delete_test_data = args.clean_test_data
     add_test_data = args.add_test_data
     use_cache = not args.no_cache
+    only_local = args.only_local
 
     root_dir = args.local_dir
     caffe2_zoo_dir = os.path.join(root_dir, ".caffe2", "models")
@@ -265,7 +278,7 @@ if __name__ == '__main__':
 
         print('####### Processing ONNX model {} ({} in Caffe2) #######'.format(onnx_model_name, c2_model_name))
         download_caffe2_model(c2_model_name, caffe2_zoo_dir, use_cache=use_cache)
-        download_onnx_model(onnx_model_name, onnx_zoo_dir, use_cache=use_cache)
+        download_onnx_model(onnx_model_name, onnx_zoo_dir, use_cache=use_cache, only_local=only_local)
 
         onnx_model_dir = os.path.join(onnx_zoo_dir, onnx_model_name)
 
@@ -340,6 +353,6 @@ if __name__ == '__main__':
                 with open(os.path.join(data_dir, 'output_{}.pb'.format(index)), 'wb') as file:
                     file.write(tensor.SerializeToString())
 
-        upload_onnx_model(onnx_model_name, onnx_zoo_dir, backup=False)
+        upload_onnx_model(onnx_model_name, onnx_zoo_dir, backup=False, only_local=only_local)
 
         print('\n\n')
