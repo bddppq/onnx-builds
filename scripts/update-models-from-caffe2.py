@@ -327,6 +327,10 @@ if __name__ == '__main__':
                 with open(os.path.join(data_dir, 'output_{}.pb'.format(index)), 'wb') as file:
                     file.write(tensor.SerializeToString())
 
+        del onnx_model
+        del c2_init_net
+        del c2_predict_net
+
         upload_onnx_model(onnx_model_name, onnx_zoo_dir, backup=False, only_local=only_local)
 
         print('\n\n')
