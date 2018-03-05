@@ -445,7 +445,6 @@ class TestCaffe2Backend(unittest.TestCase):
         underlying = nn.BatchNorm2d(3)
         self.run_model_test(underlying, train=True, batch_size=BATCH_SIZE)
 
-    @unittest.skip("Indexing is broken by #3725")
     def _test_index_generic(self, fn):
         class MyModel(torch.nn.Module):
             def __init__(self):
