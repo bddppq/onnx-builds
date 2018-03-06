@@ -2,6 +2,10 @@
 
 set -ex
 shopt -s expand_aliases
+RED='\033[0;31m'
+LIGHT_GREEN='\033[1;32m'
+CYAN='\033[0;36m'
+NC='\033[0m'
 
 # Checking to see if CuDNN is present
 if [ -f /usr/local/cuda/include/cudnn.h ]; then
@@ -101,4 +105,4 @@ python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str
 python -c "import onnx"
 
 echo "Congrats, you are ready to rock!!"
-echo "BTW, don't forget to source the environment variable script by calling \"source $onnx_init_file\"" 
+echo -e "BTW, don't forget to source the environment variable script by calling ${CYAN}\"source $onnx_init_file\"${NC}"
