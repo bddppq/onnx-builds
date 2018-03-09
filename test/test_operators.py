@@ -96,6 +96,14 @@ class TestOperators(TestCase):
             m = FuncModule(f, params)
         self.assertExpectedRaises(err, lambda: export_to_string(m, args, **kwargs))
 
+    def assertONNXRaisesRegex(self, err, reg, f, args, params=tuple(), **kwargs):
+        if isinstance(f, nn.Module):
+            m = f
+        else:
+            m = FuncModule(f, params)
+        with self.assertRaisesRegex(err, reg):
+            export_to_string(m, args, **kwargs)
+
     def test_basic(self):
         x = Variable(torch.Tensor([0.4]), requires_grad=True)
         y = Variable(torch.Tensor([0.7]), requires_grad=True)
@@ -125,12 +133,16 @@ class TestOperators(TestCase):
     def test_add_left_broadcast(self):
         x = Variable(torch.DoubleTensor(3), requires_grad=True)
         y = Variable(torch.DoubleTensor(2, 3), requires_grad=True)
-        self.assertONNXRaises(RuntimeError, lambda x, y: x + y, (x, y))
+        self.assertONNXRaisesRegex(RuntimeError, 
+            'ONNX export failed: Couldn\'t export operator expand.*',
+            lambda x, y: x + y, (x, y))
 
     def test_add_size1_broadcast(self):
         x = Variable(torch.DoubleTensor(2, 3), requires_grad=True)
         y = Variable(torch.DoubleTensor(2, 1), requires_grad=True)
-        self.assertONNXRaises(RuntimeError, lambda x, y: x + y, (x, y))
+        self.assertONNXRaisesRegex(RuntimeError,
+            'ONNX export failed: Couldn\'t export operator expand.*',
+            lambda x, y: x + y, (x, y))
 
     def test_transpose(self):
         x = Variable(torch.Tensor([[0, 1], [2, 3]]), requires_grad=True)

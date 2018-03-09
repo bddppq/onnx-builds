@@ -1,9 +1,0 @@
-ONNX export failed: Couldn't export operator expand; this usually means you used a form of broadcasting that ONNX does not currently support
-
-Graph we tried to export:
-graph(%0 : Double(3)
-      %1 : Double(2, 3)) {
-  %2 : Double(2!, 3) = Expand[shape=[2, 3]](%0), scope: FuncModule
-  %3 : Double(2, 3) = Add(%2, %1), scope: FuncModule
-  return (%3);
-}
