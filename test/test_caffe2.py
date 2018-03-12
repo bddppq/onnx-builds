@@ -216,20 +216,25 @@ class TestCaffe2Backend(unittest.TestCase):
                        bidirectional=bidirectional,
                        dropout=dropout)
 
-        if packed_sequence:
-            model = RnnModelWithPackedSequence(model)
+        if packed_sequence == 1:
+            model = RnnModelWithPackedSequence(model, False)
+        if packed_sequence == 2:
+            model = RnnModelWithPackedSequence(model, True)
 
         seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=RNN_BATCH_SIZE)
         seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
         inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
-        inputs = [rnn_utils.pad_sequence(inputs)]
+        inputs = rnn_utils.pad_sequence(inputs)
+        if packed_sequence == 2:
+            inputs = inputs.transpose(0,1)
+        inputs = [inputs]
 
         directions = 2 if bidirectional else 1
 
         if initial_state:
             h0 = Variable(torch.randn(directions * layers, RNN_BATCH_SIZE, RNN_HIDDEN_SIZE))
             inputs.append(h0)
-        if packed_sequence:
+        if packed_sequence != 0:
             inputs.append(Variable(torch.IntTensor(seq_lengths)))
         if len(inputs) == 1:
             input = inputs[0]
@@ -242,13 +247,18 @@ class TestCaffe2Backend(unittest.TestCase):
         model = LstmFlatteningResult(
             RNN_INPUT_SIZE, RNN_HIDDEN_SIZE, layers,
             bidirectional=bidirectional, dropout=dropout)
-        if packed_sequence:
-            model = RnnModelWithPackedSequence(model)
+        if packed_sequence == 1:
+            model = RnnModelWithPackedSequence(model, False)
+        if packed_sequence == 2:
+            model = RnnModelWithPackedSequence(model, True)
 
         seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=RNN_BATCH_SIZE)
         seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
         inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
-        inputs = [rnn_utils.pad_sequence(inputs)]
+        inputs = rnn_utils.pad_sequence(inputs)
+        if packed_sequence == 2:
+            inputs = inputs.transpose(0,1)
+        inputs = [inputs]
 
         directions = 2 if bidirectional else 1
 
@@ -256,7 +266,7 @@ class TestCaffe2Backend(unittest.TestCase):
             h0 = Variable(torch.randn(directions * layers, RNN_BATCH_SIZE, RNN_HIDDEN_SIZE))
             c0 = Variable(torch.randn(directions * layers, RNN_BATCH_SIZE, RNN_HIDDEN_SIZE))
             inputs.append((h0, c0))
-        if packed_sequence:
+        if packed_sequence != 0:
             inputs.append(Variable(torch.IntTensor(seq_lengths)))
         if len(inputs) == 1:
             input = inputs[0]
@@ -268,20 +278,25 @@ class TestCaffe2Backend(unittest.TestCase):
                   packed_sequence, dropout):
         model = nn.GRU(RNN_INPUT_SIZE, RNN_HIDDEN_SIZE, layers,
                        bidirectional=bidirectional, dropout=dropout)
-        if packed_sequence:
-            model = RnnModelWithPackedSequence(model)
+        if packed_sequence == 1:
+            model = RnnModelWithPackedSequence(model, False)
+        if packed_sequence == 2:
+            model = RnnModelWithPackedSequence(model, True)
 
         seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=RNN_BATCH_SIZE)
         seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
         inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
-        inputs = [rnn_utils.pad_sequence(inputs)]
+        inputs = rnn_utils.pad_sequence(inputs)
+        if packed_sequence == 2:
+            inputs = inputs.transpose(0,1)
+        inputs = [inputs]
 
         directions = 2 if bidirectional else 1
 
         if initial_state:
             h0 = Variable(torch.randn(directions * layers, RNN_BATCH_SIZE, RNN_HIDDEN_SIZE))
             inputs.append(h0)
-        if packed_sequence:
+        if packed_sequence != 0:
             inputs.append(Variable(torch.IntTensor(seq_lengths)))
         if len(inputs) == 1:
             input = inputs[0]
@@ -639,8 +654,9 @@ def setup_rnn_tests():
         (False, 'no_initial_state')
     ]
     variable_length_opts = [
-        (True, 'with_variable_length_sequences'),
-        (False, 'without_sequence_lengths')
+        (0, 'without_sequence_lengths'),
+        (1, 'with_variable_length_sequences'),
+        (2, 'with_batch_first_sequence_lengths')
     ]
     dropout_opts = [
         (0.2, 'with_dropout'),
@@ -657,7 +673,7 @@ def setup_rnn_tests():
         ):
 
         # disable some combinations
-        if bidirectional[0] and not variable_length[0]:
+        if bidirectional[0] and variable_length[0] == 0:
             continue
 
         for base, name, extra_kwargs in (
@@ -676,7 +692,7 @@ def setup_rnn_tests():
 
     # make sure no one accidentally disables all the tests without
     # noticing
-    assert test_count == 96, test_count
+    assert test_count == 160, test_count
 setup_rnn_tests()
 
 # add the same test suite as above, but switch embed_params=False
