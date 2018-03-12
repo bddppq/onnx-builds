@@ -140,9 +140,17 @@ class TestOperators(TestCase):
     def test_add_size1_broadcast(self):
         x = Variable(torch.DoubleTensor(2, 3), requires_grad=True)
         y = Variable(torch.DoubleTensor(2, 1), requires_grad=True)
-        self.assertONNXRaisesRegex(RuntimeError,
-            r"ONNX export failed: Couldn't export operator expand.*",
-            lambda x, y: x + y, (x, y))
+        self.assertONNX(lambda x, y: x + y, (x, y))
+
+    def test_add_size1_right_broadcast(self):
+        x = Variable(torch.DoubleTensor(2, 3), requires_grad=True)
+        y = Variable(torch.DoubleTensor(3), requires_grad=True)
+        self.assertONNX(lambda x, y: x + y, (x, y))
+
+    def test_add_size1_singleton_broadcast(self):
+        x = Variable(torch.DoubleTensor(2, 3), requires_grad=True)
+        y = Variable(torch.DoubleTensor(1, 3), requires_grad=True)
+        self.assertONNX(lambda x, y: x + y, (x, y))
 
     def test_transpose(self):
         x = Variable(torch.Tensor([[0, 1], [2, 3]]), requires_grad=True)
