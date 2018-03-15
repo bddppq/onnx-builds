@@ -52,7 +52,7 @@ if [ ! -f "$nvcc_path" ] && ! $force; then
 fi
 echo "nvcc is detected at $nvcc_path"
 
-if [[ "$CUDA_NVCC_EXECUTABLE" == *"ccache"* ]]; then  # Heuristic rule
+if [ -f "$CUDA_NVCC_EXECUTABLE" ] && [[ "$CUDA_NVCC_EXECUTABLE" == *"ccache"* ]]; then  # Heuristic rule
   if ! $force ; then
     echo "CCache with nvcc support is already installed at $CUDA_NVCC_EXECUTABLE, please add --force"
     exit 0
