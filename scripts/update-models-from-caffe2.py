@@ -39,6 +39,7 @@ Arguments:
     --no-cache, ignore existing models in local-dir
     --clean-test-data, delete all the existing test data when updating ONNX model zoo
     --add-test-data, add add-test-data sets of test data for each ONNX model
+    --only-local, run locally (for testing purpose)
 
 Examples:
     # store the data in /home/username/zoo-dir, delete existing test data, ignore local cache,
@@ -52,7 +53,7 @@ Examples:
 
 def upload_onnx_model(model_name, zoo_dir, backup=False, only_local=False):
     if only_local:
-        print('No uploading in loca only mode.')
+        print('No uploading in local only mode.')
         return
     model_dir = os.path.join(zoo_dir, model_name)
     suffix = '-backup' if backup else ''
