@@ -24,7 +24,7 @@ except ImportError:
     sys.exit(0)
 
 
-def test_embed_params(proto, model, input, state_dict=None, use_gpu=True):
+def run_embed_params(proto, model, input, state_dict=None, use_gpu=True):
     """
     This is only a helper debug function so we can test embed_params=False
     case as well on pytorch front

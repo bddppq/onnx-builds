@@ -23,34 +23,24 @@ do
 done
 set -- "${UNKNOWN[@]}" # leave UNKNOWN
 
+pip install pytest-cov
+if [[ $PARALLEL == 1]]; then
+    pip install pytest-xdist
+fi
+
 # realpath might not be available on MacOS
 script_path=$(python -c "import os; import sys; print(os.path.realpath(sys.argv[1]))" "${BASH_SOURCE[0]}")
 top_dir=$(dirname "$script_path")
-TEST_DIR="$top_dir/test"
+cd "$top_dir"
 
 if hash catchsegv 2>/dev/null; then
-    PYTHON="catchsegv python"
+    PYTEST="catchsegv pytest"
 else
-    PYTHON="python"
+    PYTEST="pytest"
 fi
 
-test_files=(
-    "$TEST_DIR/test_operators.py"
-    "$TEST_DIR/test_models.py"
-    "$TEST_DIR/test_caffe2.py"
-    "$TEST_DIR/test_verify.py"
-    "$TEST_DIR/test_pytorch_helper.py"
-)
-
 if [[ $PARALLEL == 1 ]]; then
-    if hash parallel 2>/dev/null; then
-        parallel -j 2 -t --line-buffer --keep-order $PYTHON {} -v ::: "${test_files[@]}"
-    else
-        # poor man's parallel
-        printf "%s\n" "${test_files[@]}" | xargs -L 1 -P 2 -i $PYTHON {} -v
-    fi
+    $PYTEST -n 3
 else
-    for f in "${test_files[@]}"; do
-        $PYTHON $f -v
-    done
+    $PYTEST
 fi

@@ -14,7 +14,7 @@ from torch import nn
 from torch.autograd import Variable, function
 import torch.utils.model_zoo as model_zoo
 from torch.nn.utils import rnn as rnn_utils
-from debug_embed_params import test_embed_params
+from debug_embed_params import run_embed_params
 import io
 
 # Import various models for testing
@@ -146,7 +146,7 @@ class TestCaffe2Backend(unittest.TestCase):
         if isinstance(torch_out, torch.autograd.Variable):
           torch_out = (torch_out,)
 
-        caffe2_out = test_embed_params(onnxir, model, input, state_dict, use_gpu)
+        caffe2_out = run_embed_params(onnxir, model, input, state_dict, use_gpu)
         for i, (x, y) in enumerate(zip(torch_out, caffe2_out)):
             np.testing.assert_almost_equal(x.data.cpu().numpy(), y, decimal=3)
 
