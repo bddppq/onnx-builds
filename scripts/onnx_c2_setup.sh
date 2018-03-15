@@ -17,6 +17,7 @@ shopt -s expand_aliases
 alias with_proxy="HTTPS_PROXY=http://fwdproxy.any:8080 HTTP_PROXY=http://fwdproxy.any:8080 FTP_PROXY=http://fwdproxy.any:8080 https_proxy=http://fwdproxy.any:8080 http_proxy=http://fwdproxy.any:8080 ftp_proxy=http://fwdproxy.any:8080 http_no_proxy='*.facebook.com|*.tfbnw.net|*.fb.com'"
 
 # Set the variables
+RED='\033[0;31m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 onnx_root="$HOME/onnx-dev"   # I think hardcoding the onnx root dir is fine, just like fbsource
@@ -24,6 +25,7 @@ venv="$onnx_root/onnxvenv"
 onnx_init_file="$onnx_root/.onnx_env_init"
 ccache_root="$onnx_root/ccache"
 ccache_script="$onnx_root/ccache_install.sh"
+sanity_script="$onnx_root/sanity.sh"
 
 # Check whether you put nvcc in PATH
 set +e
@@ -134,17 +136,38 @@ set +e
 cd "$onnx_root/onnx-fb-universe/repos/caffe2"
 with_proxy python setup.py develop
 
-ninja_path=$(which ninja)
-if [[ ! -z $ninja_path ]]; then
-  echo "Warning: ninja is installed at $ninja_path, which may cause Caffe2 building issue!!!"
-  echo "Please try to remove the ninja at $ninja_path and rerun this script."
+cd "$onnx_root"
+with_proxy wget https://raw.githubusercontent.com/onnxbot/onnx-fb-universe/master/scripts/onnx_c2_sanity_check.sh -O "$sanity_script"
+chmod u+x "$sanity_script"
+
+caffe2_ok=true
+if [ $? != 0 ]; then
+  caffe2_ok=false
 fi
+if ! $caffe2_ok; then
+  # Possible failure reasons when building Caffe2
+  ninja_path=$(which ninja)
+  if [[ ! -z $ninja_path ]]; then
+    echo -e "${RED}Warning: ninja is installed at $ninja_path, which may cause Caffe2 building issue!!!${NC}"
+    echo -e "${RED}Please try to remove the ninja at $ninja_path.${NC}"
+  fi
+  echo -e "${RED}We are almost there, only building Caffe2 fails. We can fix this problem seperately.${NC}"
+  echo "###### Please run the following command before development/fixing the problem: ######"
+  echo -e "${CYAN}source $onnx_init_file${NC}"
+  echo "#####################################################################################"
+  echo "########## Please run the following command to install Caffe2 seperately:  ##########"
+  echo -e "${CYAN}cd $onnx_root/onnx-fb-universe/repos/caffe2; python setup.py develop${NC}"
+  echo "#####################################################################################"
+  echo "########### Please run the following command to check your installation:  ###########"
+  echo -e "${CYAN}$sanity_script${NC}"
+  echo "#####################################################################################"
+  exit 1
+fi
+
 set -e
 
 # Sanity checks and useful info
-python -c 'from caffe2.python import build; from pprint import pprint; pprint(build.build_options)'
-python -c 'from caffe2.python import core, workspace; print("GPUs found: " + str(workspace.NumCudaDevices()))'
-python -c "import onnx"
+$sanity_script
 
 echo "Congrats, you are ready to rock!!"
 echo "################ Please run the following command before development ################"
