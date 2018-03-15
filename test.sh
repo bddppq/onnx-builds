@@ -24,7 +24,7 @@ done
 set -- "${UNKNOWN[@]}" # leave UNKNOWN
 
 pip install pytest-cov
-if [[ $PARALLEL == 1]]; then
+if [[ $PARALLEL == 1 ]]; then
     pip install pytest-xdist
 fi
 
