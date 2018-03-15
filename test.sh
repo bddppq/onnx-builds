@@ -23,7 +23,7 @@ do
 done
 set -- "${UNKNOWN[@]}" # leave UNKNOWN
 
-pip install pytest-cov
+pip install pytest
 if [[ $PARALLEL == 1 ]]; then
     pip install pytest-xdist
 fi
@@ -40,7 +40,7 @@ else
 fi
 
 if [[ $PARALLEL == 1 ]]; then
-    $PYTEST -n 3
+    $PYTEST -n 4
 else
     $PYTEST
 fi
