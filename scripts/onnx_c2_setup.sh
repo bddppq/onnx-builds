@@ -51,6 +51,12 @@ fi
 sudo yum install python-virtualenv freetype-devel libpng-devel glog gflags protobuf protobuf-devel protobuf-compiler -y
 rpm -q protobuf  # check the version and if necessary update the value below
 protoc --version  # check protoc
+protoc_path=$(which protoc)
+if [[ "$protoc_path" != "/bin/protoc" ]]; then
+  echo "Warning: Non-default protoc is detected, the script may not work with non-default protobuf!!!"
+  echo "Please try to remove the protoc at $protoc_path and rerun this script."
+  exit 1
+fi
 
 # Upgrade Cmake to the right version (>3.0)
 sudo yum remove cmake3 -y
@@ -125,13 +131,15 @@ with_proxy python setup.py build develop
 
 # Build Caffe2
 set +e
-ninja_path=$(which ninja)
-set -e
-if [[ ! -z $ninja_path ]]; then
-  echo "Warning: ninja is installed at $ninja_path, which may cause Caffe2 building issue!!!"
-fi
 cd "$onnx_root/onnx-fb-universe/repos/caffe2"
 with_proxy python setup.py develop
+
+ninja_path=$(which ninja)
+if [[ ! -z $ninja_path ]]; then
+  echo "Warning: ninja is installed at $ninja_path, which may cause Caffe2 building issue!!!"
+  echo "Please try to remove the ninja at $ninja_path and rerun this script."
+fi
+set -e
 
 # Sanity checks and useful info
 python -c 'from caffe2.python import build; from pprint import pprint; pprint(build.build_options)'
