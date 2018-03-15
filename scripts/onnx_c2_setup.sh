@@ -133,13 +133,13 @@ with_proxy python setup.py build develop
 
 # Build Caffe2
 set +e
-cd "$onnx_root/onnx-fb-universe/repos/caffe2"
-with_proxy python setup.py develop
 
 cd "$onnx_root"
 with_proxy wget https://raw.githubusercontent.com/onnxbot/onnx-fb-universe/master/scripts/onnx_c2_sanity_check.sh -O "$sanity_script"
 chmod u+x "$sanity_script"
 
+cd "$onnx_root/onnx-fb-universe/repos/caffe2"
+with_proxy python setup.py develop
 caffe2_ok=true
 if [ $? != 0 ]; then
   caffe2_ok=false
