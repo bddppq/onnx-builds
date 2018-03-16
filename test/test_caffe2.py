@@ -10,6 +10,7 @@ import unittest
 import itertools
 
 import torch.onnx
+import torch.onnx.operators
 from torch import nn
 from torch.autograd import Variable, function
 import torch.utils.model_zoo as model_zoo
@@ -616,6 +617,17 @@ class TestCaffe2Backend(unittest.TestCase):
     def test_instance_norm(self):
         underlying = nn.InstanceNorm2d(3)
         self.run_model_test(underlying, train=False, batch_size=BATCH_SIZE)
+
+    def test_dynamic_sizes(self):
+        class MyModel(torch.nn.Module):
+            def __init__(self):
+                super(MyModel, self).__init__()
+            def forward(self, x):
+                shape = torch.onnx.operators.shape_as_tensor(x)
+                new_shape = torch.cat((torch.LongTensor([-1]), shape[:1]))
+                return torch.onnx.operators.reshape_from_tensor_shape(x, new_shape)
+        x = Variable(torch.randn(3, 5, 7))
+        self.run_model_test(MyModel(), train=False, input=x, batch_size=BATCH_SIZE, use_gpu=False)
 
 # a bit of metaprogramming to set up all the rnn tests
 def make_test(name, base, layer, bidirectional, initial_state,
