@@ -19,10 +19,7 @@ while [[ $# -gt 0 ]]; do
     --path)
       shift
       path="$1"
-      if [[ "$path" != /* ]]; then
-        # Turn relative path to absolute path
-        path="$(pwd)/$path"
-      fi
+      path=$(realpath "$path")
       ;;
     --force)  # Force install
       force=true
@@ -42,12 +39,12 @@ done
 # Check whether you put nvcc in PATH
 set +e
 nvcc_path=$(which nvcc)
-if [[ -z $nvcc_path ]]; then
+if [[ -z "$nvcc_path" ]]; then
   nvcc_path="/usr/local/cuda/bin/nvcc"
 fi
 set -e
 if [ ! -f "$nvcc_path" ] && ! $force; then
-  echo -e "nvcc is not detected in \\x24PATH"
+  echo 'nvcc is not detected in $PATH'
   exit 1
 fi
 echo "nvcc is detected at $nvcc_path"
@@ -84,9 +81,9 @@ ln -sf "$path/bin/ccache" "$path/cuda/nvcc"
 
 # Make sure the nvcc wrapped in CCache is runnable
 "$path/cuda/nvcc" --version
-echo "Congrats! The CCache with nvcc support is installed!"
+echo 'Congrats! The CCache with nvcc support is installed!'
 echo -e "Please add the following lines to your bash init script:\\n"
 echo "################ Env Var for CCache with CUDA support ################"
-echo -e "export PATH=\\x22${path}/lib:\\x24PATH\\x22"
-echo -e "export CUDA_NVCC_EXECUTABLE=\\x22${path}/cuda/nvcc\\x22"
-echo "######################################################################"
+echo 'export PATH="'$path'/lib:$PATH"'
+echo 'export CUDA_NVCC_EXECUTABLE="'${path}'/cuda/nvcc"'
+echo '######################################################################'

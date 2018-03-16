@@ -74,13 +74,13 @@ with_proxy virtualenv "$venv"
 # Creating a script that can be sourced in the future for the environmental variable
 touch "$onnx_init_file"
 {
-  echo -e "if [ -z \\x22\\x24LD_LIBRARY_PATH\\x22 ]; then";
-  echo -e "  export LD_LIBRARY_PATH=/usr/local/cuda/lib64";
-  echo "else"
-  echo -e "  export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\\x24LD_LIBRARY_PATH";
+  echo 'if [ -z "$LD_LIBRARY_PATH" ]; then';
+  echo '  export LD_LIBRARY_PATH=/usr/local/cuda/lib64';
+  echo 'else'
+  echo '  export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH';
   echo "fi"
-  echo -e "export PATH=$ccache_root/lib:/usr/local/cuda/bin:\\x24PATH";
-  echo "source $venv/bin/activate";
+  echo 'export PATH='$ccache_root'/lib:/usr/local/cuda/bin:$PATH';
+  echo 'source $venv/bin/activate';
   echo 'alias with_proxy="HTTPS_PROXY=http://fwdproxy.any:8080 HTTP_PROXY=http://fwdproxy.any:8080 FTP_PROXY=http://fwdproxy.any:8080 https_proxy=http://fwdproxy.any:8080 http_proxy=http://fwdproxy.any:8080 ftp_proxy=http://fwdproxy.any:8080 http_no_proxy='"'"'*.facebook.com|*.tfbnw.net|*.fb.com'"'"'"'
 } >> "$onnx_init_file"
 chmod u+x "$onnx_init_file"
@@ -147,18 +147,18 @@ if ! $caffe2_ok; then
   # Possible failure reasons when building Caffe2
   ninja_path=$(which ninja)
   if [[ ! -z "$ninja_path" ]]; then
-    echo -e "${RED}Warning: ninja is installed at $ninja_path, which may cause Caffe2 building issue!!!${NC}"
-    echo -e "${RED}Please try to remove the ninja at $ninja_path.${NC}"
+    echo "${RED}Warning: ninja is installed at $ninja_path, which may cause Caffe2 building issue!!!${NC}"
+    echo "${RED}Please try to remove the ninja at ${ninja_path}.${NC}"
   fi
-  echo -e "${RED}We are almost there, only building Caffe2 fails. We can fix this problem seperately.${NC}"
+  echo "${RED}We are almost there, only building Caffe2 fails. We can fix this problem seperately.${NC}"
   echo "###### Please run the following command before development/fixing the problem: ######"
-  echo -e "${CYAN}source $onnx_init_file${NC}"
+  echo "${CYAN}source $onnx_init_file${NC}"
   echo "#####################################################################################"
   echo "########## Please run the following command to install Caffe2 seperately:  ##########"
-  echo -e "${CYAN}cd $onnx_root/onnx-fb-universe/repos/caffe2; python setup.py develop${NC}"
+  echo "${CYAN}cd $onnx_root/onnx-fb-universe/repos/caffe2; python setup.py develop${NC}"
   echo "#####################################################################################"
   echo "########### Please run the following command to check your installation:  ###########"
-  echo -e "${CYAN}$sanity_script${NC}"
+  echo "${CYAN}$sanity_script${NC}"
   echo "#####################################################################################"
   exit 1
 fi
