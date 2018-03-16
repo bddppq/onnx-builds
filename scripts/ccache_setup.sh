@@ -85,5 +85,5 @@ echo 'Congrats! The CCache with nvcc support is installed!'
 echo -e "Please add the following lines to your bash init script:\\n"
 echo "################ Env Var for CCache with CUDA support ################"
 echo 'export PATH="'$path'/lib:$PATH"'
-echo 'export CUDA_NVCC_EXECUTABLE="'${path}'/cuda/nvcc"'
+echo 'export CUDA_NVCC_EXECUTABLE="'$path'/cuda/nvcc"'
 echo '######################################################################'
