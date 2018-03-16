@@ -24,7 +24,7 @@ onnx_root="$HOME/onnx-dev"   # I think hardcoding the onnx root dir is fine, jus
 venv="$onnx_root/onnxvenv"
 onnx_init_file="$onnx_root/.onnx_env_init"
 ccache_root="$onnx_root/ccache"
-ccache_script="$onnx_root/ccache_install.sh"
+ccache_script="$pwd/ccache_install.sh"
 sanity_script="$onnx_root/sanity.sh"
 
 # Check whether default CUDA exists
@@ -87,7 +87,10 @@ chmod u+x "$onnx_init_file"
 
 # Installing CCache
 cd "$onnx_root"
-with_proxy wget https://raw.githubusercontent.com/onnxbot/onnx-fb-universe/master/scripts/ccache_setup.sh -O "$ccache_script"
+if [ ! -f "$ccache_script" ]; then
+  ccache_script="$onnx_root/ccache_install.sh"
+  with_proxy wget https://raw.githubusercontent.com/onnxbot/onnx-fb-universe/master/scripts/ccache_setup.sh -O "$ccache_script"
+fi
 chmod u+x "$ccache_script"
 "$ccache_script" --path "$ccache_root"
 
