@@ -34,7 +34,7 @@ if [[ -z $nvcc_path ]]; then
   nvcc_path="/usr/local/cuda/bin/nvcc"
 fi
 set -e
-if [ ! -f "$nvcc_path" ] && ! $force; then
+if [ ! -f "$nvcc_path" ]; then
   echo "nvcc is not detected in $PATH"
   exit 1
 fi
@@ -70,7 +70,7 @@ sudo yum install autoconf asciidoc -y
 # Create the root folder
 if [ -e "$onnx_root" ]; then
   timestamp=$(date "+%Y.%m.%d-%H.%M.%S")
-  mv --backup=t "$onnx_root" "$onnx_root"."$timestamp"
+  mv --backup=t -T "$onnx_root" "${onnx_root}.old.$timestamp"
 fi
 mkdir -p "$onnx_root"
 
@@ -80,8 +80,8 @@ with_proxy virtualenv "$venv"
 # Creating a script that can be sourced in the future for the environmental variable
 touch "$onnx_init_file"
 {
-  echo -e "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\x24LD_LIBRARY_PATH";
-  echo -e "export PATH=$ccache_root/lib:/usr/local/cuda/bin:\x24PATH";
+  echo -e "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\\x24LD_LIBRARY_PATH";
+  echo -e "export PATH=$ccache_root/lib:/usr/local/cuda/bin:\\x24PATH";
   echo "source $venv/bin/activate";
   echo 'alias with_proxy="HTTPS_PROXY=http://fwdproxy.any:8080 HTTP_PROXY=http://fwdproxy.any:8080 FTP_PROXY=http://fwdproxy.any:8080 https_proxy=http://fwdproxy.any:8080 http_proxy=http://fwdproxy.any:8080 ftp_proxy=http://fwdproxy.any:8080 http_no_proxy='"'"'*.facebook.com|*.tfbnw.net|*.fb.com'"'"'"'
 } >> "$onnx_init_file"
@@ -96,8 +96,7 @@ chmod u+x "$ccache_script"
 # Test nvcc with CCache
 own_ccache=true
 if [ -f "$CUDA_NVCC_EXECUTABLE" ] && [[ "$ccache_root/cuda/nvcc" == "$CUDA_NVCC_EXECUTABLE" ]]; then
-  "$CUDA_NVCC_EXECUTABLE" --version
-  if [ $? == 0 ]; then
+  if $CUDA_NVCC_EXECUTABLE --version; then
     own_ccache=false
   fi
 fi
@@ -106,15 +105,15 @@ if $own_ccache; then
 fi
 
 # Loading env vars
+# shellcheck disable=SC1090
 source "$onnx_init_file"
 
 "$CUDA_NVCC_EXECUTABLE" --version
 
 # Create a virtualenv, activate it, upgrade pip
-if [ -f "$HOME/.pip/pip.conf"]; then
+if [ -f "$HOME/.pip/pip.conf" ]; then
   echo "Warning: $HOME/.pip/pip.conf is detected, pip install may fail!"
 fi
-# shellcheck disable=SC1090
 with_proxy python -m pip install -U pip setuptools
 with_proxy python -m pip install future numpy "protobuf>3.2" pytest-runner pyyaml typing ipython
 
@@ -140,8 +139,9 @@ chmod u+x "$sanity_script"
 
 cd "$onnx_root/onnx-fb-universe/repos/caffe2"
 with_proxy python setup.py develop
+caffe2_exit_code=$?
 caffe2_ok=true
-if [ $? != 0 ]; then
+if [ $caffe2_exit_code != 0 ]; then
   caffe2_ok=false
 fi
 if ! $caffe2_ok; then

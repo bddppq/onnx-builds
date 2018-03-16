@@ -15,28 +15,28 @@ path="$HOME/ccache"
 force=false
 
 while [[ $# -gt 0 ]]; do
-    case "$1" in
-        --path)
-            shift
-            path="$1"
-            if [[ "$path" != /* ]]; then
-              # Turn relative path to absolute path
-              path="$(pwd)/$path"
-            fi
-            ;;
-        --force)  # Force install
-            force=true
-            ;;
-        --help)  # Force install
-            echo 'usage: ./ccache_setup.py --path /installed/folder [--force]'
-            exit 0
-            ;;
-        *)
-            echo "Invalid option: $1"
-            exit 1
-            ;;
-    esac
-    shift
+  case "$1" in
+    --path)
+      shift
+      path="$1"
+      if [[ "$path" != /* ]]; then
+        # Turn relative path to absolute path
+        path="$(pwd)/$path"
+      fi
+      ;;
+    --force)  # Force install
+      force=true
+      ;;
+    --help)
+      echo 'usage: ./ccache_setup.py --path /installed/folder [--force]'
+      exit 0
+      ;;
+    *)
+      echo "Invalid option: $1"
+      exit 1
+      ;;
+  esac
+  shift
 done
 
 # Check whether you put nvcc in PATH
@@ -47,25 +47,27 @@ if [[ -z $nvcc_path ]]; then
 fi
 set -e
 if [ ! -f "$nvcc_path" ] && ! $force; then
-  echo "nvcc is not detected in $PATH"
+  echo -e "nvcc is not detected in \\x24PATH"
   exit 1
 fi
 echo "nvcc is detected at $nvcc_path"
 
 if [ -f "$CUDA_NVCC_EXECUTABLE" ] && [[ "$CUDA_NVCC_EXECUTABLE" == *"ccache"* ]]; then  # Heuristic rule
-  if ! $force ; then
-    echo "CCache with nvcc support is already installed at $CUDA_NVCC_EXECUTABLE, please add --force"
-    exit 0
+  if $CUDA_NVCC_EXECUTABLE --version; then
+    if ! $force; then
+      echo "CCache with nvcc support is already installed at $CUDA_NVCC_EXECUTABLE, please add --force"
+      exit 0
+    fi
   fi
 fi
 
 # Installing CCache
 echo "CCache will be installed at $path"
-if [ -d "$path" ]; then
-    mv --backup=t "$path" "${path}.old"
+if [ -e "$path" ]; then
+  mv --backup=t -T "$path" "${path}.old"
 fi
 
-with_proxy git clone https://github.com/colesbury/ccache.git $path -b ccbin
+with_proxy git clone https://github.com/colesbury/ccache.git "$path" -b ccbin
 cd "$path"
 ./autogen.sh
 ./configure
@@ -86,8 +88,8 @@ export CUDA_NVCC_EXECUTABLE="$path/cuda/nvcc"
 # Make sure the nvcc wrapped in CCache is runnable
 "$path/cuda/nvcc" --version
 echo "Congrats! The CCache with nvcc support is installed!"
-echo -e "Please add the following lines to your bash init script:\n"
+echo -e "Please add the following lines to your bash init script:\\n"
 echo "################ Env Var for CCache with CUDA support ################"
-echo -e "export PATH=\x22${path}/lib:\x24PATH\x22"
-echo -e "export CUDA_NVCC_EXECUTABLE=\x22${path}/cuda/nvcc\x22"
+echo -e "export PATH=\\x22${path}/lib:\\x24PATH\\x22"
+echo -e "export CUDA_NVCC_EXECUTABLE=\\x22${path}/cuda/nvcc\\x22"
 echo "######################################################################"
