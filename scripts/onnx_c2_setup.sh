@@ -74,7 +74,11 @@ with_proxy virtualenv "$venv"
 # Creating a script that can be sourced in the future for the environmental variable
 touch "$onnx_init_file"
 {
-  echo -e "export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\\x24LD_LIBRARY_PATH";
+  echo -e "if [ -z \\x22\\x24LD_LIBRARY_PATH\\x22 ]; then";
+  echo -e "  export LD_LIBRARY_PATH=/usr/local/cuda/lib64";
+  echo "else"
+  echo -e "  export LD_LIBRARY_PATH=/usr/local/cuda/lib64:\\x24LD_LIBRARY_PATH";
+  echo "fi"
   echo -e "export PATH=$ccache_root/lib:/usr/local/cuda/bin:\\x24PATH";
   echo "source $venv/bin/activate";
   echo 'alias with_proxy="HTTPS_PROXY=http://fwdproxy.any:8080 HTTP_PROXY=http://fwdproxy.any:8080 FTP_PROXY=http://fwdproxy.any:8080 https_proxy=http://fwdproxy.any:8080 http_proxy=http://fwdproxy.any:8080 ftp_proxy=http://fwdproxy.any:8080 http_no_proxy='"'"'*.facebook.com|*.tfbnw.net|*.fb.com'"'"'"'
@@ -89,7 +93,8 @@ chmod u+x "$ccache_script"
 
 # Test nvcc with CCache
 own_ccache=true
-if [ -f "$CUDA_NVCC_EXECUTABLE" ] && [[ "$ccache_root/cuda/nvcc" == "$CUDA_NVCC_EXECUTABLE" ]]; then
+if [ -f "$CUDA_NVCC_EXECUTABLE" ] && [[ "$ccache_root/cuda/nvcc" != "$CUDA_NVCC_EXECUTABLE" ]] && \
+  && [[ "$CUDA_NVCC_EXECUTABLE" == *"ccache"* ]]; then  # Heuristic rule
   if $CUDA_NVCC_EXECUTABLE --version; then
     own_ccache=false
   fi
@@ -106,7 +111,7 @@ source "$onnx_init_file"
 
 # Create a virtualenv, activate it, upgrade pip
 if [ -f "$HOME/.pip/pip.conf" ]; then
-  echo "Warning: $HOME/.pip/pip.conf is detected, pip install may fail!"
+  echo "${RED}Warning: $HOME/.pip/pip.conf is detected, pip install may fail!${NC}"
 fi
 with_proxy python -m pip install -U pip setuptools
 with_proxy python -m pip install future numpy "protobuf>3.2" pytest-runner pyyaml typing ipython
