@@ -82,9 +82,6 @@ ln -sf "$path/bin/ccache" "$path/lib/g++"
 ln -sf "$path/bin/ccache" "$path/cuda/nvcc"
 "$path/bin/ccache" -M 25Gi
 
-export PATH="$path/lib:/usr/local/cuda/bin:$PATH"
-export CUDA_NVCC_EXECUTABLE="$path/cuda/nvcc"
-
 # Make sure the nvcc wrapped in CCache is runnable
 "$path/cuda/nvcc" --version
 echo "Congrats! The CCache with nvcc support is installed!"
