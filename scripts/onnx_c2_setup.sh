@@ -24,7 +24,7 @@ onnx_root="$HOME/onnx-dev"   # I think hardcoding the onnx root dir is fine, jus
 venv="$onnx_root/onnxvenv"
 onnx_init_file="$onnx_root/.onnx_env_init"
 ccache_root="$onnx_root/ccache"
-ccache_script="$pwd/ccache_install.sh"
+ccache_script="$(pwd)/ccache_install.sh"
 sanity_script="$onnx_root/sanity.sh"
 
 # Check whether default CUDA exists
@@ -74,12 +74,15 @@ with_proxy virtualenv "$venv"
 # Creating a script that can be sourced in the future for the environmental variable
 touch "$onnx_init_file"
 {
+  # shellcheck disable=SC2016
   echo 'if [ -z "$LD_LIBRARY_PATH" ]; then';
   echo '  export LD_LIBRARY_PATH=/usr/local/cuda/lib64';
   echo 'else'
+  # shellcheck disable=SC2016
   echo '  export LD_LIBRARY_PATH=/usr/local/cuda/lib64:$LD_LIBRARY_PATH';
   echo "fi"
-  echo 'export PATH='$ccache_root'/lib:/usr/local/cuda/bin:$PATH';
+  # shellcheck disable=SC2016
+  echo 'export PATH='"$ccache_root"'/lib:/usr/local/cuda/bin:$PATH';
   echo "source $venv/bin/activate";
   echo 'alias with_proxy="HTTPS_PROXY=http://fwdproxy.any:8080 HTTP_PROXY=http://fwdproxy.any:8080 FTP_PROXY=http://fwdproxy.any:8080 https_proxy=http://fwdproxy.any:8080 http_proxy=http://fwdproxy.any:8080 ftp_proxy=http://fwdproxy.any:8080 http_no_proxy='"'"'*.facebook.com|*.tfbnw.net|*.fb.com'"'"'"'
 } >> "$onnx_init_file"

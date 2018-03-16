@@ -44,6 +44,7 @@ if [[ -z "$nvcc_path" ]]; then
 fi
 set -e
 if [ ! -f "$nvcc_path" ] && ! $force; then
+  # shellcheck disable=SC2016
   echo 'nvcc is not detected in $PATH'
   exit 1
 fi
@@ -84,6 +85,7 @@ ln -sf "$path/bin/ccache" "$path/cuda/nvcc"
 echo 'Congrats! The CCache with nvcc support is installed!'
 echo -e "Please add the following lines to your bash init script:\\n"
 echo "################ Env Var for CCache with CUDA support ################"
-echo 'export PATH="'$path'/lib:$PATH"'
-echo 'export CUDA_NVCC_EXECUTABLE="'$path'/cuda/nvcc"'
+# shellcheck disable=SC2016
+echo 'export PATH="'"$path"'/lib:$PATH"'
+echo 'export CUDA_NVCC_EXECUTABLE="'"$path"'/cuda/nvcc"'
 echo '######################################################################'
