@@ -94,7 +94,7 @@ chmod u+x "$ccache_script"
 # Test nvcc with CCache
 own_ccache=true
 if [ -f "$CUDA_NVCC_EXECUTABLE" ] && [[ "$ccache_root/cuda/nvcc" != "$CUDA_NVCC_EXECUTABLE" ]] && \
-  && [[ "$CUDA_NVCC_EXECUTABLE" == *"ccache"* ]]; then  # Heuristic rule
+  [[ "$CUDA_NVCC_EXECUTABLE" == *"ccache"* ]]; then  # Heuristic rule
   if $CUDA_NVCC_EXECUTABLE --version; then
     own_ccache=false
   fi
