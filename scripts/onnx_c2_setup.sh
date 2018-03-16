@@ -27,18 +27,12 @@ ccache_root="$onnx_root/ccache"
 ccache_script="$onnx_root/ccache_install.sh"
 sanity_script="$onnx_root/sanity.sh"
 
-# Check whether you put nvcc in PATH
-set +e
-nvcc_path=$(which nvcc)
-if [[ -z $nvcc_path ]]; then
-  nvcc_path="/usr/local/cuda/bin/nvcc"
+# Check whether default CUDA exists
+# TODO check the required header and lib files
+default_cuda="/usr/local/cuda"
+if [[ ! -e "$default_cuda" ]]; then
+  echo "Default CUDA is not found at $default_cuda"
 fi
-set -e
-if [ ! -f "$nvcc_path" ]; then
-  echo "nvcc is not detected in $PATH"
-  exit 1
-fi
-echo "nvcc is detected at $nvcc_path"
 
 # Checking to see if CuDNN is present, and install it if not exists
 if [ -f /usr/local/cuda/include/cudnn.h ]; then
@@ -147,7 +141,7 @@ fi
 if ! $caffe2_ok; then
   # Possible failure reasons when building Caffe2
   ninja_path=$(which ninja)
-  if [[ ! -z $ninja_path ]]; then
+  if [[ ! -z "$ninja_path" ]]; then
     echo -e "${RED}Warning: ninja is installed at $ninja_path, which may cause Caffe2 building issue!!!${NC}"
     echo -e "${RED}Please try to remove the ninja at $ninja_path.${NC}"
   fi
