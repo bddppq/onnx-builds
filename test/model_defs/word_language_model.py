@@ -1,6 +1,7 @@
 # The model is from here:
 #   https://github.com/pytorch/examples/blob/master/word_language_model/model.py
 
+import torch
 import torch.nn as nn
 from torch.autograd import Variable
 
@@ -44,9 +45,9 @@ class RNNModel(nn.Module):
 
     @staticmethod
     def repackage_hidden(h):
-        """Wraps hidden states in new Variables, to detach them from their history."""
-        if type(h) == Variable:
-            return Variable(h.data)
+        """Detach hidden states from their history."""
+        if isinstance(h, torch.Tensor):
+            return h.detach()
         else:
             return tuple(RNNModel.repackage_hidden(v) for v in h)
 
