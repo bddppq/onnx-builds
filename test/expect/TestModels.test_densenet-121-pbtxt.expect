@@ -18842,5 +18842,5 @@ graph {
   }
 }
 opset_import {
-  version: 2
+  version: 5
 }

@@ -31,6 +31,7 @@ graph torch-jit-export (
   %28 = LeakyRelu[alpha = 0.200000002980232](%27)
   %29 = Conv[dilations = [1, 1], group = 1, kernel_shape = [4, 4], pads = [0, 0, 0, 0], strides = [1, 1]](%28, %17)
   %30 = Sigmoid(%29)
-  %31 = Reshape[shape = [-1, 1]](%30)
-  return %31
+  %31 = Constant[value = <Tensor>]()
+  %32 = Reshape(%30, %31)
+  return %32
 }
