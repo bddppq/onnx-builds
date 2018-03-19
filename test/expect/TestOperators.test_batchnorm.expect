@@ -8,7 +8,7 @@ graph {
     input: "2"
     input: "3"
     input: "4"
-    output: "5"
+    output: "6"
     op_type: "BatchNormalization"
     attribute {
       name: "consumed_inputs"
@@ -31,7 +31,7 @@ graph {
     }
     attribute {
       name: "momentum"
-      f: 0.899999976158142
+      f: 1
       type: FLOAT
     }
   }
@@ -59,6 +59,12 @@ graph {
     data_type: FLOAT
     name: "4"
     raw_data: "\000\000\200?\000\000\200?"
+  }
+  initializer {
+    dims: 1
+    data_type: INT64
+    name: "5"
+    raw_data: "\000\000\000\000\000\000\000\000"
   }
   input {
     name: "0"
@@ -134,8 +140,21 @@ graph {
       }
     }
   }
-  output {
+  input {
     name: "5"
+    type {
+      tensor_type {
+        elem_type: INT64
+        shape {
+          dim {
+            dim_value: 1
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "6"
     type {
       tensor_type {
         elem_type: FLOAT

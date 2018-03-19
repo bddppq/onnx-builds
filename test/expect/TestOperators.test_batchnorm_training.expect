@@ -8,11 +8,11 @@ graph {
     input: "2"
     input: "3"
     input: "4"
-    output: "5"
     output: "6"
     output: "7"
-    output: "batch_norm_dead_output-8"
+    output: "8"
     output: "batch_norm_dead_output-9"
+    output: "batch_norm_dead_output-10"
     op_type: "BatchNormalization"
     attribute {
       name: "consumed_inputs"
@@ -63,6 +63,12 @@ graph {
     data_type: FLOAT
     name: "4"
     raw_data: "fff?fff?"
+  }
+  initializer {
+    dims: 1
+    data_type: INT64
+    name: "5"
+    raw_data: "\001\000\000\000\000\000\000\000"
   }
   input {
     name: "0"
@@ -138,8 +144,21 @@ graph {
       }
     }
   }
-  output {
+  input {
     name: "5"
+    type {
+      tensor_type {
+        elem_type: INT64
+        shape {
+          dim {
+            dim_value: 1
+          }
+        }
+      }
+    }
+  }
+  output {
+    name: "6"
     type {
       tensor_type {
         elem_type: FLOAT

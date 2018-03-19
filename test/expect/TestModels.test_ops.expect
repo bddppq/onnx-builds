@@ -4,12 +4,13 @@ graph torch-jit-export (
   %2[FLOAT, 3]
   %3[FLOAT, 3]
   %4[FLOAT, 3]
+  %5[INT64, 1]
 ) {
-  %5 = LeakyRelu[alpha = 0.0199999995529652](%0)
-  %6 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 0.899999976158142](%5, %1, %2, %3, %4)
-  %7 = AveragePool[kernel_shape = [3, 3], pads = [1, 1, 1, 1], strides = [2, 2]](%6)
-  %8 = Constant[value = <Tensor>]()
-  %9 = Reshape(%7, %8)
-  %10 = Squeeze[axes = [1]](%9)
-  return %10
+  %6 = LeakyRelu[alpha = 0.0199999995529652](%0)
+  %7 = BatchNormalization[consumed_inputs = [0, 0, 0, 1, 1], epsilon = 9.99999974737875e-06, is_test = 1, momentum = 1](%6, %1, %2, %3, %4)
+  %8 = AveragePool[kernel_shape = [3, 3], pads = [1, 1, 1, 1], strides = [2, 2]](%7)
+  %9 = Constant[value = <Tensor>]()
+  %10 = Reshape(%8, %9)
+  %11 = Squeeze[axes = [1]](%10)
+  return %11
 }
