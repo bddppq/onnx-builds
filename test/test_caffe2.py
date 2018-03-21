@@ -506,6 +506,15 @@ class TestCaffe2Backend(unittest.TestCase):
                 return input.chunk(20, dim=2)[-1]
         self.run_model_test(MyModel(), train=False, batch_size=BATCH_SIZE)
 
+    def test_sqrt(self):
+        class MyModel(torch.nn.Module):
+            def __init__(self):
+                super(MyModel, self).__init__()
+
+            def forward(self, input):
+                return input.sqrt()
+        self.run_model_test(MyModel(), train=False, batch_size=BATCH_SIZE)
+
     def test_addconstant(self):
         class MyModel(torch.nn.Module):
             def __init__(self):
