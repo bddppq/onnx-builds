@@ -30,10 +30,11 @@ def collect_generated_testcases(root_dir=test_onnx_common.pytorch_converted_dir,
     total_fail = 0
     for d in os.listdir(root_dir):
         dir_name = os.path.join(root_dir, d)
+        print("=======>", dir_name)
         if os.path.isdir(dir_name):
             failed = False
             try:
-                model_file = os.path.join(dir_name, "model.pb")
+                model_file = os.path.join(dir_name, "model.onnx")
                 data_dir_pattern = os.path.join(dir_name, "test_data_set_*")
                 for data_dir in glob.glob(data_dir_pattern):
                     for device in ['CPU', 'CUDA']:

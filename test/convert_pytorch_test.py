@@ -59,8 +59,8 @@ def convert_tests(testcases, sets=1):
     for t in testcases:
         test_name = get_test_name(t)
         module = gen_module(t)
-        input = gen_input(t)
         try:
+            input = gen_input(t)
             f = io.BytesIO()
             torch.onnx._export(module, input, f)
             onnx_model = onnx.load_from_string(f.getvalue())
@@ -71,7 +71,7 @@ def convert_tests(testcases, sets=1):
             if os.path.exists(output_dir):
                 shutil.rmtree(output_dir)
             os.makedirs(output_dir)
-            with open(os.path.join(output_dir, "model.pb"), "wb") as file:
+            with open(os.path.join(output_dir, "model.onnx"), "wb") as file:
                 file.write(onnx_model.SerializeToString())
 
             for i in range(sets):
