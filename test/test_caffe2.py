@@ -633,7 +633,7 @@ class TestCaffe2Backend(unittest.TestCase):
                 super(MyModel, self).__init__()
             def forward(self, x):
                 shape = torch.onnx.operators.shape_as_tensor(x)
-                new_shape = torch.cat((torch.LongTensor([-1]), shape[:1]))
+                new_shape = torch.cat((torch.LongTensor([-1]), shape[0].view(1)))
                 return torch.onnx.operators.reshape_from_tensor_shape(x, new_shape)
         x = Variable(torch.randn(3, 5, 7))
         self.run_model_test(MyModel(), train=False, input=x, batch_size=BATCH_SIZE, use_gpu=False)
