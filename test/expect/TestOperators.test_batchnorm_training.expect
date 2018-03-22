@@ -15,15 +15,6 @@ graph {
     output: "batch_norm_dead_output-9"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -162,5 +153,5 @@ graph {
   }
 }
 opset_import {
-  version: 5
+  version: 6
 }

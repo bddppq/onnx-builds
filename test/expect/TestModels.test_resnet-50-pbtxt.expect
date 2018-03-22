@@ -48,15 +48,6 @@ graph {
     output: "269"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -148,15 +139,6 @@ graph {
     output: "273"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -222,15 +204,6 @@ graph {
     input: "15"
     output: "276"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -298,15 +271,6 @@ graph {
     output: "279"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -367,15 +331,6 @@ graph {
     input: "25"
     output: "281"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -449,15 +404,6 @@ graph {
     output: "285"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -524,15 +470,6 @@ graph {
     output: "288"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -598,15 +535,6 @@ graph {
     input: "40"
     output: "291"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -680,15 +608,6 @@ graph {
     output: "295"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -755,15 +674,6 @@ graph {
     output: "298"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -829,15 +739,6 @@ graph {
     input: "55"
     output: "301"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -911,15 +812,6 @@ graph {
     output: "305"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -985,15 +877,6 @@ graph {
     input: "65"
     output: "308"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -1061,15 +944,6 @@ graph {
     output: "311"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -1130,15 +1004,6 @@ graph {
     input: "75"
     output: "313"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -1212,15 +1077,6 @@ graph {
     output: "317"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -1287,15 +1143,6 @@ graph {
     output: "320"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -1361,15 +1208,6 @@ graph {
     input: "90"
     output: "323"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -1443,15 +1281,6 @@ graph {
     output: "327"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -1518,15 +1347,6 @@ graph {
     output: "330"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -1592,15 +1412,6 @@ graph {
     input: "105"
     output: "333"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -1674,15 +1485,6 @@ graph {
     output: "337"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -1749,15 +1551,6 @@ graph {
     output: "340"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -1823,15 +1616,6 @@ graph {
     input: "120"
     output: "343"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -1905,15 +1689,6 @@ graph {
     output: "347"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -1979,15 +1754,6 @@ graph {
     input: "130"
     output: "350"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -2055,15 +1821,6 @@ graph {
     output: "353"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -2124,15 +1881,6 @@ graph {
     input: "140"
     output: "355"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -2206,15 +1954,6 @@ graph {
     output: "359"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -2281,15 +2020,6 @@ graph {
     output: "362"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -2355,15 +2085,6 @@ graph {
     input: "155"
     output: "365"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -2437,15 +2158,6 @@ graph {
     output: "369"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -2512,15 +2224,6 @@ graph {
     output: "372"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -2586,15 +2289,6 @@ graph {
     input: "170"
     output: "375"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -2668,15 +2362,6 @@ graph {
     output: "379"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -2743,15 +2428,6 @@ graph {
     output: "382"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -2817,15 +2493,6 @@ graph {
     input: "185"
     output: "385"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -2899,15 +2566,6 @@ graph {
     output: "389"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -2974,15 +2632,6 @@ graph {
     output: "392"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -3048,15 +2697,6 @@ graph {
     input: "200"
     output: "395"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -3130,15 +2770,6 @@ graph {
     output: "399"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -3205,15 +2836,6 @@ graph {
     output: "402"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -3279,15 +2901,6 @@ graph {
     input: "215"
     output: "405"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -3361,15 +2974,6 @@ graph {
     output: "409"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -3435,15 +3039,6 @@ graph {
     input: "225"
     output: "412"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -3511,15 +3106,6 @@ graph {
     output: "415"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -3580,15 +3166,6 @@ graph {
     input: "235"
     output: "417"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -3662,15 +3239,6 @@ graph {
     output: "421"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -3737,15 +3305,6 @@ graph {
     output: "424"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -3811,15 +3370,6 @@ graph {
     input: "250"
     output: "427"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -3893,15 +3443,6 @@ graph {
     output: "431"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -3968,15 +3509,6 @@ graph {
     output: "434"
     op_type: "BatchNormalization"
     attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
-    attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
       type: FLOAT
@@ -4042,15 +3574,6 @@ graph {
     input: "265"
     output: "437"
     op_type: "BatchNormalization"
-    attribute {
-      name: "consumed_inputs"
-      ints: 0
-      ints: 0
-      ints: 0
-      ints: 1
-      ints: 1
-      type: INTS
-    }
     attribute {
       name: "epsilon"
       f: 9.99999974737875e-06
@@ -8132,5 +7655,5 @@ graph {
   }
 }
 opset_import {
-  version: 5
+  version: 6
 }
