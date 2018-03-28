@@ -222,26 +222,36 @@ class TestCaffe2Backend(unittest.TestCase):
         if packed_sequence == 2:
             model = RnnModelWithPackedSequence(model, True)
 
-        seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=RNN_BATCH_SIZE)
-        seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
-        inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
-        inputs = rnn_utils.pad_sequence(inputs)
-        if packed_sequence == 2:
-            inputs = inputs.transpose(0,1)
-        inputs = [inputs]
 
-        directions = 2 if bidirectional else 1
+        def make_input(batch_size):
+            seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=batch_size)
+            seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
+            inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
+            inputs = rnn_utils.pad_sequence(inputs)
+            if packed_sequence == 2:
+                inputs = inputs.transpose(0,1)
+            inputs = [inputs]
 
-        if initial_state:
-            h0 = Variable(torch.randn(directions * layers, RNN_BATCH_SIZE, RNN_HIDDEN_SIZE))
-            inputs.append(h0)
-        if packed_sequence != 0:
-            inputs.append(Variable(torch.IntTensor(seq_lengths)))
-        if len(inputs) == 1:
-            input = inputs[0]
-        else:
-            input = tuple(inputs)
+            directions = 2 if bidirectional else 1
+
+            if initial_state:
+                h0 = Variable(torch.randn(directions * layers, batch_size, RNN_HIDDEN_SIZE))
+                inputs.append(h0)
+            if packed_sequence != 0:
+                inputs.append(Variable(torch.IntTensor(seq_lengths)))
+            if len(inputs) == 1:
+                input = inputs[0]
+            else:
+                input = tuple(inputs)
+            return input
+
+        input = make_input(RNN_BATCH_SIZE)
         self.run_model_test(model, train=False, batch_size=RNN_BATCH_SIZE, input=input, use_gpu=False)
+
+        # test that the model still runs with a different batch size
+        onnxir, _ = do_export(model, input)
+        other_input = make_input(RNN_BATCH_SIZE + 1)
+        _ = run_embed_params(onnxir, model, other_input, use_gpu=False)
 
     def _lstm_test(self, layers, bidirectional, initial_state,
                    packed_sequence, dropout):
@@ -253,27 +263,36 @@ class TestCaffe2Backend(unittest.TestCase):
         if packed_sequence == 2:
             model = RnnModelWithPackedSequence(model, True)
 
-        seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=RNN_BATCH_SIZE)
-        seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
-        inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
-        inputs = rnn_utils.pad_sequence(inputs)
-        if packed_sequence == 2:
-            inputs = inputs.transpose(0,1)
-        inputs = [inputs]
+        def make_input(batch_size):
+            seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=batch_size)
+            seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
+            inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
+            inputs = rnn_utils.pad_sequence(inputs)
+            if packed_sequence == 2:
+                inputs = inputs.transpose(0,1)
+            inputs = [inputs]
 
-        directions = 2 if bidirectional else 1
+            directions = 2 if bidirectional else 1
 
-        if initial_state:
-            h0 = Variable(torch.randn(directions * layers, RNN_BATCH_SIZE, RNN_HIDDEN_SIZE))
-            c0 = Variable(torch.randn(directions * layers, RNN_BATCH_SIZE, RNN_HIDDEN_SIZE))
-            inputs.append((h0, c0))
-        if packed_sequence != 0:
-            inputs.append(Variable(torch.IntTensor(seq_lengths)))
-        if len(inputs) == 1:
-            input = inputs[0]
-        else:
-            input = tuple(inputs)
+            if initial_state:
+                h0 = Variable(torch.randn(directions * layers, batch_size, RNN_HIDDEN_SIZE))
+                c0 = Variable(torch.randn(directions * layers, batch_size, RNN_HIDDEN_SIZE))
+                inputs.append((h0, c0))
+            if packed_sequence != 0:
+                inputs.append(Variable(torch.IntTensor(seq_lengths)))
+            if len(inputs) == 1:
+                input = inputs[0]
+            else:
+                input = tuple(inputs)
+            return input
+
+        input = make_input(RNN_BATCH_SIZE)
         self.run_model_test(model, train=False, batch_size=RNN_BATCH_SIZE, input=input, use_gpu=False)
+
+        # test that the model still runs with a different batch size
+        onnxir, _ = do_export(model, input)
+        other_input = make_input(RNN_BATCH_SIZE + 1)
+        _ = run_embed_params(onnxir, model, other_input, use_gpu=False)
 
     def _gru_test(self, layers, bidirectional, initial_state,
                   packed_sequence, dropout):
@@ -284,26 +303,35 @@ class TestCaffe2Backend(unittest.TestCase):
         if packed_sequence == 2:
             model = RnnModelWithPackedSequence(model, True)
 
-        seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=RNN_BATCH_SIZE)
-        seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
-        inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
-        inputs = rnn_utils.pad_sequence(inputs)
-        if packed_sequence == 2:
-            inputs = inputs.transpose(0,1)
-        inputs = [inputs]
+        def make_input(batch_size):
+            seq_lengths = np.random.randint(1, RNN_SEQUENCE_LENGTH + 1, size=batch_size)
+            seq_lengths = list(reversed(sorted(map(int, seq_lengths))))
+            inputs = [ Variable(torch.randn(l, RNN_INPUT_SIZE)) for l in seq_lengths ]
+            inputs = rnn_utils.pad_sequence(inputs)
+            if packed_sequence == 2:
+                inputs = inputs.transpose(0,1)
+            inputs = [inputs]
 
-        directions = 2 if bidirectional else 1
+            directions = 2 if bidirectional else 1
 
-        if initial_state:
-            h0 = Variable(torch.randn(directions * layers, RNN_BATCH_SIZE, RNN_HIDDEN_SIZE))
-            inputs.append(h0)
-        if packed_sequence != 0:
-            inputs.append(Variable(torch.IntTensor(seq_lengths)))
-        if len(inputs) == 1:
-            input = inputs[0]
-        else:
-            input = tuple(inputs)
+            if initial_state:
+                h0 = Variable(torch.randn(directions * layers, batch_size, RNN_HIDDEN_SIZE))
+                inputs.append(h0)
+            if packed_sequence != 0:
+                inputs.append(Variable(torch.IntTensor(seq_lengths)))
+            if len(inputs) == 1:
+                input = inputs[0]
+            else:
+                input = tuple(inputs)
+            return input
+
+        input = make_input(RNN_BATCH_SIZE)
         self.run_model_test(model, train=False, batch_size=RNN_BATCH_SIZE, input=input, use_gpu=False)
+
+        # test that the model still runs with a different batch size
+        onnxir, _ = do_export(model, input)
+        other_input = make_input(RNN_BATCH_SIZE + 1)
+        _ = run_embed_params(onnxir, model, other_input, use_gpu=False)
 
     def test_alexnet(self):
         alexnet = AlexNet()
