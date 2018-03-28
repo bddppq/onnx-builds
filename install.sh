@@ -30,7 +30,8 @@ _pip_install() {
 }
 
 # Install caffe2
-_pip_install -b "$BUILD_DIR/caffe2" "file://$REPOS_DIR/caffe2#egg=caffe2"
+cd "$REPOS_DIR/caffe2" && python setup_caffe2.py build install --build-base="$BUILD_DIR/caffe2" && cd -
+
 python -c 'from caffe2.python import build; from pprint import pprint; pprint(build.build_options)'
 
 # Install onnx
