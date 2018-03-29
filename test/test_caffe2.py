@@ -696,6 +696,8 @@ def setup_rnn_tests():
         # disable some combinations
         if bidirectional[0] and variable_length[0] == 0:
             continue
+        if dropout > 0 and layer == 1:
+            continue
 
         for base, name, extra_kwargs in (
                 ('elman', 'elman_relu', { 'nonlinearity' : u'relu' }),
