@@ -30,7 +30,6 @@ def collect_generated_testcases(root_dir=test_onnx_common.pytorch_converted_dir,
     total_fail = 0
     for d in os.listdir(root_dir):
         dir_name = os.path.join(root_dir, d)
-        print("=======>", dir_name)
         if os.path.isdir(dir_name):
             failed = False
             try:

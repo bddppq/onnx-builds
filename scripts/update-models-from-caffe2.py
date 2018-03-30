@@ -68,7 +68,7 @@ def upload_onnx_model(model_name, zoo_dir, backup=False, only_local=False):
     print('Uploading {} ({} MB) to s3 cloud...'.format(abs_file_name, float(file_size) / 1024 / 1024))
     client = boto3.client('s3', 'us-east-1')
     transfer = boto3.s3.transfer.S3Transfer(client)
-    transfer.upload_file(abs_file_name, 'download.onnx', 'models/{}'.format(rel_file_name),
+    transfer.upload_file(abs_file_name, 'download.onnx', 'models/latest/{}'.format(rel_file_name),
                          extra_args={'ACL': 'public-read'})
 
     print('Successfully uploaded {} to s3!'.format(rel_file_name))
@@ -82,7 +82,7 @@ def download_onnx_model(model_name, zoo_dir, use_cache=True, only_local=False):
             return
         else:
             shutil.rmtree(model_dir)
-    url = 'https://s3.amazonaws.com/download.onnx/models/{}.tar.gz'.format(model_name)
+    url = 'https://s3.amazonaws.com/download.onnx/models/latest/{}.tar.gz'.format(model_name)
 
     download_file = tempfile.NamedTemporaryFile(delete=False)
     try:
