@@ -10,7 +10,7 @@ REPOS_DIR="$top_dir/repos"
 pip install ninja
 
 # Install caffe2
-cd "$REPOS_DIR/caffe2" && python setup_caffe2.py build develop && cd -
+cd "$REPOS_DIR/caffe2" && python setup_caffe2.py develop && cd -
 
 # Install onnx
 pip install -e "$REPOS_DIR/onnx"
