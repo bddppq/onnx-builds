@@ -3,24 +3,9 @@ producer_name: "pytorch"
 producer_version: "0.3"
 graph {
   node {
-    output: "9"
-    op_type: "Constant"
-    attribute {
-      name: "value"
-      t {
-        dims: 2
-        dims: 3
-        dims: 20
-        data_type: FLOAT
-        raw_data: "\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"
-      }
-      type: TENSOR
-    }
-  }
-  node {
     input: "3"
     input: "4"
-    output: "11"
+    output: "10"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -29,34 +14,104 @@ graph {
     }
   }
   node {
-    input: "9"
+    input: "0"
+    output: "11"
+    op_type: "Shape"
+  }
+  node {
     output: "12"
-    op_type: "Slice"
+    op_type: "Constant"
+    attribute {
+      name: "value"
+      t {
+        data_type: INT64
+        raw_data: "\001\000\000\000\000\000\000\000"
+      }
+      type: TENSOR
+    }
+  }
+  node {
+    input: "11"
+    input: "12"
+    output: "13"
+    op_type: "Gather"
+  }
+  node {
+    input: "13"
+    output: "14"
+    op_type: "Unsqueeze"
     attribute {
       name: "axes"
       ints: 0
       type: INTS
     }
+  }
+  node {
+    output: "15"
+    op_type: "Constant"
     attribute {
-      name: "ends"
-      ints: 1
-      type: INTS
+      name: "value"
+      t {
+        dims: 1
+        data_type: INT64
+        raw_data: "\024\000\000\000\000\000\000\000"
+      }
+      type: TENSOR
     }
+  }
+  node {
+    output: "16"
+    op_type: "Constant"
     attribute {
-      name: "starts"
+      name: "value"
+      t {
+        data_type: INT64
+        raw_data: "\001\000\000\000\000\000\000\000"
+      }
+      type: TENSOR
+    }
+  }
+  node {
+    input: "16"
+    output: "17"
+    op_type: "Unsqueeze"
+    attribute {
+      name: "axes"
       ints: 0
       type: INTS
+    }
+  }
+  node {
+    input: "17"
+    input: "14"
+    input: "15"
+    output: "18"
+    op_type: "Concat"
+    attribute {
+      name: "axis"
+      i: 0
+      type: INT
+    }
+  }
+  node {
+    input: "18"
+    output: "19"
+    op_type: "ConstantFill"
+    attribute {
+      name: "input_as_shape"
+      i: 1
+      type: INT
     }
   }
   node {
     input: "0"
     input: "1"
     input: "2"
-    input: "11"
+    input: "10"
     input: ""
-    input: "12"
-    output: "13"
-    output: "14"
+    input: "19"
+    output: "20"
+    output: "21"
     op_type: "RNN"
     attribute {
       name: "activations"
@@ -72,7 +127,7 @@ graph {
   node {
     input: "7"
     input: "8"
-    output: "15"
+    output: "22"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -81,34 +136,104 @@ graph {
     }
   }
   node {
-    input: "9"
-    output: "16"
-    op_type: "Slice"
+    input: "20"
+    output: "23"
+    op_type: "Shape"
+  }
+  node {
+    output: "24"
+    op_type: "Constant"
+    attribute {
+      name: "value"
+      t {
+        data_type: INT64
+        raw_data: "\001\000\000\000\000\000\000\000"
+      }
+      type: TENSOR
+    }
+  }
+  node {
+    input: "23"
+    input: "24"
+    output: "25"
+    op_type: "Gather"
+  }
+  node {
+    input: "25"
+    output: "26"
+    op_type: "Unsqueeze"
     attribute {
       name: "axes"
       ints: 0
       type: INTS
     }
+  }
+  node {
+    output: "27"
+    op_type: "Constant"
     attribute {
-      name: "ends"
-      ints: 2
-      type: INTS
+      name: "value"
+      t {
+        dims: 1
+        data_type: INT64
+        raw_data: "\024\000\000\000\000\000\000\000"
+      }
+      type: TENSOR
     }
+  }
+  node {
+    output: "28"
+    op_type: "Constant"
     attribute {
-      name: "starts"
-      ints: 1
+      name: "value"
+      t {
+        data_type: INT64
+        raw_data: "\001\000\000\000\000\000\000\000"
+      }
+      type: TENSOR
+    }
+  }
+  node {
+    input: "28"
+    output: "29"
+    op_type: "Unsqueeze"
+    attribute {
+      name: "axes"
+      ints: 0
       type: INTS
     }
   }
   node {
-    input: "13"
+    input: "29"
+    input: "26"
+    input: "27"
+    output: "30"
+    op_type: "Concat"
+    attribute {
+      name: "axis"
+      i: 0
+      type: INT
+    }
+  }
+  node {
+    input: "30"
+    output: "31"
+    op_type: "ConstantFill"
+    attribute {
+      name: "input_as_shape"
+      i: 1
+      type: INT
+    }
+  }
+  node {
+    input: "20"
     input: "5"
     input: "6"
-    input: "15"
+    input: "22"
     input: ""
-    input: "16"
-    output: "17"
-    output: "18"
+    input: "31"
+    output: "32"
+    output: "33"
     op_type: "RNN"
     attribute {
       name: "activations"
@@ -122,9 +247,9 @@ graph {
     }
   }
   node {
-    input: "14"
-    input: "18"
-    output: "19"
+    input: "21"
+    input: "33"
+    output: "34"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -321,7 +446,7 @@ graph {
     }
   }
   output {
-    name: "17"
+    name: "32"
     type {
       tensor_type {
         elem_type: FLOAT
@@ -340,7 +465,7 @@ graph {
     }
   }
   output {
-    name: "19"
+    name: "34"
     type {
       tensor_type {
         elem_type: FLOAT
