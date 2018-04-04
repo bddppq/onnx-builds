@@ -638,6 +638,16 @@ class TestCaffe2Backend(unittest.TestCase):
         x = Variable(torch.randn(3, 5, 7))
         self.run_model_test(MyModel(), train=False, input=x, batch_size=BATCH_SIZE, use_gpu=False)
 
+    def test_advanced_broadcast(self):
+        class MyModel(torch.nn.Module):
+            def __init__(self):
+                super(MyModel, self).__init__()
+            def forward(self, x, y):
+                return torch.mul(x, y)
+        x = Variable(torch.randn(1, 5, 10))
+        y = Variable(torch.randn(1, 5, 1))
+        self.run_model_test(MyModel(), train=False, input=(x, y), batch_size=BATCH_SIZE, use_gpu=False)
+
 # a bit of metaprogramming to set up all the rnn tests
 def make_test(name, base, layer, bidirectional, initial_state,
               variable_length, dropout,
