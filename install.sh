@@ -29,6 +29,10 @@ _pip_install() {
     fi
 }
 
+# Install pytorch
+pip install -r "$REPOS_DIR/pytorch/requirements.txt"
+_pip_install -b "$BUILD_DIR/pytorch" "file://$REPOS_DIR/pytorch#egg=torch"
+
 # Install caffe2
 pip install -r "$REPOS_DIR/pytorch/caffe2/requirements.txt"
 cd "$REPOS_DIR/pytorch" && python setup_caffe2.py install && cd -
@@ -36,7 +40,3 @@ python -c 'from caffe2.python import build; from pprint import pprint; pprint(bu
 
 # Install onnx
 _pip_install -b "$BUILD_DIR/onnx" "file://$REPOS_DIR/onnx#egg=onnx"
-
-# Install pytorch
-pip install -r "$REPOS_DIR/pytorch/requirements.txt"
-_pip_install -b "$BUILD_DIR/pytorch" "file://$REPOS_DIR/pytorch#egg=torch"
