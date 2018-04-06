@@ -29,11 +29,12 @@ class Errors(object):
     >>>     ...
     """
 
-    def __init__(self, msg, decimal=3):
+    def __init__(self, msg, rtol=1e-3, atol=1e-8):
         self.msg = msg
         self.errors = []
         self.context = []
-        self.decimal = decimal
+        self.rtol = rtol
+        self.atol = atol
 
         # Allocated upon instance creation so that multiple Errors
         # can be used
@@ -43,14 +44,14 @@ class Errors(object):
 
     def requireAlmostEqual(self, x, y, msg=None):
         """
-        Test that x and y are nearly equal (equal within self.decimal
+        Test that x and y are nearly equal (equal within self.rtol
         precision); aborts execution if they are not.
         """
         self.almostEqualAndThen(x, y, msg, self.failWith)
 
     def checkAlmostEqual(self, x, y, msg=None):
         """
-        Test that x and y are nearly equal (equal within self.decimal
+        Test that x and y are nearly equal (equal within self.rtol
         precision), but continue execution even if they are not equal.
 
         To prevent error cascades, you should remember to call 'failIfErrs'
@@ -67,8 +68,9 @@ class Errors(object):
         """
         if isinstance(x, np.ndarray) and isinstance(y, np.ndarray):
             try:
-                np.testing.assert_almost_equal(x, y, decimal=self.decimal)
+                np.testing.assert_allclose(x, y, rtol=self.rtol, atol=self.atol, verbose=True)
             except AssertionError as e:
+                raise
                 k("{}{}".format(colonize(msg), str(e).lstrip()))
         else:
             raise RuntimeError("Unsupported almost equal test")
@@ -105,6 +107,7 @@ class Errors(object):
             try:
                 np.testing.assert_equal(x, y)
             except AssertionError as e:
+                raise
                 k("{}{}".format(colonize(msg, ": "), str(e).lstrip()))
         else:
             if x != y:
@@ -235,7 +238,7 @@ def set_training(model, mode):
             model.train(old_mode)
 
 
-def verify(model, args, backend, verbose=False, training=False, decimal=3, test_args=2):
+def verify(model, args, backend, verbose=False, training=False, rtol=1e-3, atol=1e-8, test_args=2):
     """
     Export a model into ONNX, import it into a specified ONNX backend, and then
     on a few random inputs verify that PyTorch and the backend produced the same
@@ -269,7 +272,7 @@ def verify(model, args, backend, verbose=False, training=False, decimal=3, test_
         training (bool, default False): export the model in training mode.  At
             the moment, ONNX is oriented towards exporting models for inference
             only, so you will generally not need to set this to True.
-        decimal (int, default 3): how many decimal places to test precision
+        rtol (float, default 1e-3): relative precision required
         test_args (int or iterable of args, default 2):
             either an integer specifying the number
             of random arguments to generate, or an iterable producing arguments
@@ -362,7 +365,7 @@ def verify(model, args, backend, verbose=False, training=False, decimal=3, test_
                 msg = "When I exported your model with different inputs, the result was different."
                 if not verbose:
                     msg += "\n(To get more information, run torch.onnx.verify(..., verbose=True))"
-                with Errors(msg) as errs:
+                with Errors(msg, rtol=rtol, atol=atol) as errs:
                     # First, check if we have the same number of parameters, and
                     # that they're the same order.  If they don't, something has *really* gone wrong.
                     initializer_order_hint = ("This is really strange! The second time I exported your model,\n"
@@ -432,7 +435,7 @@ def verify(model, args, backend, verbose=False, training=False, decimal=3, test_
             result_hint = ("If you are not using trained parameters, a difference in results\n"
                            "could mean that your network is numerically unstable.  Otherwise\n"
                            "it indicates a bug in PyTorch/ONNX; please file a bug report.")
-            with Errors(msg) as errs, errs.addErrCtxt(result_hint):
+            with Errors(msg, rtol=rtol, atol=atol) as errs, errs.addErrCtxt(result_hint):
                 for i, (x, y) in enumerate(zip(torch_out, backend_out)):
                     errs.checkAlmostEqual(x.data.cpu().numpy(), y, "In output {}".format(i))
 

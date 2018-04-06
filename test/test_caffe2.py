@@ -152,7 +152,7 @@ class TestCaffe2Backend(unittest.TestCase):
             np.testing.assert_almost_equal(x.data.cpu().numpy(), y, decimal=3)
 
     def run_actual_test(self, model, train, batch_size, state_dict=None,
-                        input=None, use_gpu=True):
+                        input=None, use_gpu=True, rtol=0.001, atol=1e-8):
         """
         This is what the user facing version will look like
         """
@@ -171,14 +171,14 @@ class TestCaffe2Backend(unittest.TestCase):
             model, input = self.convert_cuda(model, input)
 
         # Verify the model runs the same in Caffe2
-        verify.verify(model, input, c2)
+        verify.verify(model, input, c2, rtol=rtol, atol=atol)
 
     def run_model_test(self, model, train, batch_size, state_dict=None,
-                       input=None, use_gpu=True):
+                       input=None, use_gpu=True, rtol=0.001, atol=1e-8):
         use_gpu_ = torch.cuda.is_available() and use_gpu
         if self.embed_params:
             self.run_actual_test(model, train, batch_size, state_dict, input,
-                                 use_gpu=use_gpu_)
+                                 use_gpu=use_gpu_, rtol=rtol, atol=atol)
         else:
             self.run_debug_test(model, train, batch_size, state_dict, input,
                                 use_gpu=use_gpu_)
@@ -246,7 +246,7 @@ class TestCaffe2Backend(unittest.TestCase):
             return input
 
         input = make_input(RNN_BATCH_SIZE)
-        self.run_model_test(model, train=False, batch_size=RNN_BATCH_SIZE, input=input, use_gpu=False)
+        self.run_model_test(model, train=False, batch_size=RNN_BATCH_SIZE, input=input, use_gpu=False, atol=1e-7)
 
         # test that the model still runs with a different batch size
         onnxir, _ = do_export(model, input)
@@ -337,7 +337,7 @@ class TestCaffe2Backend(unittest.TestCase):
         alexnet = AlexNet()
         state_dict = model_zoo.load_url(model_urls['alexnet'], progress=False)
         self.run_model_test(alexnet, train=False, batch_size=BATCH_SIZE,
-                            state_dict=state_dict)
+                            state_dict=state_dict, atol=1e-3)
 
     @skipIfNoCuda
     def test_dcgan(self):
@@ -360,7 +360,7 @@ class TestCaffe2Backend(unittest.TestCase):
         noise = Variable(
             torch.randn(BATCH_SIZE, dcgan.nz, 1, 1).normal_(0, 1))
         self.run_model_test(netG, train=False, batch_size=BATCH_SIZE,
-                            input=noise, state_dict=state_dict)
+                            input=noise, state_dict=state_dict, rtol=1e-2, atol=1e-6)
 
     @unittest.skipIf(not torch.cuda.is_available(),
                      "model on net has cuda in it, awaiting fix")
@@ -369,7 +369,7 @@ class TestCaffe2Backend(unittest.TestCase):
                                block_config=(6, 12, 24, 16))
         state_dict = model_zoo.load_url(model_urls['densenet121'], progress=False)
         self.run_model_test(densenet121, train=False, batch_size=BATCH_SIZE,
-                            state_dict=state_dict)
+                            state_dict=state_dict, atol=1e-7)
 
     @skip("doesn't match exactly...")
     # TODO: figure out the numerical instabilities
@@ -386,7 +386,7 @@ class TestCaffe2Backend(unittest.TestCase):
         resnet50 = ResNet(Bottleneck, [3, 4, 6, 3])
         state_dict = model_zoo.load_url(model_urls['resnet50'], progress=False)
         self.run_model_test(resnet50, train=False, batch_size=BATCH_SIZE,
-                            state_dict=state_dict)
+                            state_dict=state_dict, atol=1e-6)
 
     def test_squeezenet(self):
         sqnet_v1_1 = SqueezeNet(version=1.1)
@@ -646,7 +646,7 @@ class TestCaffe2Backend(unittest.TestCase):
 
     def test_convtranspose(self):
         model = nn.ConvTranspose2d(3, 3, 3, stride=3, bias=False, padding=1, output_padding=2)
-        self.run_model_test(model, train=False, batch_size=BATCH_SIZE)
+        self.run_model_test(model, train=False, batch_size=BATCH_SIZE, atol=1e-7)
 
     # NB: InstanceNorm model includes unused weights, so skip this in TestCaffe2BackendEmbed
     # TODO: We should have another pass to eliminate the unused initializers in ONNX models.
