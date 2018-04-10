@@ -182,7 +182,7 @@ class TestOperators(TestCase):
 
     def test_pad(self):
         x = Variable(torch.Tensor([[[[0, 1, 1, 1], [2, 3, 7, 7]]]]), requires_grad=True)
-        self.assertONNX(nn.ReflectionPad2d((3, 4, 1, 2)), x)
+        self.assertONNX(nn.ReflectionPad2d((2, 3, 1, 2)), x)
 
     def test_params(self):
         x = Variable(torch.Tensor([[1, 2], [3, 4]]), requires_grad=True)
