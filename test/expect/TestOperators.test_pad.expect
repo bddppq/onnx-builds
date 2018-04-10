@@ -15,12 +15,12 @@ graph {
       name: "pads"
       ints: 0
       ints: 0
-      ints: 1
-      ints: 3
-      ints: 0
       ints: 0
       ints: 2
-      ints: 4
+      ints: 0
+      ints: 0
+      ints: 1
+      ints: 3
       type: INTS
     }
   }
@@ -60,10 +60,10 @@ graph {
             dim_value: 1
           }
           dim {
-            dim_value: 5
+            dim_value: 3
           }
           dim {
-            dim_value: 11
+            dim_value: 9
           }
         }
       }
