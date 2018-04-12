@@ -731,10 +731,6 @@ def setup_rnn_tests():
             dropout_opts,
         ):
 
-        # disable some combinations
-        if bidirectional[0] and variable_length[0] == 0:
-            continue
-
         for base, name, extra_kwargs in (
                 ('elman', 'elman_relu', { 'nonlinearity' : u'relu' }),
                 ('elman', 'elman_tanh', { 'nonlinearity' : u'tanh' }),
@@ -751,7 +747,7 @@ def setup_rnn_tests():
 
     # make sure no one accidentally disables all the tests without
     # noticing
-    assert test_count == 160, test_count
+    assert test_count == 192, test_count
 setup_rnn_tests()
 
 # add the same test suite as above, but switch embed_params=False
