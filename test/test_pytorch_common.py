@@ -39,4 +39,4 @@ skipIfCI = _skipper(lambda: os.getenv('CI'),
                     'Skip In CI')
 
 def flatten(x):
-    return tuple(function._iter_filter(lambda o: isinstance(o, Variable) or torch.is_tensor(o))(x))
+    return tuple(function._iter_filter(lambda o: isinstance(o, torch.Tensor))(x))

@@ -275,9 +275,49 @@ def verify(model, args, backend, verbose=False, training=False, decimal=3, test_
             of random arguments to generate, or an iterable producing arguments
             to test under.
     """
+    def _nested_map(condition, fn, condition_msg=None):
+        def _map(obj):
+            if condition(obj):
+                return fn(obj)
+            elif obj is None:
+                return None
+            elif isinstance(obj, (list, tuple)):
+                return type(obj)(_map(x) for x in obj)
+            else:
+                raise ValueError("Auto nesting doesn't know how to process "
+                                 "an input object of type " + torch.typename(obj) +
+                                 (". Accepted types: " + condition_msg +
+                                  ", or lists/tuples of them"
+                                  if condition_msg else ""))
 
-    def is_variable(o):
-        return isinstance(o, torch.autograd.Variable)
+        return _map
+
+
+    def _iter_filter(condition, allow_unknown=False, condition_msg=None):
+        def _iter(obj):
+            if condition(obj):
+                yield obj
+            elif obj is None:
+                return
+            elif isinstance(obj, (list, tuple)):
+                for o in obj:
+                    for var in _iter(o):
+                        yield var
+            elif allow_unknown:
+                yield obj
+            else:
+                raise ValueError("Auto nesting doesn't know how to process "
+                                 "an input object of type " + torch.typename(obj) +
+                                 (". Accepted types: " + condition_msg +
+                                  ", or lists/tuples of them"
+                                  if condition_msg else ""))
+
+        return _iter
+
+    def is_tensor(o):
+        return isinstance(o, torch.Tensor)
+
+    _iter_tensors = _iter_filter(is_tensor, condition_msg="Tensors")
 
     def randomize_arg(arg):
         new_data = arg.data.clone()
@@ -289,12 +329,11 @@ def verify(model, args, backend, verbose=False, training=False, decimal=3, test_
             new_data.uniform_()
         return torch.autograd.Variable(new_data, requires_grad=arg.requires_grad)
 
-    def randomize_args(args):
-        return torch.autograd.function._nested_map(is_variable, randomize_arg)(args)
+    randomize_args = _nested_map(is_tensor, randomize_arg)
 
     def backend_args(args):
         # TODO: onnx should accept iterables
-        return tuple(v.data.cpu().numpy() for v in torch.autograd.function._iter_variables(args))
+        return tuple(v.data.cpu().numpy() for v in _iter_tensors(args))
 
     def load_bytes(b):
         b.seek(0)
@@ -304,9 +343,9 @@ def verify(model, args, backend, verbose=False, training=False, decimal=3, test_
         onnx.helper.strip_doc_string(x)
         return x
 
-    # Special case for common case of passing a single Variable
-    if isinstance(args, torch.autograd.Variable):
-        args = (args, )
+    # Special case for common case of passing a single Tensor
+    if isinstance(args, torch.Tensor):
+        args = (args,)
 
     with set_training(model, training):
         proto_bytes = io.BytesIO()
@@ -386,7 +425,7 @@ def verify(model, args, backend, verbose=False, training=False, decimal=3, test_
         # Factored out so we can avoid one run of the model
         def run_helper(torch_out, args):
             backend_out = prepared.run(backend_args(args))
-            if isinstance(torch_out, torch.autograd.Variable):
+            if isinstance(torch_out, torch.Tensor):
                 torch_out = (torch_out,)
             # NB: onnx backend NEVER returns bare numpy array
             msg = "ONNX backend returned different results from PyTorch"
