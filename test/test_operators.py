@@ -71,7 +71,7 @@ class TestOperators(TestCase):
             #     2) only one assertONNX in each test, otherwise will override the data.
             assert not os.path.exists(output_dir), "{} should not exist!".format(output_dir)
             os.makedirs(output_dir)
-            with open(os.path.join(output_dir, "model.pb"), 'wb') as file:
+            with open(os.path.join(output_dir, "model.onnx"), 'wb') as file:
                 file.write(model_def.SerializeToString())
             data_dir = os.path.join(output_dir, "test_data_set_0")
             os.makedirs(data_dir)
@@ -217,6 +217,10 @@ class TestOperators(TestCase):
     def test_batchnorm(self):
         x = Variable(torch.randn(2, 2, 2, 2).fill_(1.0), requires_grad=True)
         self.assertONNX(nn.BatchNorm2d(2), x)
+
+    def test_batchnorm_1d(self):
+        x = Variable(torch.randn(2, 2).fill_(1.0), requires_grad=True)
+        self.assertONNX(nn.BatchNorm1d(2), x)
 
     def test_batchnorm_training(self):
         x = Variable(torch.randn(2, 2, 2, 2).fill_(1.0), requires_grad=True)

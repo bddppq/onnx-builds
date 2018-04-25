@@ -473,6 +473,11 @@ class TestCaffe2Backend(unittest.TestCase):
     def test_word_language_model_GRU(self):
         self.run_word_language_model("GRU")
 
+    def test_batchnorm1d_special(self):
+        c = Variable(torch.randn(BATCH_SIZE, 224))
+        model = nn.BatchNorm1d(224)
+        self.run_model_test(model, train=True, input=c, batch_size=BATCH_SIZE)
+
     def test_constant(self):
         c = Variable(torch.randn(BATCH_SIZE, 3, 224, 224))
 
