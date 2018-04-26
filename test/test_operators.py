@@ -358,6 +358,14 @@ class TestOperators(TestCase):
         x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
         self.assertONNX(nn.SELU(), x)
 
+    def test_repeat(self):
+        x = Variable(torch.randn(1, 2, 3, 4), requires_grad=True)
+        self.assertONNX(lambda x: x.repeat(1, 2, 3, 4), x)
+
+    def test_repeat_dim_overflow(self):
+        x = Variable(torch.randn(1, 2), requires_grad=True)
+        self.assertONNX(lambda x: x.repeat(1, 2, 3, 4), x)
+
     def test_symbolic_override(self):
         """Lifted from fast-neural-style: custom implementation of instance norm
         to be mapped to ONNX operator"""
