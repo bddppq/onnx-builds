@@ -29,12 +29,14 @@ _pip_install() {
     fi
 }
 
+pip install -r "$REPOS_DIR/pytorch/caffe2/requirements.txt"
+pip install -r "$REPOS_DIR/pytorch/requirements.txt"
+
 # Install caffe2
 if [[ -n "$CI" ]]; then
     # TODO: remove this
     rm -rf "$REPOS_DIR/pytorch/third_party/onnx" && cp -r "$REPOS_DIR/onnx" "$REPOS_DIR/pytorch/third_party/onnx"
 fi
-pip install -r "$REPOS_DIR/pytorch/caffe2/requirements.txt"
 cd "$REPOS_DIR/pytorch" && python setup_caffe2.py install && cd -
 python -c 'from caffe2.python import build; from pprint import pprint; pprint(build.build_options)'
 
@@ -42,5 +44,4 @@ python -c 'from caffe2.python import build; from pprint import pprint; pprint(bu
 _pip_install -b "$BUILD_DIR/onnx" "file://$REPOS_DIR/onnx#egg=onnx"
 
 # Install pytorch
-pip install -r "$REPOS_DIR/pytorch/requirements.txt"
 _pip_install -b "$BUILD_DIR/pytorch" "file://$REPOS_DIR/pytorch#egg=torch"
