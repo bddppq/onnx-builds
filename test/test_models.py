@@ -43,12 +43,11 @@ BATCH_SIZE = 2
 
 
 class TestModels(TestCase):
-    def exportTest(self, model, inputs, subname=None, rtol=1e-2):
+    def exportTest(self, model, inputs, subname=None, rtol=1e-2, atol=1e-7):
         trace = torch.onnx.utils._trace(model, inputs)
         torch._C._jit_pass_lint(trace.graph())
-        verify(model, inputs, backend, rtol=rtol)
+        verify(model, inputs, backend, rtol=rtol, atol=atol)
 
-    @unittest.skip("1.77% mismatch")
     def test_ops(self):
         x = Variable(
             torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0)
@@ -82,7 +81,7 @@ class TestModels(TestCase):
         x = Variable(
             torch.randn(BATCH_SIZE, 1, 224, 224).fill_(1.0)
         )
-        self.exportTest(toC(SuperResolutionNet(upscale_factor=3)), toC(x))
+        self.exportTest(toC(SuperResolutionNet(upscale_factor=3)), toC(x), atol=1e-6)
 
     def test_alexnet(self):
         x = Variable(
@@ -96,34 +95,38 @@ class TestModels(TestCase):
         self.exportTest(toC(MNIST()), toC(x))
 
     @skipIfCI
-    @unittest.skip("0.2% mismatch")
-    def test_vgg(self):
+    def test_vgg16(self):
         # VGG 16-layer model (configuration "D")
         x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         vgg16 = make_vgg16()
         self.exportTest(toC(vgg16), toC(x), "16")
 
+    @skipIfCI
+    def test_vgg16_bn(self):
         # VGG 16-layer model (configuration "D") with batch normalization
         x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         vgg16_bn = make_vgg16_bn()
         self.exportTest(toC(vgg16_bn), toC(x), "16_bn")
 
+    @skipIfCI
+    def test_vgg19(self):
         # VGG 19-layer model (configuration "E")
         x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         vgg19 = make_vgg19()
         self.exportTest(toC(vgg19), toC(x), "19")
 
+    @skipIfCI
+    def test_vgg19_bn(self):
         # VGG 19-layer model (configuration 'E') with batch normalization
         x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         vgg19_bn = make_vgg19_bn()
         self.exportTest(toC(vgg19_bn), toC(x), "19_bn")
 
-    @unittest.skip("0.1% mismatch")
     def test_resnet(self):
         # ResNet50 model
         x = Variable(torch.randn(BATCH_SIZE, 3, 224, 224).fill_(1.0))
         resnet50 = ResNet(Bottleneck, [3, 4, 6, 3])
-        self.exportTest(toC(resnet50), toC(x), "50")
+        self.exportTest(toC(resnet50), toC(x), "50", atol=1e-6)
 
     def test_inception(self):
         x = Variable(
@@ -150,7 +153,6 @@ class TestModels(TestCase):
                             block_config=(6, 12, 24, 16))
         self.exportTest(toC(dense121), toC(x), "121")
 
-    @unittest.skip("0.71% mismatch")
     def test_dcgan(self):
         # note, could have more than 1 gpu
         netG = _netG(1)
