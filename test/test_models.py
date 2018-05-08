@@ -153,26 +153,17 @@ class TestModels(TestCase):
                             block_config=(6, 12, 24, 16))
         self.exportTest(toC(dense121), toC(x), "121")
 
-    def test_dcgan(self):
-        # note, could have more than 1 gpu
-        netG = _netG(1)
-        netG.apply(weights_init)
+    def test_dcgan_netD(self):
         netD = _netD(1)
         netD.apply(weights_init)
+        input = Variable(torch.Tensor(bsz, 3, imgsz, imgsz).normal_(0, 1))
+        self.exportTest(toC(netD), toC(input), "dcgan-netD")
 
-        input = torch.Tensor(bsz, 3, imgsz, imgsz)
-        noise = torch.Tensor(bsz, nz, 1, 1)
-        fixed_noise = torch.Tensor(bsz, nz, 1, 1).normal_(0, 1)
-
-        fixed_noise = Variable(fixed_noise)
-
-        netD.zero_grad()
-        inputv = Variable(input)
-        self.exportTest(toC(netD), toC(inputv), "dcgan-netD")
-
-        noise.resize_(bsz, nz, 1, 1).normal_(0, 1)
-        noisev = Variable(noise)
-        self.exportTest(toC(netG), toC(noisev), "dcgan-netG")
+    def test_dcgan_netG(self):
+        netG = _netG(1)
+        netG.apply(weights_init)
+        input = Variable(torch.Tensor(bsz, nz, 1, 1).normal_(0, 1))
+        self.exportTest(toC(netG), toC(input), "dcgan-netG")
 
 if __name__ == '__main__':
     run_tests()

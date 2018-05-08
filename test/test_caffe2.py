@@ -152,7 +152,7 @@ class TestCaffe2Backend(unittest.TestCase):
             np.testing.assert_almost_equal(x.data.cpu().numpy(), y, decimal=3)
 
     def run_actual_test(self, model, train, batch_size, state_dict=None,
-                        input=None, use_gpu=True, rtol=0.001, atol=1e-8):
+                        input=None, use_gpu=True, rtol=0.001, atol=1e-7):
         """
         This is what the user facing version will look like
         """
@@ -174,7 +174,7 @@ class TestCaffe2Backend(unittest.TestCase):
         verify.verify(model, input, c2, rtol=rtol, atol=atol)
 
     def run_model_test(self, model, train, batch_size, state_dict=None,
-                       input=None, use_gpu=True, rtol=0.001, atol=1e-8):
+                       input=None, use_gpu=True, rtol=0.001, atol=1e-7):
         use_gpu_ = torch.cuda.is_available() and use_gpu
         if self.embed_params:
             self.run_actual_test(model, train, batch_size, state_dict, input,
@@ -546,7 +546,8 @@ class TestCaffe2Backend(unittest.TestCase):
 
             def forward(self, input):
                 return input.sqrt()
-        self.run_model_test(MyModel(), train=False, batch_size=BATCH_SIZE)
+        input = Variable(torch.empty(BATCH_SIZE, 10, 10).uniform_(4, 9))
+        self.run_model_test(MyModel(), train=False, input=input, batch_size=BATCH_SIZE)
 
     def test_addconstant(self):
         class MyModel(torch.nn.Module):

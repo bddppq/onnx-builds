@@ -68,7 +68,7 @@ class Errors(object):
         """
         if isinstance(x, np.ndarray) and isinstance(y, np.ndarray):
             try:
-                np.testing.assert_allclose(x, y, rtol=self.rtol, atol=self.atol, verbose=True)
+                np.testing.assert_allclose(x, y, rtol=self.rtol, atol=self.atol, equal_nan=False, verbose=True)
             except AssertionError as e:
                 raise
                 k("{}{}".format(colonize(msg), str(e).lstrip()))
@@ -238,7 +238,7 @@ def set_training(model, mode):
             model.train(old_mode)
 
 
-def verify(model, args, backend, verbose=False, training=False, rtol=1e-3, atol=1e-8, test_args=2):
+def verify(model, args, backend, verbose=False, training=False, rtol=1e-3, atol=1e-7, test_args=2):
     """
     Export a model into ONNX, import it into a specified ONNX backend, and then
     on a few random inputs verify that PyTorch and the backend produced the same
