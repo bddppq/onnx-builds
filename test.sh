@@ -40,7 +40,7 @@ else
 fi
 
 if [[ $PARALLEL == 1 ]]; then
-    $PYTEST -n 3
+    $PYTEST -v -n 3
 else
-    $PYTEST
+    $PYTEST -v
 fi
