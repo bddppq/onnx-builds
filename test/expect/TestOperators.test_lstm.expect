@@ -530,22 +530,12 @@ graph {
     }
   }
   node {
-    input: "5"
+    input: "48"
     output: "51"
-    op_type: "Slice"
+    op_type: "Squeeze"
     attribute {
       name: "axes"
-      ints: 0
-      type: INTS
-    }
-    attribute {
-      name: "ends"
-      ints: 20
-      type: INTS
-    }
-    attribute {
-      name: "starts"
-      ints: 0
+      ints: 1
       type: INTS
     }
   }
@@ -560,12 +550,12 @@ graph {
     }
     attribute {
       name: "ends"
-      ints: 80
+      ints: 20
       type: INTS
     }
     attribute {
       name: "starts"
-      ints: 60
+      ints: 0
       type: INTS
     }
   }
@@ -580,6 +570,26 @@ graph {
     }
     attribute {
       name: "ends"
+      ints: 80
+      type: INTS
+    }
+    attribute {
+      name: "starts"
+      ints: 60
+      type: INTS
+    }
+  }
+  node {
+    input: "5"
+    output: "54"
+    op_type: "Slice"
+    attribute {
+      name: "axes"
+      ints: 0
+      type: INTS
+    }
+    attribute {
+      name: "ends"
       ints: 60
       type: INTS
     }
@@ -590,35 +600,15 @@ graph {
     }
   }
   node {
-    input: "51"
     input: "52"
     input: "53"
-    output: "54"
+    input: "54"
+    output: "55"
     op_type: "Concat"
     attribute {
       name: "axis"
       i: 0
       type: INT
-    }
-  }
-  node {
-    input: "6"
-    output: "55"
-    op_type: "Slice"
-    attribute {
-      name: "axes"
-      ints: 0
-      type: INTS
-    }
-    attribute {
-      name: "ends"
-      ints: 20
-      type: INTS
-    }
-    attribute {
-      name: "starts"
-      ints: 0
-      type: INTS
     }
   }
   node {
@@ -632,12 +622,12 @@ graph {
     }
     attribute {
       name: "ends"
-      ints: 80
+      ints: 20
       type: INTS
     }
     attribute {
       name: "starts"
-      ints: 60
+      ints: 0
       type: INTS
     }
   }
@@ -652,6 +642,26 @@ graph {
     }
     attribute {
       name: "ends"
+      ints: 80
+      type: INTS
+    }
+    attribute {
+      name: "starts"
+      ints: 60
+      type: INTS
+    }
+  }
+  node {
+    input: "6"
+    output: "58"
+    op_type: "Slice"
+    attribute {
+      name: "axes"
+      ints: 0
+      type: INTS
+    }
+    attribute {
+      name: "ends"
       ints: 60
       type: INTS
     }
@@ -662,35 +672,15 @@ graph {
     }
   }
   node {
-    input: "55"
     input: "56"
     input: "57"
-    output: "58"
+    input: "58"
+    output: "59"
     op_type: "Concat"
     attribute {
       name: "axis"
       i: 0
       type: INT
-    }
-  }
-  node {
-    input: "7"
-    output: "59"
-    op_type: "Slice"
-    attribute {
-      name: "axes"
-      ints: 0
-      type: INTS
-    }
-    attribute {
-      name: "ends"
-      ints: 20
-      type: INTS
-    }
-    attribute {
-      name: "starts"
-      ints: 0
-      type: INTS
     }
   }
   node {
@@ -704,12 +694,12 @@ graph {
     }
     attribute {
       name: "ends"
-      ints: 80
+      ints: 20
       type: INTS
     }
     attribute {
       name: "starts"
-      ints: 60
+      ints: 0
       type: INTS
     }
   }
@@ -724,6 +714,26 @@ graph {
     }
     attribute {
       name: "ends"
+      ints: 80
+      type: INTS
+    }
+    attribute {
+      name: "starts"
+      ints: 60
+      type: INTS
+    }
+  }
+  node {
+    input: "7"
+    output: "62"
+    op_type: "Slice"
+    attribute {
+      name: "axes"
+      ints: 0
+      type: INTS
+    }
+    attribute {
+      name: "ends"
       ints: 60
       type: INTS
     }
@@ -734,10 +744,10 @@ graph {
     }
   }
   node {
-    input: "59"
     input: "60"
     input: "61"
-    output: "62"
+    input: "62"
+    output: "63"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -747,7 +757,7 @@ graph {
   }
   node {
     input: "8"
-    output: "63"
+    output: "64"
     op_type: "Slice"
     attribute {
       name: "axes"
@@ -767,7 +777,7 @@ graph {
   }
   node {
     input: "8"
-    output: "64"
+    output: "65"
     op_type: "Slice"
     attribute {
       name: "axes"
@@ -787,7 +797,7 @@ graph {
   }
   node {
     input: "8"
-    output: "65"
+    output: "66"
     op_type: "Slice"
     attribute {
       name: "axes"
@@ -806,19 +816,8 @@ graph {
     }
   }
   node {
-    input: "63"
     input: "64"
     input: "65"
-    output: "66"
-    op_type: "Concat"
-    attribute {
-      name: "axis"
-      i: 0
-      type: INT
-    }
-  }
-  node {
-    input: "62"
     input: "66"
     output: "67"
     op_type: "Concat"
@@ -829,17 +828,18 @@ graph {
     }
   }
   node {
-    input: "54"
+    input: "63"
+    input: "67"
     output: "68"
-    op_type: "Unsqueeze"
+    op_type: "Concat"
     attribute {
-      name: "axes"
-      ints: 0
-      type: INTS
+      name: "axis"
+      i: 0
+      type: INT
     }
   }
   node {
-    input: "58"
+    input: "55"
     output: "69"
     op_type: "Unsqueeze"
     attribute {
@@ -849,7 +849,7 @@ graph {
     }
   }
   node {
-    input: "67"
+    input: "59"
     output: "70"
     op_type: "Unsqueeze"
     attribute {
@@ -859,12 +859,22 @@ graph {
     }
   }
   node {
-    input: "48"
+    input: "68"
     output: "71"
+    op_type: "Unsqueeze"
+    attribute {
+      name: "axes"
+      ints: 0
+      type: INTS
+    }
+  }
+  node {
+    input: "51"
+    output: "72"
     op_type: "Shape"
   }
   node {
-    output: "72"
+    output: "73"
     op_type: "Constant"
     attribute {
       name: "value"
@@ -876,32 +886,19 @@ graph {
     }
   }
   node {
-    input: "71"
     input: "72"
-    output: "73"
+    input: "73"
+    output: "74"
     op_type: "Gather"
   }
   node {
-    input: "73"
-    output: "74"
+    input: "74"
+    output: "75"
     op_type: "Unsqueeze"
     attribute {
       name: "axes"
       ints: 0
       type: INTS
-    }
-  }
-  node {
-    output: "75"
-    op_type: "Constant"
-    attribute {
-      name: "value"
-      t {
-        dims: 1
-        data_type: INT64
-        raw_data: "\024\000\000\000\000\000\000\000"
-      }
-      type: TENSOR
     }
   }
   node {
@@ -910,51 +907,15 @@ graph {
     attribute {
       name: "value"
       t {
+        dims: 1
         data_type: INT64
-        raw_data: "\001\000\000\000\000\000\000\000"
+        raw_data: "\024\000\000\000\000\000\000\000"
       }
       type: TENSOR
     }
   }
   node {
-    input: "76"
     output: "77"
-    op_type: "Unsqueeze"
-    attribute {
-      name: "axes"
-      ints: 0
-      type: INTS
-    }
-  }
-  node {
-    input: "77"
-    input: "74"
-    input: "75"
-    output: "78"
-    op_type: "Concat"
-    attribute {
-      name: "axis"
-      i: 0
-      type: INT
-    }
-  }
-  node {
-    input: "78"
-    output: "79"
-    op_type: "ConstantFill"
-    attribute {
-      name: "input_as_shape"
-      i: 1
-      type: INT
-    }
-  }
-  node {
-    input: "48"
-    output: "80"
-    op_type: "Shape"
-  }
-  node {
-    output: "81"
     op_type: "Constant"
     attribute {
       name: "value"
@@ -966,14 +927,8 @@ graph {
     }
   }
   node {
-    input: "80"
-    input: "81"
-    output: "82"
-    op_type: "Gather"
-  }
-  node {
-    input: "82"
-    output: "83"
+    input: "77"
+    output: "78"
     op_type: "Unsqueeze"
     attribute {
       name: "axes"
@@ -982,7 +937,62 @@ graph {
     }
   }
   node {
+    input: "78"
+    input: "75"
+    input: "76"
+    output: "79"
+    op_type: "Concat"
+    attribute {
+      name: "axis"
+      i: 0
+      type: INT
+    }
+  }
+  node {
+    input: "79"
+    output: "80"
+    op_type: "ConstantFill"
+    attribute {
+      name: "input_as_shape"
+      i: 1
+      type: INT
+    }
+  }
+  node {
+    input: "51"
+    output: "81"
+    op_type: "Shape"
+  }
+  node {
+    output: "82"
+    op_type: "Constant"
+    attribute {
+      name: "value"
+      t {
+        data_type: INT64
+        raw_data: "\001\000\000\000\000\000\000\000"
+      }
+      type: TENSOR
+    }
+  }
+  node {
+    input: "81"
+    input: "82"
+    output: "83"
+    op_type: "Gather"
+  }
+  node {
+    input: "83"
     output: "84"
+    op_type: "Unsqueeze"
+    attribute {
+      name: "axes"
+      ints: 0
+      type: INTS
+    }
+  }
+  node {
+    output: "85"
     op_type: "Constant"
     attribute {
       name: "value"
@@ -995,7 +1005,7 @@ graph {
     }
   }
   node {
-    output: "85"
+    output: "86"
     op_type: "Constant"
     attribute {
       name: "value"
@@ -1007,8 +1017,8 @@ graph {
     }
   }
   node {
-    input: "85"
-    output: "86"
+    input: "86"
+    output: "87"
     op_type: "Unsqueeze"
     attribute {
       name: "axes"
@@ -1017,10 +1027,10 @@ graph {
     }
   }
   node {
-    input: "86"
-    input: "83"
+    input: "87"
     input: "84"
-    output: "87"
+    input: "85"
+    output: "88"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -1029,8 +1039,8 @@ graph {
     }
   }
   node {
-    input: "87"
-    output: "88"
+    input: "88"
+    output: "89"
     op_type: "ConstantFill"
     attribute {
       name: "input_as_shape"
@@ -1039,16 +1049,16 @@ graph {
     }
   }
   node {
-    input: "48"
-    input: "68"
+    input: "51"
     input: "69"
     input: "70"
+    input: "71"
     input: ""
-    input: "79"
-    input: "88"
-    output: "89"
+    input: "80"
+    input: "89"
     output: "90"
     output: "91"
+    output: "92"
     op_type: "LSTM"
     attribute {
       name: "hidden_size"
@@ -1057,9 +1067,19 @@ graph {
     }
   }
   node {
-    input: "49"
     input: "90"
-    output: "92"
+    output: "93"
+    op_type: "Squeeze"
+    attribute {
+      name: "axes"
+      ints: 1
+      type: INTS
+    }
+  }
+  node {
+    input: "49"
+    input: "91"
+    output: "94"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -1069,8 +1089,8 @@ graph {
   }
   node {
     input: "50"
-    input: "91"
-    output: "93"
+    input: "92"
+    output: "95"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -1267,7 +1287,7 @@ graph {
     }
   }
   output {
-    name: "89"
+    name: "93"
     type {
       tensor_type {
         elem_type: FLOAT
@@ -1286,7 +1306,7 @@ graph {
     }
   }
   output {
-    name: "92"
+    name: "94"
     type {
       tensor_type {
         elem_type: FLOAT
@@ -1305,7 +1325,7 @@ graph {
     }
   }
   output {
-    name: "93"
+    name: "95"
     type {
       tensor_type {
         elem_type: FLOAT

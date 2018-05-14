@@ -154,6 +154,16 @@ graph {
       type: INT
     }
   }
+  node {
+    input: "19"
+    output: "21"
+    op_type: "Squeeze"
+    attribute {
+      name: "axes"
+      ints: 1
+      type: INTS
+    }
+  }
   name: "torch-jit-export"
   initializer {
     dims: 20
@@ -259,7 +269,7 @@ graph {
     }
   }
   output {
-    name: "19"
+    name: "21"
     type {
       tensor_type {
         elem_type: FLOAT

@@ -155,9 +155,19 @@ graph {
     }
   }
   node {
+    input: "23"
+    output: "25"
+    op_type: "Squeeze"
+    attribute {
+      name: "axes"
+      ints: 1
+      type: INTS
+    }
+  }
+  node {
     input: "7"
     input: "8"
-    output: "25"
+    output: "26"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -167,16 +177,6 @@ graph {
   }
   node {
     input: "5"
-    output: "26"
-    op_type: "Unsqueeze"
-    attribute {
-      name: "axes"
-      ints: 0
-      type: INTS
-    }
-  }
-  node {
-    input: "6"
     output: "27"
     op_type: "Unsqueeze"
     attribute {
@@ -186,7 +186,7 @@ graph {
     }
   }
   node {
-    input: "25"
+    input: "6"
     output: "28"
     op_type: "Unsqueeze"
     attribute {
@@ -196,12 +196,22 @@ graph {
     }
   }
   node {
-    input: "23"
+    input: "26"
     output: "29"
+    op_type: "Unsqueeze"
+    attribute {
+      name: "axes"
+      ints: 0
+      type: INTS
+    }
+  }
+  node {
+    input: "25"
+    output: "30"
     op_type: "Shape"
   }
   node {
-    output: "30"
+    output: "31"
     op_type: "Constant"
     attribute {
       name: "value"
@@ -213,14 +223,14 @@ graph {
     }
   }
   node {
-    input: "29"
     input: "30"
-    output: "31"
+    input: "31"
+    output: "32"
     op_type: "Gather"
   }
   node {
-    input: "31"
-    output: "32"
+    input: "32"
+    output: "33"
     op_type: "Unsqueeze"
     attribute {
       name: "axes"
@@ -229,7 +239,7 @@ graph {
     }
   }
   node {
-    output: "33"
+    output: "34"
     op_type: "Constant"
     attribute {
       name: "value"
@@ -242,7 +252,7 @@ graph {
     }
   }
   node {
-    output: "34"
+    output: "35"
     op_type: "Constant"
     attribute {
       name: "value"
@@ -254,8 +264,8 @@ graph {
     }
   }
   node {
-    input: "34"
-    output: "35"
+    input: "35"
+    output: "36"
     op_type: "Unsqueeze"
     attribute {
       name: "axes"
@@ -264,10 +274,10 @@ graph {
     }
   }
   node {
-    input: "35"
-    input: "32"
+    input: "36"
     input: "33"
-    output: "36"
+    input: "34"
+    output: "37"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -276,8 +286,8 @@ graph {
     }
   }
   node {
-    input: "36"
-    output: "37"
+    input: "37"
+    output: "38"
     op_type: "ConstantFill"
     attribute {
       name: "input_as_shape"
@@ -286,14 +296,14 @@ graph {
     }
   }
   node {
-    input: "23"
-    input: "26"
+    input: "25"
     input: "27"
     input: "28"
+    input: "29"
     input: ""
-    input: "37"
-    output: "38"
+    input: "38"
     output: "39"
+    output: "40"
     op_type: "RNN"
     attribute {
       name: "activations"
@@ -307,9 +317,19 @@ graph {
     }
   }
   node {
-    input: "24"
     input: "39"
-    output: "40"
+    output: "41"
+    op_type: "Squeeze"
+    attribute {
+      name: "axes"
+      ints: 1
+      type: INTS
+    }
+  }
+  node {
+    input: "24"
+    input: "40"
+    output: "42"
     op_type: "Concat"
     attribute {
       name: "axis"
@@ -506,7 +526,7 @@ graph {
     }
   }
   output {
-    name: "38"
+    name: "41"
     type {
       tensor_type {
         elem_type: FLOAT
@@ -525,7 +545,7 @@ graph {
     }
   }
   output {
-    name: "40"
+    name: "42"
     type {
       tensor_type {
         elem_type: FLOAT
